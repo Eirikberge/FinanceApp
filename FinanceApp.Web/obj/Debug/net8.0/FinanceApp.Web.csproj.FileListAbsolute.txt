@@ -1034,3 +1034,4 @@ C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Web\bin\Debug\net8.0\wwwroot\_
 C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Web\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Web\obj\Debug\net8.0\webcil\Newtonsoft.Json.wasm
 C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Web\obj\Debug\net8.0\compressed\t0tx2r5rhd.gz
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Web\obj\Debug\net8.0\FinanceApp.Web.sourcelink.json

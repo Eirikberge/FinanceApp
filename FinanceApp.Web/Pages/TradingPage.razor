@@ -22,9 +22,11 @@ else
 				<th>Symbol</th>
 				<th>Current Price</th>
 				<th>Open Price</th>
-				<th>Close Price</th>
+				<th>Previous Price</th>
 				<th>High</th>
 				<th>Low</th>
+				<th>Percent Change</th>
+				<th>Change</th>
 				<th>Time</th>
 			</tr>
 		</thead>
@@ -36,9 +38,11 @@ else
 					<td>@stock.Symbol</td>
 					<td>@stock.Current</td>
 					<td>@stock.Open</td>
-					<td>@stock.Close</td>
+					<td>@stock.Previous</td>
 					<td>@stock.High</td>
 					<td>@stock.Low</td>
+					<td>@stock.PercentChange</td>
+					<td>@stock.Change</td>
 					<td>@FormatDateTime(stock.Time)</td>
 				</tr>
 			}
@@ -74,10 +78,12 @@ else
 				{
 					Current = responseObject.Current,
 					Open = responseObject.Open,
-					Close = responseObject.Close,
+					Previous = responseObject.Previous,
 					High = responseObject.High,
 					Low = responseObject.Low,
 					Time = responseObject.Time,
+					Change = responseObject.Change,
+					PercentChange = responseObject.PercentChange,
 					Symbol = responseObject.Symbol
 				};
 			searchedStocks = new List<StockSearchResponse> { stock };
@@ -94,9 +100,11 @@ else
 	{
 		public float Current { get; set; }
 		public float Open { get; set; }
-		public float Close { get; set; }
+		public float Previous { get; set; }
 		public float High { get; set; }
 		public float Low { get; set; }
+		public float PercentChange { get; set; }
+		public float Change { get; set; }
 		public string Time { get; set; }
 		public string Symbol { get; set; }
 	}

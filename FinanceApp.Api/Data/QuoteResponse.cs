@@ -16,10 +16,16 @@ public class QuoteResponse
 	public float Open { get; set; }
 	[JsonPropertyName("pc")]
 
-	public float Close { get; set; }
+	public float Previous { get; set; }
+	[JsonPropertyName("dp")]
+
+	public float PercentChange { get; set; }
 	[JsonPropertyName("l")]
 
 	public float Low { get; set; }
+	[JsonPropertyName("d")]
+
+	public float Change { get; set; }
 
 
 	public QuoteResponse()

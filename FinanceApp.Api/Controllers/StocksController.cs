@@ -38,7 +38,9 @@ namespace FinanceApp.Controllers
 			stockPrice.Current = deserialized.Current;
 			stockPrice.High = deserialized.High;
 			stockPrice.Low = deserialized.Low;
-			stockPrice.Close = deserialized.Close;
+			stockPrice.Previous = deserialized.Previous;
+			stockPrice.PercentChange = deserialized.PercentChange;
+			stockPrice.Change = deserialized.Change;
 			stockPrice.Open = deserialized.Open;
 			stockPrice.Time = DateTime.Now;
 
