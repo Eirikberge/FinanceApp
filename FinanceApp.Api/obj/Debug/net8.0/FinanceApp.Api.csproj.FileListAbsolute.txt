@@ -134,3 +134,4 @@ C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Api\obj\Debug\net8.0\refint\Fi
 C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Api\obj\Debug\net8.0\FinanceApp.Api.pdb
 C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Api\obj\Debug\net8.0\FinanceApp.Api.genruntimeconfig.cache
 C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Api\obj\Debug\net8.0\ref\FinanceApp.Api.dll
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Api\obj\Debug\net8.0\FinanceApp.Api.sourcelink.json

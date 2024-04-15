@@ -42,8 +42,7 @@
               "RelativeToolTip": "FinanceApp.Api\\Controllers\\StocksController.cs",
               "ViewState": "AQIAAAsAAAAAAAAAAAAQwCoAAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-15T12:34:08.215Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-15T12:34:08.215Z"
             },
             {
               "$type": "Document",
@@ -55,8 +54,7 @@
               "RelativeToolTip": "FinanceApp.Api\\Entities\\PriceCandle.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-15T12:31:30.115Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-15T12:31:30.115Z"
             },
             {
               "$type": "Document",
@@ -68,8 +66,7 @@
               "RelativeToolTip": "FinanceApp.Api\\Data\\QuoteResponse.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-15T12:28:44.675Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-15T12:28:44.675Z"
             },
             {
               "$type": "Document",
@@ -79,7 +76,7 @@
               "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\TradingPage.razor",
               "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\TradingPage.razor",
               "RelativeToolTip": "FinanceApp.Web\\Pages\\TradingPage.razor",
-              "ViewState": "AQIAAA8AAAAAAAAAAAAAABQAAAAHAAAA",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAB0AAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-04-15T10:30:31.167Z",
               "EditorCaption": ""
