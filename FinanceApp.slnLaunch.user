@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Name": "FinanceApp.Api\\FinanceApp.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Name": "FinanceApp.Web\\FinanceApp.Web.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

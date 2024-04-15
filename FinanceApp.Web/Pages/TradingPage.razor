@@ -1,0 +1,103 @@
+﻿@page "/tradingpage"
+@using Newtonsoft.Json
+@using System.Text
+@inject HttpClient Http
+
+<h3>TradingPage</h3>
+
+<form @onsubmit="Search">
+	<input type="text" @bind="searchString" @bind:event="oninput" />
+	<button type="submit">Search</button>
+</form>
+
+@if (searchedStocks == null)
+{
+
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Symbol</th>
+				<th>Current Price</th>
+				<th>Open Price</th>
+				<th>Close Price</th>
+				<th>High</th>
+				<th>Low</th>
+				<th>Time</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			@foreach (var stock in searchedStocks)
+			{
+				<tr>
+					<td>@stock.Symbol</td>
+					<td>@stock.Current</td>
+					<td>@stock.Open</td>
+					<td>@stock.Close</td>
+					<td>@stock.High</td>
+					<td>@stock.Low</td>
+					<td>@FormatDateTime(stock.Time)</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+
+
+@code {
+	private List<StockSearchResponse> searchedStocks;
+
+	private string searchString;
+
+	private string emtySearchStringMsg = "";
+
+
+	async Task Search()
+	{
+		await ShowStockInfo();
+	}
+
+	async Task ShowStockInfo()
+	{
+		var response = await Http.GetAsync($"https://localhost:7282/stocks/{searchString}");
+		if (response.IsSuccessStatusCode)
+		{
+
+			var jsonResponse = await response.Content.ReadAsStringAsync();
+			var responseObject = JsonConvert.DeserializeObject<StockSearchResponse>(jsonResponse);
+
+			var stock = new StockSearchResponse
+				{
+					Current = responseObject.Current,
+					Open = responseObject.Open,
+					Close = responseObject.Close,
+					High = responseObject.High,
+					Low = responseObject.Low,
+					Time = responseObject.Time,
+					Symbol = responseObject.Symbol
+				};
+			searchedStocks = new List<StockSearchResponse> { stock };
+		}
+	}
+	string FormatDateTime(string dateTimeString)
+	{
+		DateTime time = DateTime.Parse(dateTimeString);
+		string formattedTime = time.ToString("HH:mm:ss");
+		return formattedTime;
+	}
+
+	public class StockSearchResponse
+	{
+		public float Current { get; set; }
+		public float Open { get; set; }
+		public float Close { get; set; }
+		public float High { get; set; }
+		public float Low { get; set; }
+		public string Time { get; set; }
+		public string Symbol { get; set; }
+	}
+}

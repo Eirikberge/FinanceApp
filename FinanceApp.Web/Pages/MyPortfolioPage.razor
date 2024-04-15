@@ -1,0 +1,161 @@
+﻿@page "/mystock"
+@using Newtonsoft.Json
+@using System.Text
+@inject HttpClient Http
+
+<h1>My Stocks</h1>
+
+
+<form @onsubmit="UpdateFilteredStocks">
+	<input type="text" @bind="searchString" />
+	<button type="submit">Search</button>
+</form>
+
+@if (stocks == null)
+{
+	<p>Loading...</p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Symbol</th>
+				<th>Name</th>
+				<th>BuyingPrice</th>
+				<th>CurrentPrice</th>
+				<th>Quantity</th>
+				<th>Gain</th>
+				<th></th>
+
+			</tr>
+		</thead>
+		<tbody>
+			@if (filteredStocks == null)
+			{
+				@foreach (var stock in stocks)
+				{
+					var gain = (stock.CurrentPrice - stock.BuyingPrice) * stock.Qty;
+					<tr>
+						<td>@stock.Symbol</td>
+						<td>@stock.Name</td>
+						<td>@stock.BuyingPrice</td>
+						<td>@stock.CurrentPrice</td>
+						<td>@stock.Qty</td>
+						<td>@gain</td>
+						<td><button class="btn btn-primary" @onclick="() => UpdateStock(stock)">Refresh</button></td>
+					</tr>
+				}
+
+			}
+			else
+			{
+				@foreach (var filteredstock in filteredStocks)
+				{
+					var filteredgain = (filteredstock.CurrentPrice - filteredstock.BuyingPrice) * filteredstock.Qty;
+					<tr>
+						<td>@filteredstock.Symbol</td>
+						<td>@filteredstock.Name</td>
+						<td>@filteredstock.BuyingPrice</td>
+						<td>@filteredstock.CurrentPrice</td>
+						<td>@filteredstock.Qty</td>
+						<td>@filteredgain</td>
+						<td><button class="btn btn-primary" @onclick="() => UpdateStock(filteredstock)">Refresh</button></td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	private List<Stock> stocks;
+	private List<Stock> filteredStocks;
+
+	private string searchString;
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
+		if (response.IsSuccessStatusCode)
+		{
+			stocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
+			filteredStocks = stocks.ToList();
+		}
+	}
+
+	public class Stock
+	{
+		public string Name { get; set; }
+		public string Symbol { get; set; }
+		public float BuyingPrice { get; set; }
+		public float CurrentPrice { get; set; }	
+		public int Qty { get; set; }
+	}
+
+	void UpdateFilteredStocks()
+	{
+		if (string.IsNullOrEmpty(searchString))
+		{
+			filteredStocks = stocks.ToList();
+		}
+		else
+		{
+			filteredStocks = stocks.Where(stock => stock.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+		}
+	}
+
+
+
+	async Task UpdateStock(Stock stock)
+	{
+
+		var response = await Http.GetAsync($"https://localhost:7282/stocks/{stock.Symbol}");
+    
+		if (response.IsSuccessStatusCode)
+		{
+			var jsonResponse = await response.Content.ReadAsStringAsync();
+			var responseObject = JsonConvert.DeserializeObject<StockResponse>(jsonResponse);
+        
+			stock.CurrentPrice = responseObject.Current;
+		}
+		var updateModel = new StockUpdateModel
+		{
+			Symbol = stock.Symbol,
+			NewPrice = stock.CurrentPrice
+		};
+		var json = JsonConvert.SerializeObject(updateModel);
+		var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+		var stockResponse = await Http.PutAsync("https://localhost:7282/UpdateStockPrice/api/updatestock", content);
+
+		if (stockResponse.IsSuccessStatusCode)
+		{
+			Console.Write("Vellykket");
+		}
+		else
+		{
+			Console.Write("Mislykket");
+		}
+	}
+
+	public class StockResponse
+	{
+		public float Current { get; set; }
+		public float Open { get; set; }
+		public float Close { get; set; }
+		public float High { get; set; }
+		public float Low { get; set; }
+		public DateTime Time { get; set; }
+		public string Symbol { get; set; }
+	}
+
+	public class StockUpdateModel
+	{
+		public string Symbol { get; set; }
+		public float NewPrice { get; set; }
+	}
+
+
+}
