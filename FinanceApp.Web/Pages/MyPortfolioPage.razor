@@ -130,14 +130,6 @@ else
 
 		var stockResponse = await Http.PutAsync("https://localhost:7282/UpdateStockPrice/api/updatestock", content);
 
-		if (stockResponse.IsSuccessStatusCode)
-		{
-			Console.Write("Vellykket");
-		}
-		else
-		{
-			Console.Write("Mislykket");
-		}
 	}
 
 	public class StockResponse
