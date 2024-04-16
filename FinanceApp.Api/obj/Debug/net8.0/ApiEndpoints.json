@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "FinanceApp.Api.Controllers.AddStockController",
+    "Method": "AddStock",
+    "RelativePath": "AddStock/api/addstock",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "addModel",
+        "Type": "FinanceApp.Api.Entities.AddStockModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "FinanceApp.Controllers.GetOwnersController",
     "Method": "GetOwners",
     "RelativePath": "api/GetOwners",
@@ -117,7 +133,7 @@
     "Parameters": [
       {
         "Name": "updateModel",
-        "Type": "FinanceApp.Api.Data.StockUpdateModel",
+        "Type": "FinanceApp.Api.Entities.StockUpdateModel",
         "IsRequired": true
       }
     ],

@@ -1,10 +1,11 @@
 ﻿using FinanceApp.Api.Data;
+using FinanceApp.Api.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApp.Api.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class UpdateStockPriceController : Controller
 	{
