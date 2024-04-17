@@ -4,11 +4,13 @@
     "Projects": [
       {
         "Name": "FinanceApp.Api\\FinanceApp.Api.csproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": ""
       },
       {
         "Name": "FinanceApp.Web\\FinanceApp.Web.csproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": ""
       }
     ]
   }

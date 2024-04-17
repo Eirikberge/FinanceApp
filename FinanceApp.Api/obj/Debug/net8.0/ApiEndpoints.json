@@ -1,5 +1,15 @@
 [
   {
+    "ContainingType": "FinanceApp.Controllers.GetStockPriceController",
+    "Method": "Index",
+    "RelativePath": "",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "FinanceApp.Api.Controllers.AddStockController",
     "Method": "AddStock",
     "RelativePath": "AddStock/api/addstock",
@@ -36,69 +46,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "FinanceApp.Controllers.EarningsSurpriseController",
-    "Method": "Index",
-    "RelativePath": "earningssurprise",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FinanceApp.Controllers.EarningsSurpriseController",
-    "Method": "GetEarningsSurprise",
-    "RelativePath": "earningssurprise/{symbol}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "symbol",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FinanceApp.Controllers.RecommendationController",
-    "Method": "Index",
-    "RelativePath": "recommendations",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FinanceApp.Controllers.RecommendationController",
-    "Method": "GetRecommendations",
-    "RelativePath": "recommendations/{symbol}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "symbol",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FinanceApp.Controllers.StocksController",
-    "Method": "Index",
-    "RelativePath": "stocks",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FinanceApp.Controllers.StocksController",
+    "ContainingType": "FinanceApp.Controllers.GetStockPriceController",
     "Method": "GetStockPrice",
     "RelativePath": "stocks/{symbol}",
     "HttpMethod": "GET",
@@ -124,6 +72,38 @@
     ]
   },
   {
+    "ContainingType": "FinanceApp.Api.Controllers.UpdateStockController",
+    "Method": "UpdatePrice",
+    "RelativePath": "UpdateStock/api/updateprice",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateModel",
+        "Type": "FinanceApp.Api.Entities.StockUpdateModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApp.Api.Controllers.UpdateStockController",
+    "Method": "UpdateQty",
+    "RelativePath": "UpdateStock/api/updateqty",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateModel",
+        "Type": "FinanceApp.Api.Entities.StockUpdateModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "FinanceApp.Api.Controllers.UpdateStockPriceController",
     "Method": "UpdateStock",
     "RelativePath": "UpdateStockPrice/api/updatestock",
@@ -133,7 +113,23 @@
     "Parameters": [
       {
         "Name": "updateModel",
-        "Type": "FinanceApp.Api.Entities.StockUpdateModel",
+        "Type": "FinanceApp.Api.Entities.StockUpdatePriceModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApp.Api.Controllers.UpdateStockQtyController",
+    "Method": "UpdateStock",
+    "RelativePath": "UpdateStockQty/api/updatestock",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateModel",
+        "Type": "FinanceApp.Api.Entities.StockUpdateQtyModel",
         "IsRequired": true
       }
     ],

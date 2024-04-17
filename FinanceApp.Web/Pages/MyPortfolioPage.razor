@@ -35,7 +35,7 @@ else
 			{
 				@foreach (var stock in stocks)
 				{
-					var gain = (stock.CurrentPrice - stock.BuyingPrice) * stock.Qty;
+					var gain = Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
 					<tr>
 						<td>@stock.Symbol</td>
 						<td>@stock.Name</td>
@@ -85,14 +85,7 @@ else
 		}
 	}
 
-	public class Stock
-	{
-		public string Name { get; set; }
-		public string Symbol { get; set; }
-		public float BuyingPrice { get; set; }
-		public float CurrentPrice { get; set; }	
-		public int Qty { get; set; }
-	}
+	
 
 	void UpdateFilteredStocks()
 	{
@@ -112,6 +105,7 @@ else
 	{
 
 		var response = await Http.GetAsync($"https://localhost:7282/stocks/{stock.Symbol}");
+
     
 		if (response.IsSuccessStatusCode)
 		{
@@ -128,8 +122,16 @@ else
 		var json = JsonConvert.SerializeObject(updateModel);
 		var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-		var stockResponse = await Http.PutAsync("https://localhost:7282/UpdateStockPrice/api/updatestock", content);
+		var stockResponse = await Http.PutAsync("https://localhost:7282/UpdateStock/api/updateprice", content);
 
+	}
+	public class Stock
+	{
+		public string Name { get; set; }
+		public string Symbol { get; set; }
+		public float BuyingPrice { get; set; }
+		public float CurrentPrice { get; set; }
+		public int Qty { get; set; }
 	}
 
 	public class StockResponse

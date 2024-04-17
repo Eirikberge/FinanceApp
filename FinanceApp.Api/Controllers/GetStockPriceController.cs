@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace FinanceApp.Controllers
 {
 	[ApiController]
-	[Route("stocks")]
-	public class StocksController : Controller
+	[Route("")]
+	public class GetStockPriceController : Controller
 	{
 		[Route("")]
 		[HttpGet]
@@ -15,7 +15,7 @@ namespace FinanceApp.Controllers
 		{
 			return Ok();
 		}
-		[HttpGet("{symbol}")] // decorator
+		[HttpGet("stocks/{symbol}")] // decorator
 		public PriceCandle GetStockPrice(string symbol)
 		{
 			var client = new HttpClient();
