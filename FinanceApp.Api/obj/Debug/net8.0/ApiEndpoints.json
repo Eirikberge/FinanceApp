@@ -46,6 +46,26 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "FinanceApp.Api.Controllers.CompanyInfoController",
+    "Method": "Get",
+    "RelativePath": "CompanyInfo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[FinanceApp.Api.Entities.CompanyInfo, FinanceApp.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "FinanceApp.Controllers.GetStockPriceController",
     "Method": "GetStockPrice",
     "RelativePath": "stocks/{symbol}",
