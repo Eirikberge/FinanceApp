@@ -73,22 +73,6 @@
   },
   {
     "ContainingType": "FinanceApp.Api.Controllers.UpdateStockController",
-    "Method": "UpdatePrice",
-    "RelativePath": "UpdateStock/api/updateprice",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "updateModel",
-        "Type": "FinanceApp.Api.Entities.StockUpdateModel",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FinanceApp.Api.Controllers.UpdateStockController",
     "Method": "UpdateQty",
     "RelativePath": "UpdateStock/api/updateqty",
     "HttpMethod": "PUT",

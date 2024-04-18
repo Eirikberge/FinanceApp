@@ -25,7 +25,6 @@ namespace FinanceApp.Api.Controllers
 					Name = addModel.Name,
 					Symbol = addModel.Symbol,
 					BuyingPrice = addModel.BuyingPrice,
-					CurrentPrice = addModel.CurrentPrice,
 					Qty = addModel.Qty
 				};
 

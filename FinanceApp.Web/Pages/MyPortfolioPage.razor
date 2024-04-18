@@ -53,6 +53,7 @@ else
 	private List<Stock> filteredStocks;
 
 	private string searchString;
+	private float CurrentPrice;
 
 
 	protected override async Task OnInitializedAsync()
@@ -88,16 +89,7 @@ else
 
 			stock.CurrentPrice = responseObject.Current;
 		}
-		var updateModel = new Stock
-			{
-				Symbol = stock.Symbol,
-				CurrentPrice = stock.CurrentPrice
-			};
-		var json = JsonConvert.SerializeObject(updateModel);
-		var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-		var stockResponse = await Http.PutAsync("https://localhost:7282/UpdateStock/api/updateprice", content);
-
+		
 	}
 	public class Stock
 	{
@@ -118,4 +110,5 @@ else
 		public string Time { get; set; }
 		public string Symbol { get; set; }
 	}
+	
 }

@@ -88,6 +88,7 @@
 	private string insertedName;
 	private int insertedQty;
 
+
 	protected override async Task OnInitializedAsync()
 	{
 		await LoadStocks();
@@ -186,7 +187,6 @@
 					Name = insertedName,
 					Symbol = searchedStock.Symbol,
 					BuyingPrice = searchedStock.Current,
-					CurrentPrice = searchedStock.Current,
 					Qty = insertedQty,
 				};
 			var json = JsonConvert.SerializeObject(addModel);
@@ -241,7 +241,6 @@
 		public string Name { get; set; }
 		public string Symbol { get; set; }
 		public float BuyingPrice { get; set; }
-		public float CurrentPrice { get; set; }
 		public int Qty { get; set; }
 	}
 

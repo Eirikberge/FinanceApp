@@ -14,11 +14,6 @@ namespace FinanceApp.Api.Controllers
 		{
 			_context = context;
 		}
-		[HttpPut("api/updateprice")]
-		public IActionResult UpdatePrice([FromBody] StockUpdateModel updateModel)
-		{
-			return UpdateStock(updateModel.Symbol, stock => stock.CurrentPrice = updateModel.NewPrice);
-		}
 
 		[HttpPut("api/updateqty")]
 		public IActionResult UpdateQty([FromBody] StockUpdateModel updateModel)

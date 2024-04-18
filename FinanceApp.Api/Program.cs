@@ -19,6 +19,8 @@ namespace FinanceApp.Api
 			builder.Services.AddDbContext<FinanceAppDbContext>(options =>
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+			builder.Services.AddHttpClient();
+
 			builder.Services.AddCors(options =>
 			{
 				options.AddPolicy("AllowSpecificOrigin", builder =>

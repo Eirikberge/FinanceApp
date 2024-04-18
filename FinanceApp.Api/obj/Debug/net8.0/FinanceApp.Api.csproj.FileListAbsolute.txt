@@ -135,3 +135,4 @@ C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Api\obj\Debug\net8.0\FinanceAp
 C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Api\obj\Debug\net8.0\FinanceApp.Api.genruntimeconfig.cache
 C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Api\obj\Debug\net8.0\ref\FinanceApp.Api.dll
 C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Api\obj\Debug\net8.0\FinanceApp.Api.sourcelink.json
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Api\bin\Debug\net8.0\CompanyTickerCik.json
