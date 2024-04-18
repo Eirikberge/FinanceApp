@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\controllers\\getcompanyinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\controllers\\getcompanyinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.web\\models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\data\\companydata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\data\\companydata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.web\\pages\\myportfoliopage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\pages\\myportfoliopage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.web\\pages\\tradingpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\pages\\tradingpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\controllers\\getcompanyinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\controllers\\getcompanyinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +26,64 @@
       "DocumentGroups": [
         {
           "DockedWidth": 210,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CompanyData.cs",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Data\\CompanyData.cs",
-              "RelativeDocumentMoniker": "FinanceApp.Api\\Data\\CompanyData.cs",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Data\\CompanyData.cs",
-              "RelativeToolTip": "FinanceApp.Api\\Data\\CompanyData.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAABAAAA",
+              "DocumentIndex": 0,
+              "Title": "Models.cs",
+              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Models.cs",
+              "RelativeDocumentMoniker": "FinanceApp.Web\\Models.cs",
+              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Models.cs",
+              "RelativeToolTip": "FinanceApp.Web\\Models.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-18T13:14:04.872Z",
+              "WhenOpened": "2024-04-18T14:34:18.614Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
+              "Title": "TradingPage.razor",
+              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\TradingPage.razor",
+              "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\TradingPage.razor",
+              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\TradingPage.razor",
+              "RelativeToolTip": "FinanceApp.Web\\Pages\\TradingPage.razor",
+              "ViewState": "AQIAAFQAAAAAAAAAAAAAAOkAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-04-18T13:58:08.498Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "GetCompanyInfoController.cs",
               "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Controllers\\GetCompanyInfoController.cs",
               "RelativeDocumentMoniker": "FinanceApp.Api\\Controllers\\GetCompanyInfoController.cs",
               "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Controllers\\GetCompanyInfoController.cs",
               "RelativeToolTip": "FinanceApp.Api\\Controllers\\GetCompanyInfoController.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAmwBYAAAAxAAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAABYAAAAxAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-18T13:05:59.178Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 210,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MyPortfolioPage.razor",
+              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
+              "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
+              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
+              "RelativeToolTip": "FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADQAAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-04-18T14:26:22.703Z",
               "EditorCaption": ""
             }
           ]

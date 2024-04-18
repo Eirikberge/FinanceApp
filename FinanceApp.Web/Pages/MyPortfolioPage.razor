@@ -7,11 +7,11 @@
 
 
 <form @onsubmit="UpdateFilteredStocks">
-	<input type="text" @bind="searchString" />
+	<input type="text" @bind="_searchString" />
 	<button type="submit">Search</button>
 </form>
 
-@if (stocks == null)
+@if (_stocks == null)
 {
 	<p>Loading...</p>
 }
@@ -31,29 +31,29 @@ else
 			</tr>
 		</thead>
 		<tbody>
-				@foreach (var stock in filteredStocks ?? stocks)
-				{
-					var gain = Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
-					<tr>
-						<td>@stock.Symbol</td>
-						<td>@stock.Name</td>
-						<td>@stock.BuyingPrice</td>
-						<td>@stock.CurrentPrice</td>
-						<td>@stock.Qty</td>
-						<td>@gain</td>
-						<td><button class="btn btn-primary" @onclick="() => UpdateStock(stock)">Refresh</button></td>
-					</tr>
-				}
-			</tbody>
+			@foreach (var stock in _filteredStocks ?? _stocks)
+			{
+				var gain = Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
+				<tr>
+					<td>@stock.Symbol</td>
+					<td>@stock.Name</td>
+					<td>@stock.BuyingPrice</td>
+					<td>@stock.CurrentPrice</td>
+					<td>@stock.Qty</td>
+					<td>@gain</td>
+					<td><button class="btn btn-primary" @onclick="() => UpdateStock(stock)">Refresh</button></td>
+				</tr>
+			}
+		</tbody>
 	</table>
 }
 
 @code {
-	private List<Stock> stocks;
-	private List<Stock> filteredStocks;
+	private List<Stock> _stocks;
+	private List<Stock> _filteredStocks;
 
-	private string searchString;
-	private float CurrentPrice;
+	private string _searchString;
+	private float _currentPrice;
 
 
 	protected override async Task OnInitializedAsync()
@@ -66,49 +66,28 @@ else
 		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
 		if (response.IsSuccessStatusCode)
 		{
-			stocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
-			filteredStocks = stocks.ToList();
+			_stocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
+			_filteredStocks = _stocks.ToList();
 		}
 	}
 
 	private void UpdateFilteredStocks()
 	{
-		filteredStocks = string.IsNullOrEmpty(searchString) ? stocks : stocks.Where(stock =>
-			stock.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-			stock.Symbol.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+		_filteredStocks = string.IsNullOrEmpty(_searchString) ? _stocks : _stocks.Where(stock =>
+			stock.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
+			stock.Symbol.Contains(_searchString, StringComparison.OrdinalIgnoreCase)).ToList();
 	}
 
-	async Task UpdateStock(Stock stock)
+	private async Task UpdateStock(Stock stock)
 	{
 		var response = await Http.GetAsync($"https://localhost:7282/stocks/{stock.Symbol}");
-		
+
 		if (response.IsSuccessStatusCode)
 		{
 			var jsonResponse = await response.Content.ReadAsStringAsync();
-			var responseObject = JsonConvert.DeserializeObject<StockResponse>(jsonResponse);
+			var responseObject = JsonConvert.DeserializeObject<StockSearchResponse>(jsonResponse);
 
 			stock.CurrentPrice = responseObject.Current;
 		}
-		
 	}
-	public class Stock
-	{
-		public string Name { get; set; }
-		public string Symbol { get; set; }
-		public float BuyingPrice { get; set; }
-		public float CurrentPrice { get; set; }
-		public int Qty { get; set; }
-	}
-
-	public class StockResponse
-	{
-		public float Current { get; set; }
-		public float Open { get; set; }
-		public float Close { get; set; }
-		public float High { get; set; }
-		public float Low { get; set; }
-		public string Time { get; set; }
-		public string Symbol { get; set; }
-	}
-	
 }

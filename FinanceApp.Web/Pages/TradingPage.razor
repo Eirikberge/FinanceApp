@@ -6,7 +6,7 @@
 <h3>Trading Page</h3>
 
 <form @onsubmit="Search">
-	<input type="text" @bind="searchString" @bind:event="oninput" />
+	<input type="text" @bind="_searchString" @bind:event="oninput" />
 	<button type="submit">Search</button>
 </form>
 
@@ -15,11 +15,12 @@
 <NavLink href="/symbolexamples" class="btn btn-primary">Se aksjer eksempler</NavLink>
 
 
-@if (searchedStocks != null)
+@if (_searchedStocks != null)
 {
 	<table class="table">
 		<thead>
 			<tr>
+				<th>Name</th>
 				<th>Symbol</th>
 				<th>Current Price</th>
 				<th>Open Price</th>
@@ -35,9 +36,10 @@
 		</thead>
 		<tbody>
 
-			@foreach (var stock in searchedStocks)
+			@foreach (var stock in _searchedStocks)
 			{
 				<tr>
+					<td>@_stockName</td>
 					<td>@stock.Symbol</td>
 					<td>@stock.Current</td>
 					<td>@stock.Open</td>
@@ -54,18 +56,17 @@
 					}
 
 				</tr>
-				@if (showBuyForm)
+				@if (_showBuyForm)
 				{
 					<div class="buy-form">
-						<input type="text" @bind="insertedName" placeholder="Enter stock name for @stock.Symbol" />
-						<input type="number" @bind="insertedQty" placeholder="Enter quantity for @stock.Symbol" />
+						<input type="number" @bind="_insertedQty" placeholder="Enter quantity for @_stockName" />
 						<button @onclick="() => ConfirmBuy(stock)">Confirm</button>
 					</div>
 				}
-				@if (showSellForm)
+				@if (_showSellForm)
 				{
 					<div class="sell-form">
-						<input type="number" @bind="insertedQty" placeholder="Enter quantity for @stock.Symbol" />
+						<input type="number" @bind="_insertedQty" placeholder="Enter quantity for @stock.Symbol" />
 						<button @onclick="() => ConfirmSell(stock)">Confirm</button>
 					</div>
 				}
@@ -77,21 +78,31 @@
 
 
 @code {
-	private List<StockSearchResponse> searchedStocks;
-	public List<Stock> OwnedStocks;
+	private List<Stock> _ownedStocks;
+	private List<StockSearchResponse> _searchedStocks;
+	private List<CompanyInfoResponse> _companyInfoList;
 
-	private string searchString;
+	private string _searchString;
 
-	private bool showBuyForm = false;
-	private bool showSellForm = false;
+	private bool _showBuyForm = false;
+	private bool _showSellForm = false;
 
-	private string insertedName;
-	private int insertedQty;
-
+	private string _stockName;
+	private int _insertedQty;
 
 	protected override async Task OnInitializedAsync()
 	{
 		await LoadStocks();
+		await LoadCompanyInfo();
+	}
+
+	private async Task LoadCompanyInfo()
+	{
+		var response = await Http.GetAsync("https://localhost:7282/CompanyInfo");
+		if (response.IsSuccessStatusCode)
+		{
+			_companyInfoList = await response.Content.ReadFromJsonAsync<List<CompanyInfoResponse>>();
+		}
 	}
 
 	private async Task LoadStocks()
@@ -99,26 +110,35 @@
 		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
 		if (response.IsSuccessStatusCode)
 		{
-			OwnedStocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
+			_ownedStocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
 		}
 	}
 
-	async Task Search()
+	private async Task Search()
 	{
 		await ShowStockInfo();
 	}
 
-	async Task ShowStockInfo()
+	private async Task ShowStockInfo()
 	{
-		var response = await Http.GetAsync($"https://localhost:7282/stocks/{searchString.ToUpper()}");
+		var response = await Http.GetAsync($"https://localhost:7282/stocks/{_searchString.ToUpper()}");
 		if (response.IsSuccessStatusCode)
 		{
 
 			var jsonResponse = await response.Content.ReadAsStringAsync();
 			var responseObject = JsonConvert.DeserializeObject<StockSearchResponse>(jsonResponse);
 
+			foreach (var company in _companyInfoList)
+			{
+				if (responseObject.Symbol == company.Ticker)
+				{
+					_stockName = company.Name;
+				}
+			}
+
 			var stock = new StockSearchResponse
 				{
+					Name = _stockName,
 					Current = responseObject.Current,
 					Open = responseObject.Open,
 					Previous = responseObject.Previous,
@@ -129,40 +149,40 @@
 					PercentChange = responseObject.PercentChange,
 					Symbol = responseObject.Symbol
 				};
-			searchedStocks = new List<StockSearchResponse> { stock };
+			_searchedStocks = new List<StockSearchResponse> { stock };
 		}
 	}
 
-	void ShowBuyStockForm(string buyOrSell = "clear")
+	private void ShowBuyStockForm(string buyOrSell = "clear")
 	{
 		if (buyOrSell == "buy")
 		{
-			showSellForm = false;
-			showBuyForm = true;
+			_showSellForm = false;
+			_showBuyForm = true;
 		}
 		else if (buyOrSell == "sell")
 		{
-			showBuyForm = false;
-			showSellForm = true;
+			_showBuyForm = false;
+			_showSellForm = true;
 		}
 		else if (buyOrSell == "clear")
 		{
-			showBuyForm = false;
-			showSellForm = false;
-			insertedName = "";
-			insertedQty = 0;
+			_showBuyForm = false;
+			_showSellForm = false;
+			_stockName = "";
+			_insertedQty = 0;
 		}
 	}
 
-	    private bool IsStockOwned(string symbol) => OwnedStocks?.Any(stock => stock.Symbol == symbol) ?? false;
+	private bool IsStockOwned(string symbol) => _ownedStocks?.Any(stock => stock.Symbol == symbol) ?? false;
 
 
-	async Task ConfirmBuy(StockSearchResponse searchedStock)
+	private async Task ConfirmBuy(StockSearchResponse searchedStock)
 	{
 		if (IsStockOwned(searchedStock.Symbol))
 		{
 			var previousQty = 0;
-			foreach (var stock in OwnedStocks)
+			foreach (var stock in _ownedStocks)
 			{
 				if (stock.Symbol == searchedStock.Symbol)
 				{
@@ -172,7 +192,7 @@
 			var updateModel = new Stock
 				{
 					Symbol = searchedStock.Symbol,
-					Qty = insertedQty + previousQty,
+					Qty = _insertedQty + previousQty,
 				};
 			var json = JsonConvert.SerializeObject(updateModel);
 			var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -184,10 +204,10 @@
 		{
 			var addModel = new Stock
 				{
-					Name = insertedName,
+					Name = _stockName,
 					Symbol = searchedStock.Symbol,
 					BuyingPrice = searchedStock.Current,
-					Qty = insertedQty,
+					Qty = _insertedQty,
 				};
 			var json = JsonConvert.SerializeObject(addModel);
 			var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -197,14 +217,14 @@
 		ShowBuyStockForm();
 
 	}
-	async Task ConfirmSell(StockSearchResponse searchedStock)
+	private async Task ConfirmSell(StockSearchResponse searchedStock)
 	{
-		foreach (var ownedStock in OwnedStocks)
+		foreach (var ownedStock in _ownedStocks)
 		{
 			var previousQty = 0;
-			if (ownedStock.Symbol == searchedStock.Symbol || ownedStock.Qty > insertedQty)
+			if (ownedStock.Symbol == searchedStock.Symbol || ownedStock.Qty > _insertedQty)
 			{
-				foreach (var stock in OwnedStocks)
+				foreach (var stock in _ownedStocks)
 				{
 					if (stock.Symbol == searchedStock.Symbol)
 					{
@@ -214,7 +234,7 @@
 				var updateModel = new Stock
 					{
 						Symbol = searchedStock.Symbol,
-						Qty = previousQty - insertedQty,
+						Qty = previousQty - _insertedQty,
 					};
 				var json = JsonConvert.SerializeObject(updateModel);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -228,33 +248,11 @@
 		}
 		ShowBuyStockForm();
 	}
-	
-	string FormatDateTime(string dateTimeString)
+
+	private string FormatDateTime(string dateTimeString)
 	{
 		DateTime time = DateTime.Parse(dateTimeString);
 		string formattedTime = time.ToString("HH:mm:ss");
 		return formattedTime;
 	}
-
-	public class Stock
-	{
-		public string Name { get; set; }
-		public string Symbol { get; set; }
-		public float BuyingPrice { get; set; }
-		public int Qty { get; set; }
-	}
-
-	public class StockSearchResponse
-	{
-		public float Current { get; set; }
-		public float Open { get; set; }
-		public float Previous { get; set; }
-		public float High { get; set; }
-		public float Low { get; set; }
-		public float PercentChange { get; set; }
-		public float Change { get; set; }
-		public string Time { get; set; }
-		public string Symbol { get; set; }
-	}
-	
 }
