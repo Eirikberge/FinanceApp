@@ -1,6 +1,6 @@
 ﻿namespace FinanceApp.Api.Entities;
 
-public class PriceCandle
+public class StockPriceCandle
 {
 	public float Current { get; set; }
 

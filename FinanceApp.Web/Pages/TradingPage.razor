@@ -15,11 +15,7 @@
 <NavLink href="/symbolexamples" class="btn btn-primary">Se aksjer eksempler</NavLink>
 
 
-@if (searchedStocks == null)
-{
-
-}
-else
+@if (searchedStocks != null)
 {
 	<table class="table">
 		<thead>
@@ -76,8 +72,6 @@ else
 			}
 		</tbody>
 	</table>
-
-
 }
 
 
@@ -96,13 +90,17 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+		await LoadStocks();
+	}
+
+	private async Task LoadStocks()
+	{
 		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
 		if (response.IsSuccessStatusCode)
 		{
 			OwnedStocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
 		}
 	}
-
 
 	async Task Search()
 	{
@@ -111,7 +109,7 @@ else
 
 	async Task ShowStockInfo()
 	{
-		var response = await Http.GetAsync($"https://localhost:7282/stocks/{searchString}");
+		var response = await Http.GetAsync($"https://localhost:7282/stocks/{searchString.ToUpper()}");
 		if (response.IsSuccessStatusCode)
 		{
 
@@ -155,27 +153,12 @@ else
 		}
 	}
 
-	private bool IsStockOwned(string symbol)
-	{
-		if (OwnedStocks == null)
-		{
-			return false;
-		}
+	    private bool IsStockOwned(string symbol) => OwnedStocks?.Any(stock => stock.Symbol == symbol) ?? false;
 
-		foreach (var stock in OwnedStocks)
-		{
-			if (stock.Symbol == symbol)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	async Task ConfirmBuy(StockSearchResponse searchedStock)
 	{
-		if (IsStockOwned(searchedStock.Symbol)) // change quantity
+		if (IsStockOwned(searchedStock.Symbol))
 		{
 			var previousQty = 0;
 			foreach (var stock in OwnedStocks)
@@ -185,10 +168,10 @@ else
 					previousQty = stock.Qty;
 				}
 			}
-			var updateModel = new StockUpdateQtyModel
+			var updateModel = new Stock
 				{
 					Symbol = searchedStock.Symbol,
-					NewQty = insertedQty + previousQty,
+					Qty = insertedQty + previousQty,
 				};
 			var json = JsonConvert.SerializeObject(updateModel);
 			var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -198,7 +181,7 @@ else
 		}
 		else
 		{
-			var addModel = new BuyStockModel
+			var addModel = new Stock
 				{
 					Name = insertedName,
 					Symbol = searchedStock.Symbol,
@@ -211,8 +194,6 @@ else
 
 			var addedStock = await Http.PostAsync("https://localhost:7282/AddStock/api/addstock", content);
 		}
-
-
 		ShowBuyStockForm();
 
 	}
@@ -221,7 +202,7 @@ else
 		foreach (var ownedStock in OwnedStocks)
 		{
 			var previousQty = 0;
-			if (ownedStock.Symbol == searchedStock.Symbol || ownedStock.Qty > insertedQty) //Reduce the quantity of stocks
+			if (ownedStock.Symbol == searchedStock.Symbol || ownedStock.Qty > insertedQty)
 			{
 				foreach (var stock in OwnedStocks)
 				{
@@ -230,10 +211,10 @@ else
 						previousQty = stock.Qty;
 					}
 				}
-				var updateModel = new StockUpdateQtyModel
+				var updateModel = new Stock
 					{
 						Symbol = searchedStock.Symbol,
-						NewQty = previousQty - insertedQty,
+						Qty = previousQty - insertedQty,
 					};
 				var json = JsonConvert.SerializeObject(updateModel);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -247,9 +228,7 @@ else
 		}
 		ShowBuyStockForm();
 	}
-
-
-
+	
 	string FormatDateTime(string dateTimeString)
 	{
 		DateTime time = DateTime.Parse(dateTimeString);
@@ -278,26 +257,5 @@ else
 		public string Time { get; set; }
 		public string Symbol { get; set; }
 	}
-
-	public class BuyStockModel
-	{
-		public string Name { get; set; }
-		public string Symbol { get; set; }
-		public float BuyingPrice { get; set; }
-		public float CurrentPrice { get; set; }
-		public int Qty { get; set; }
-	}
-
-	public class SellStockModel
-	{
-		public string Symbol { get; set; }
-		public int Qty { get; set; }
-	}
-
-	public class StockUpdateQtyModel
-	{
-		public string Symbol { get; set; }
-		public int NewQty { get; set; }
-	}
-
+	
 }

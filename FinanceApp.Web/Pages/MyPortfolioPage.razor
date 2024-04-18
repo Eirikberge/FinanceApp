@@ -31,9 +31,7 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@if (filteredStocks == null)
-			{
-				@foreach (var stock in stocks)
+				@foreach (var stock in filteredStocks ?? stocks)
 				{
 					var gain = Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
 					<tr>
@@ -46,25 +44,7 @@ else
 						<td><button class="btn btn-primary" @onclick="() => UpdateStock(stock)">Refresh</button></td>
 					</tr>
 				}
-
-			}
-			else
-			{
-				@foreach (var filteredstock in filteredStocks)
-				{
-					var filteredgain = (filteredstock.CurrentPrice - filteredstock.BuyingPrice) * filteredstock.Qty;
-					<tr>
-						<td>@filteredstock.Symbol</td>
-						<td>@filteredstock.Name</td>
-						<td>@filteredstock.BuyingPrice</td>
-						<td>@filteredstock.CurrentPrice</td>
-						<td>@filteredstock.Qty</td>
-						<td>@filteredgain</td>
-						<td><button class="btn btn-primary" @onclick="() => UpdateStock(filteredstock)">Refresh</button></td>
-					</tr>
-				}
-			}
-		</tbody>
+			</tbody>
 	</table>
 }
 
@@ -77,6 +57,11 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+		await LoadStocks();
+	}
+
+	private async Task LoadStocks()
+	{
 		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
 		if (response.IsSuccessStatusCode)
 		{
@@ -85,40 +70,29 @@ else
 		}
 	}
 
-	
-
-	void UpdateFilteredStocks()
+	private void UpdateFilteredStocks()
 	{
-		if (string.IsNullOrEmpty(searchString))
-		{
-			filteredStocks = stocks.ToList();
-		}
-		else
-		{
-			filteredStocks = stocks.Where(stock => stock.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
-		}
+		filteredStocks = string.IsNullOrEmpty(searchString) ? stocks : stocks.Where(stock =>
+			stock.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+			stock.Symbol.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
 	}
-
-
 
 	async Task UpdateStock(Stock stock)
 	{
-
 		var response = await Http.GetAsync($"https://localhost:7282/stocks/{stock.Symbol}");
-
-    
+		
 		if (response.IsSuccessStatusCode)
 		{
 			var jsonResponse = await response.Content.ReadAsStringAsync();
 			var responseObject = JsonConvert.DeserializeObject<StockResponse>(jsonResponse);
-        
+
 			stock.CurrentPrice = responseObject.Current;
 		}
-		var updateModel = new StockUpdateModel
-		{
-			Symbol = stock.Symbol,
-			NewPrice = stock.CurrentPrice
-		};
+		var updateModel = new Stock
+			{
+				Symbol = stock.Symbol,
+				CurrentPrice = stock.CurrentPrice
+			};
 		var json = JsonConvert.SerializeObject(updateModel);
 		var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -141,15 +115,7 @@ else
 		public float Close { get; set; }
 		public float High { get; set; }
 		public float Low { get; set; }
-		public DateTime Time { get; set; }
+		public string Time { get; set; }
 		public string Symbol { get; set; }
 	}
-
-	public class StockUpdateModel
-	{
-		public string Symbol { get; set; }
-		public float NewPrice { get; set; }
-	}
-
-
 }

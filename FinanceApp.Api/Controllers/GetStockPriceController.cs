@@ -16,7 +16,7 @@ namespace FinanceApp.Controllers
 			return Ok();
 		}
 		[HttpGet("stocks/{symbol}")] // decorator
-		public PriceCandle GetStockPrice(string symbol)
+		public StockPriceCandle GetStockPrice(string symbol)
 		{
 			var client = new HttpClient();
 			var request = new HttpRequestMessage(HttpMethod.Get, $"https://finnhub.io/api/v1/quote?symbol={symbol}");
@@ -33,7 +33,7 @@ namespace FinanceApp.Controllers
 				return null;
 			}
 
-			var stockPrice = new PriceCandle();
+			var stockPrice = new StockPriceCandle();
 			stockPrice.Symbol = symbol;
 			stockPrice.Current = deserialized.Current;
 			stockPrice.High = deserialized.High;

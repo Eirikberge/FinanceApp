@@ -61,7 +61,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "FinanceApp.Api.Entities.PriceCandle",
+        "Type": "FinanceApp.Api.Entities.StockPriceCandle",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -98,38 +98,6 @@
       {
         "Name": "updateModel",
         "Type": "FinanceApp.Api.Entities.StockUpdateModel",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FinanceApp.Api.Controllers.UpdateStockPriceController",
-    "Method": "UpdateStock",
-    "RelativePath": "UpdateStockPrice/api/updatestock",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "updateModel",
-        "Type": "FinanceApp.Api.Entities.StockUpdatePriceModel",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "FinanceApp.Api.Controllers.UpdateStockQtyController",
-    "Method": "UpdateStock",
-    "RelativePath": "UpdateStockQty/api/updatestock",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "updateModel",
-        "Type": "FinanceApp.Api.Entities.StockUpdateQtyModel",
         "IsRequired": true
       }
     ],
