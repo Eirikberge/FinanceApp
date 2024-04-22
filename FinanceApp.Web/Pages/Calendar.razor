@@ -1,0 +1,84 @@
+﻿@page "/calendar"
+@using System.Net
+@using System.Runtime.InteropServices.JavaScript
+@inject HttpClient Http
+
+
+<PageTitle>Calendar</PageTitle>
+
+<h1>Calendar</h1>
+
+
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Symbol</th>
+			<th>Quarter</th>
+			<th>BuyingPrice</th>
+			<th>Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var stock in _calendarResponsList)
+		{
+			if (StockIsOwned(stock.Symbol))
+			{
+				<tr>
+					<td>@stock.Symbol</td>
+					<td>@stock.Quarter </td>
+					<td>@stock.Year</td>
+					<td>@stock.Date</td>
+				</tr>
+			}
+
+		}
+	</tbody>
+
+</table>
+
+
+
+@code {
+	private List<Stock> _stocks;
+	private List<EarningsCalendarResponse> _calendarResponsList;
+	private DateTime _dateTime;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadStocks();
+		await LoadCalendarInfo(new DateTime(2024, 4, 1), new DateTime(2024, 4, 30));
+	}
+
+	private async Task LoadStocks()
+	{
+		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
+		if (response.IsSuccessStatusCode)
+		{
+			_stocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
+		}
+	}
+	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
+	{
+		string apiUrl = $"https://localhost:7282/controller/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
+
+		var response = await Http.GetFromJsonAsync<List<EarningsCalendarResponse>>(apiUrl);
+		if (response != null)
+		{
+			_calendarResponsList = response;
+		}
+	}
+
+	private bool StockIsOwned(string symbol)
+	{
+		foreach (var stock in _stocks)
+		{
+			if (stock.Symbol == symbol)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+}

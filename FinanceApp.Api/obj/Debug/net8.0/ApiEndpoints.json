@@ -1,15 +1,5 @@
 [
   {
-    "ContainingType": "FinanceApp.Controllers.GetStockPriceController",
-    "Method": "Index",
-    "RelativePath": "",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "FinanceApp.Api.Controllers.AddStockController",
     "Method": "AddStock",
     "RelativePath": "AddStock/api/addstock",
@@ -55,7 +45,43 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[FinanceApp.Api.Entities.CompanyInfo, FinanceApp.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[FinanceApp.Api.Entities.CompanyInfoModel, FinanceApp.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FinanceApp.Api.Controllers.EarningsCalendarController",
+    "Method": "GetAsync",
+    "RelativePath": "controller/api/earningscalendar",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "from",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "to",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "symbol",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[FinanceApp.Api.Entities.EarningsCalendarModel, FinanceApp.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -68,7 +94,7 @@
   {
     "ContainingType": "FinanceApp.Controllers.GetStockPriceController",
     "Method": "GetStockPrice",
-    "RelativePath": "stocks/{symbol}",
+    "RelativePath": "GetStockPrice/api/getstockprice/{symbol}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

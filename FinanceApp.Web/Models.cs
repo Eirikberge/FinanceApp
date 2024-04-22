@@ -35,4 +35,17 @@
 		public string Exchange { get; set; }
 
 	}
+
+	public class EarningsCalendarResponse
+	{
+		public string Date { get; set; }
+		public double? EpsActual { get; set; }
+		public double? EpsEstimate { get; set; }
+		public string? Hour { get; set; }
+		public int? Quarter { get; set; }
+		public long? RevenueActual { get; set; }
+		public long? RevenueEstimate { get; set; }
+		public string? Symbol { get; set; }
+		public int? Year { get; set; }
+	}
 }

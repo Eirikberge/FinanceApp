@@ -25,5 +25,4 @@ public class QuoteResponse
 
 	[JsonPropertyName("d")]
 	public float Change { get; set; }
-	
 }

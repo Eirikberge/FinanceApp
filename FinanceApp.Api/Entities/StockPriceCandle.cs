@@ -12,6 +12,4 @@ public class StockPriceCandle
 	public float Low { get; set; }
 	public DateTime Time { get; set; }
 	public string Symbol { get; set; } = null!;
-
-
 }

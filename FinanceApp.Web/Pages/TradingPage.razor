@@ -121,7 +121,7 @@
 
 	private async Task ShowStockInfo()
 	{
-		var response = await Http.GetAsync($"https://localhost:7282/stocks/{_searchString.ToUpper()}");
+		var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{_searchString.ToUpper()}");
 		if (response.IsSuccessStatusCode)
 		{
 

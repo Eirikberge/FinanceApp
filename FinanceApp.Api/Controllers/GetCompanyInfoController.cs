@@ -12,7 +12,7 @@ namespace FinanceApp.Api.Controllers
 	public class CompanyInfoController : Controller
 	{
 		[HttpGet]
-		public ActionResult<IEnumerable<CompanyInfo>> Get()
+		public ActionResult<IEnumerable<CompanyInfoModel>> Get()
 		{
 			try
 			{
@@ -24,10 +24,10 @@ namespace FinanceApp.Api.Controllers
 
 					if (root.TryGetProperty("data", out JsonElement dataElement))
 					{
-						var companyInfoList = new List<CompanyInfo>();
+						var companyInfoList = new List<CompanyInfoModel>();
 						foreach (JsonElement companyInfoElement in dataElement.EnumerateArray())
 						{
-							var companyInfo = new CompanyInfo
+							var companyInfo = new CompanyInfoModel
 							{
 								Cik = companyInfoElement[0].GetInt32(),
 								Name = companyInfoElement[1].GetString(),
