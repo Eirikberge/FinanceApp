@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.web\\pages\\calendar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\pages\\calendar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\controllers\\earningscalendarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\controllers\\earningscalendarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.web\\pages\\calendartest.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\pages\\calendartest.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Calendar.razor",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\Calendar.razor",
-              "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\Calendar.razor",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\Calendar.razor",
-              "RelativeToolTip": "FinanceApp.Web\\Pages\\Calendar.razor",
-              "ViewState": "AQIAAAIAAAAAAAAAAAAkwBYAAAAuAAAA",
+              "Title": "CalendarTest.razor",
+              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\CalendarTest.razor",
+              "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\CalendarTest.razor",
+              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\CalendarTest.razor",
+              "RelativeToolTip": "FinanceApp.Web\\Pages\\CalendarTest.razor",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAAABYAAAAeAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-22T08:31:48.257Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "EarningsCalendarController.cs",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
-              "RelativeDocumentMoniker": "FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
-              "RelativeToolTip": "FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAswB0AAAAiAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-22T08:21:33.7Z",
+              "WhenOpened": "2024-04-22T11:13:36.041Z",
               "EditorCaption": ""
             }
           ]

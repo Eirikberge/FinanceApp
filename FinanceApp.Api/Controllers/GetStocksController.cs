@@ -10,9 +10,9 @@ namespace FinanceApp.Controllers
 	[Route("api/getstocks")]
 	public class GetStocksController : Controller
 	{
-		private readonly FinanceAppDbContext _context;
+		private readonly FinanceAppContext _context;
 
-		public GetStocksController(FinanceAppDbContext context)
+		public GetStocksController(FinanceAppContext context)
 		{
 			_context = context;
 		}

@@ -10,9 +10,9 @@ namespace FinanceApp.Controllers
 	[Route("api/[controller]")]
 	public class GetOwnersController : Controller
 	{
-		private readonly FinanceAppDbContext _context;
+		private readonly FinanceAppContext _context;
 
-		public GetOwnersController(FinanceAppDbContext context)
+		public GetOwnersController(FinanceAppContext context)
 		{
 			_context = context;
 		}

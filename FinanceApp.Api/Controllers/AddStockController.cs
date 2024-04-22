@@ -8,9 +8,9 @@ namespace FinanceApp.Api.Controllers
 	[Route("[controller]")]
 	public class AddStockController : Controller
 	{
-		private readonly FinanceAppDbContext _context;
+		private readonly FinanceAppContext _context;
 
-		public AddStockController(FinanceAppDbContext context)
+		public AddStockController(FinanceAppContext context)
 		{
 			_context = context;
 		}

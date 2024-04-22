@@ -8,9 +8,9 @@ namespace FinanceApp.Api.Controllers
 	[Route("[controller]")]
 	public class UpdateStockController : Controller
 	{
-		private readonly FinanceAppDbContext _context;
+		private readonly FinanceAppContext _context;
 
-		public UpdateStockController(FinanceAppDbContext context)
+		public UpdateStockController(FinanceAppContext context)
 		{
 			_context = context;
 		}

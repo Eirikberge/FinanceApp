@@ -20,15 +20,15 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var stock in _calendarResponsList)
+		@foreach (var company in _calendarResponsList)
 		{
-			if (StockIsOwned(stock.Symbol))
+			if (StockIsOwned(company.Symbol))
 			{
 				<tr>
-					<td>@stock.Symbol</td>
-					<td>@stock.Quarter </td>
-					<td>@stock.Year</td>
-					<td>@stock.Date</td>
+					<td>@company.Symbol</td>
+					<td>@company.Quarter </td>
+					<td>@company.Year</td>
+					<td>@company.Date</td>
 				</tr>
 			}
 
