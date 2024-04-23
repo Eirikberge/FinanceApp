@@ -1,14 +1,45 @@
 ﻿@page "/calendar"
 @using System.Net
 @using System.Runtime.InteropServices.JavaScript
+@using System.Globalization
 @inject HttpClient Http
-
 
 <PageTitle>Calendar</PageTitle>
 
 <h1>Calendar</h1>
 
+<div style="display: flex; justify-content: center; align-items: center;">
+	<button class="btn btn-primary" style="font-size: 10px;" @onclick="ChangeMonthBack">Forrige</button>
+	<h2 style="text-align: center; margin: 0 10px;">@GetMonthHeadline()</h2>
+	<button class="btn btn-primary" style="font-size: 10px;" @onclick="ChangeMonthForward">Neste</button>
+</div>
 
+<br/>
+<table class="table table-bordered table-striped">
+	<thead>
+	<tr>
+		@foreach (var day in days)
+		{
+			<th style="width: @(100 / days.Count())%;">@day</th>
+		}
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var week in weeks)
+	{
+		<tr>
+			@foreach (var day in week.Dates)
+			{
+				<td>
+					@day.DateValue
+					<br /><br />
+					cell number: [Week: @weeks.IndexOf(week), Day: @week.Dates.IndexOf(day)]
+				</td>
+			}
+		</tr>
+	}
+	</tbody>
+</table>
 
 <table class="table">
 	<thead>
@@ -31,23 +62,125 @@
 					<td>@company.Date</td>
 				</tr>
 			}
-
 		}
 	</tbody>
-
 </table>
 
-
-
 @code {
+	private List<string> days = new List<string>();
+	private List<WeekClass> weeks = new List<WeekClass>();
+	private DateTime startDate = DateTime.Now.Date;
+	private DateTime endDate = DateTime.Now.Date;
+
+	DateTime firstWeekOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month + monthChange, 1);
+	private static int monthChange = 1;
+
 	private List<Stock> _stocks;
 	private List<EarningsCalendarResponse> _calendarResponsList;
 	private DateTime _dateTime;
 
 	protected override async Task OnInitializedAsync()
 	{
+		startDate = GetFirstMondayOfWeek(firstWeekOfMonth.Year, GetWeekNumber(firstWeekOfMonth));
+		endDate = startDate.AddDays(34);
+
+		GenerateCalendarHead();
+		GenerateCalendarBody();
+
 		await LoadStocks();
 		await LoadCalendarInfo(new DateTime(2024, 4, 1), new DateTime(2024, 4, 30));
+	}
+
+	private void ChangeMonthBack()
+	{
+		monthChange--;
+	}
+
+	private void ChangeMonthForward()
+	{
+		monthChange++;
+	}
+
+	private DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
+	{
+		DateTime jan1 = new DateTime(year, 1, 1);
+		int daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
+		DateTime firstMonday = jan1.AddDays(daysOffset);
+
+		int firstWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(jan1, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+		if (firstWeek <= 1)
+		{
+			weekOfYear -= 1;
+		}
+
+		return firstMonday.AddDays(weekOfYear * 7);
+	}
+
+	private int GetWeekNumber(DateTime date)
+	{
+		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+	}
+
+	private void GenerateCalendarHead()
+	{
+		var day1 = new List<string>();
+		for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
+		{
+			day1.Add(dt.ToString("dddd"));
+		}
+
+		days = day1.Distinct().ToList();
+	}
+
+	private static string GetMonthHeadline()
+	{
+		int targetMonth = (DateTime.Now.Month + monthChange - 1) % 12 + 1;
+
+		string currentMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(targetMonth); var capitalizedMonth = currentMonth.Substring(0, 1).ToUpper() + currentMonth.Substring(1);
+		return capitalizedMonth;
+	}
+
+	private void GenerateCalendarBody()
+	{
+		weeks = new List<WeekClass>();
+
+		int flag = 0;
+		WeekClass week = new WeekClass();
+		List<DayEvent> dates = new List<DayEvent>();
+		var totalDays = (int)(endDate - startDate).TotalDays;
+		int countDays = 0;
+
+		for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
+		{
+			flag++;
+
+			dates.Add(new DayEvent()
+				{
+					DateValue = dt.ToString("dd-MMM-yyyy"),
+					DayName = dt.ToString("dddd")
+				});
+
+			if (flag == 7)
+			{
+				week = new WeekClass();
+				week.Dates = dates;
+				weeks.Add(week);
+
+				dates = new List<DayEvent>();
+				flag = 0;
+			}
+
+			if (countDays == totalDays)
+			{
+				week = new WeekClass();
+				week.Dates = dates;
+				weeks.Add(week);
+				break;
+			}
+
+			countDays++;
+		}
 	}
 
 	private async Task LoadStocks()
@@ -58,6 +191,7 @@
 			_stocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
 		}
 	}
+
 	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
 	{
 		string apiUrl = $"https://localhost:7282/controller/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
@@ -78,7 +212,6 @@
 				return true;
 			}
 		}
-
 		return false;
 	}
 }

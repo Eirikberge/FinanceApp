@@ -1,6 +1,7 @@
 ﻿@page "/mystock"
 @using System.Text
 @using Newtonsoft.Json
+@using System.Globalization
 @inject HttpClient Http
 
 <h1>My Stocks</h1>
@@ -46,6 +47,37 @@ else
 			}
 		</tbody>
 	</table>
+
+	<br />
+	<h4 style="text-align: center;">Uke: @GetWeekNumber(DateTime.Now)</h4>
+
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				@foreach (var day in days)
+				{
+					<th style="width: @(100 / days.Count())%;">@day</th>
+				}
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var week in weeks)
+			{
+				<tr>
+					@foreach (var day in week.Dates)
+					{
+						int dag = 1;
+						dag++;
+						<td>
+							@day.DateValue
+							<br /><br />
+							@dag. dag
+						</td>
+					}
+				</tr>
+			}
+		</tbody>
+	</table>
 }
 
 @code {
@@ -55,10 +87,21 @@ else
 	private string _searchString;
 	private float _currentPrice;
 
+	private List<string> days;
+	private List<WeekClass> weeks;
+	private DateTime startDate = DateTime.Now;
+	private DateTime endDate = DateTime.Now;
+	DateTime firstWeekOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
 	protected override async Task OnInitializedAsync()
 	{
 		await LoadStocks();
+
+		startDate = GetFirstMondayOfWeek(startDate.Year, GetWeekNumber(startDate));
+		endDate = startDate.AddDays(6);
+
+		GenerateCalendarHead();
+		GenerateCalendarBody();
 	}
 
 	private async Task LoadStocks()
@@ -90,4 +133,78 @@ else
 			stock.CurrentPrice = responseObject.Current;
 		}
 	}
+	private DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
+	{
+		DateTime jan1 = new DateTime(year, 1, 1);
+		int daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
+		DateTime firstMonday = jan1.AddDays(daysOffset);
+
+		int firstWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(jan1, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+		if (firstWeek <= 1)
+		{
+			weekOfYear -= 1;
+		}
+
+		return firstMonday.AddDays(weekOfYear * 7);
+	}
+
+	private void GenerateCalendarHead()
+	{
+		var day1 = new List<string>();
+		for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
+		{
+			day1.Add(dt.ToString("dddd"));
+		}
+
+		days = day1.Distinct().ToList();
+	}
+
+	private void GenerateCalendarBody()
+	{
+		weeks = new List<WeekClass>();
+
+		int flag = 0;
+		WeekClass week = new WeekClass();
+		List<DayEvent> dates = new List<DayEvent>();
+		var totalDays = (int)(endDate - startDate).TotalDays;
+		int countDays = 0;
+
+		for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
+		{
+			flag++;
+
+			dates.Add(new DayEvent()
+				{
+					DateValue = dt.ToString("dd-MMM-yyyy"),
+					DayName = dt.ToString("dddd")
+				});
+
+			if (flag == 7)
+			{
+				week = new WeekClass();
+				week.Dates = dates;
+				weeks.Add(week);
+
+				dates = new List<DayEvent>();
+				flag = 0;
+			}
+
+			if (countDays == totalDays)
+			{
+				week = new WeekClass();
+				week.Dates = dates;
+				weeks.Add(week);
+				break;
+			}
+
+			countDays++;
+		}
+	}
+
+	private int GetWeekNumber(DateTime date)
+	{
+		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+	}
+
 }

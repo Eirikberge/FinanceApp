@@ -48,4 +48,17 @@
 		public string? Symbol { get; set; }
 		public int? Year { get; set; }
 	}
+
+	public class DayEvent
+	{
+		public DateTime FromDate { get; set; }
+		public DateTime ToDate { get; set; }
+		public string DateValue { get; set; }
+		public string DayName { get; set; }
+	}
+
+	public class WeekClass
+	{
+		public List<DayEvent> Dates { get; set; } = new List<DayEvent>();
+	}
 }

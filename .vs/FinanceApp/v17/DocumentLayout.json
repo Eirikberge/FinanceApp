@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.web\\pages\\calendartest.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\pages\\calendartest.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.web\\pages\\calendar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\pages\\calendar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,14 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CalendarTest.razor",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\CalendarTest.razor",
-              "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\CalendarTest.razor",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\CalendarTest.razor",
-              "RelativeToolTip": "FinanceApp.Web\\Pages\\CalendarTest.razor",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAAABYAAAAeAAAA",
+              "Title": "Calendar.razor",
+              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\Calendar.razor",
+              "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\Calendar.razor",
+              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\Calendar.razor",
+              "RelativeToolTip": "FinanceApp.Web\\Pages\\Calendar.razor",
+              "ViewState": "AQIAAEYAAAAAAAAAAAArwFcAAAAZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-22T11:13:36.041Z",
+              "WhenOpened": "2024-04-23T11:39:37.05Z",
               "EditorCaption": ""
             }
           ]
