@@ -14,54 +14,44 @@
 	<button class="btn btn-primary" style="font-size: 10px;" @onclick="ChangeMonthForward">Neste</button>
 </div>
 
-<br/>
+<br />
 <table class="table table-bordered table-striped">
 	<thead>
-	<tr>
-		@foreach (var day in days)
-		{
-			<th style="width: @(100 / days.Count())%;">@day</th>
-		}
-	</tr>
-	</thead>
-	<tbody>
-	@foreach (var week in weeks)
-	{
 		<tr>
-			@foreach (var day in week.Dates)
+			@foreach (var day in days)
 			{
-				<td>
-					@day.DateValue
-					<br /><br />
-					cell number: [Week: @weeks.IndexOf(week), Day: @week.Dates.IndexOf(day)]
-				</td>
+				<th style="width: @(100 / days.Count())%;">@day</th>
 			}
 		</tr>
-	}
-	</tbody>
-</table>
+	</thead>
+	<tbody>
+		@foreach (var week in weeks)
+		{
+			<tr>
+				@foreach (var day in week.Dates)
+				{
+					<td>
+						@day.DateValue
+						<br />
+						@foreach (var company in _calendarResponsList)
+						{
+							if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
+							{
+								<text>Ticker: @company.Symbol</text>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>Symbol</th>
-			<th>Quarter</th>
-			<th>BuyingPrice</th>
-			<th>Date</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var company in _calendarResponsList)
-		{
-			if (StockIsOwned(company.Symbol))
-			{
-				<tr>
-					<td>@company.Symbol</td>
-					<td>@company.Quarter </td>
-					<td>@company.Year</td>
-					<td>@company.Date</td>
-				</tr>
-			}
+								<br />
+								<text>Quarter: @company.Quarter</text>
+
+								<br />
+								<text>EpsEstimate: @company.EpsEstimate</text>
+
+								<br />
+								<text>RevenueEstimate: @company.RevenueEstimate</text>
+							}
+						}
+					</td>
+				}
+			</tr>
 		}
 	</tbody>
 </table>
@@ -73,22 +63,25 @@
 	private DateTime endDate = DateTime.Now.Date;
 
 	DateTime firstWeekOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month + monthChange, 1);
-	private static int monthChange = 1;
+	private static int monthChange = 0;
 
 	private List<Stock> _stocks;
 	private List<EarningsCalendarResponse> _calendarResponsList;
-	private DateTime _dateTime;
+
 
 	protected override async Task OnInitializedAsync()
 	{
+		await LoadStocks();
+
 		startDate = GetFirstMondayOfWeek(firstWeekOfMonth.Year, GetWeekNumber(firstWeekOfMonth));
 		endDate = startDate.AddDays(34);
 
 		GenerateCalendarHead();
 		GenerateCalendarBody();
 
-		await LoadStocks();
-		await LoadCalendarInfo(new DateTime(2024, 4, 1), new DateTime(2024, 4, 30));
+		DateTime firstDayInThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+		DateTime lastDayInMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
+		await LoadCalendarInfo(firstDayInThisMonth, lastDayInMonth);
 	}
 
 	private void ChangeMonthBack()
@@ -157,7 +150,7 @@
 
 			dates.Add(new DayEvent()
 				{
-					DateValue = dt.ToString("dd-MMM-yyyy"),
+					DateValue = dt.ToString("yyyy-MM-dd"),
 					DayName = dt.ToString("dddd")
 				});
 

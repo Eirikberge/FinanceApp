@@ -61,28 +61,43 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var week in weeks)
-			{
-				<tr>
-					@foreach (var day in week.Dates)
-					{
-						int dag = 1;
-						dag++;
-						<td>
-							@day.DateValue
-							<br /><br />
-							@dag. dag
-						</td>
-					}
-				</tr>
-			}
-		</tbody>
+		@foreach (var week in weeks)
+		{
+			<tr>
+				@foreach (var day in week.Dates)
+				{
+					<td>
+						@day.DateValue
+						<br />
+						@foreach (var company in _calendarResponsList)
+						{
+							if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
+							{
+								<text>Ticker: @company.Symbol</text>
+
+								<br />
+								<text>Quarter: @company.Quarter</text>
+
+								<br />
+								<text>EpsEstimate: @company.EpsEstimate</text>
+
+								<br />
+								<text>RevenueEstimate: @company.RevenueEstimate</text>
+							}
+						}
+					</td>
+				}
+			</tr>
+		}
+	</tbody>
 	</table>
 }
 
 @code {
 	private List<Stock> _stocks;
 	private List<Stock> _filteredStocks;
+	private List<EarningsCalendarResponse> _calendarResponsList;
+
 
 	private string _searchString;
 	private float _currentPrice;
@@ -91,7 +106,6 @@ else
 	private List<WeekClass> weeks;
 	private DateTime startDate = DateTime.Now;
 	private DateTime endDate = DateTime.Now;
-	DateTime firstWeekOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -102,6 +116,21 @@ else
 
 		GenerateCalendarHead();
 		GenerateCalendarBody();
+
+		DateTime firstDayInThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+		DateTime lastDayInMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
+		await LoadCalendarInfo(firstDayInThisMonth, lastDayInMonth);
+	}
+
+	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
+	{
+		string apiUrl = $"https://localhost:7282/controller/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
+
+		var response = await Http.GetFromJsonAsync<List<EarningsCalendarResponse>>(apiUrl);
+		if (response != null)
+		{
+			_calendarResponsList = response;
+		}
 	}
 
 	private async Task LoadStocks()
@@ -176,7 +205,7 @@ else
 
 			dates.Add(new DayEvent()
 				{
-					DateValue = dt.ToString("dd-MMM-yyyy"),
+					DateValue = dt.ToString("yyyy-MM-dd"),
 					DayName = dt.ToString("dddd")
 				});
 
@@ -207,4 +236,15 @@ else
 		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 	}
 
+	private bool StockIsOwned(string symbol)
+	{
+		foreach (var stock in _stocks)
+		{
+			if (stock.Symbol == symbol)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }
