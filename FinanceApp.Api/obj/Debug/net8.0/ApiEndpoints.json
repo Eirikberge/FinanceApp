@@ -27,7 +27,7 @@
   },
   {
     "ContainingType": "FinanceApp.Controllers.GetStocksController",
-    "Method": "GetOwners",
+    "Method": "GetStocks",
     "RelativePath": "api/getstocks",
     "HttpMethod": "GET",
     "IsController": true,

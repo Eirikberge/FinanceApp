@@ -3,6 +3,7 @@ using FinanceApp.Api.Data;
 using FinanceApp.Api.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using FinanceApp.Api.Repositorys.Contracts;
 
 namespace FinanceApp.Controllers
 {
@@ -10,17 +11,17 @@ namespace FinanceApp.Controllers
 	[Route("api/getstocks")]
 	public class GetStocksController : Controller
 	{
-		private readonly FinanceAppContext _context;
+		private readonly IStockRepository _stockRepository;
 
-		public GetStocksController(FinanceAppContext context)
+		public GetStocksController(IStockRepository stockRepository)
 		{
-			_context = context;
+			_stockRepository = stockRepository;
 		}
 
 		[HttpGet]
-		public IActionResult GetOwners()
+		public async Task<IActionResult> GetStocks()
 		{
-			var stocks = _context.Stocks.ToList();
+			var stocks = await _stockRepository.GetStocks();
 			return Ok(stocks);
 		}
 	}
