@@ -36,6 +36,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "FinanceApp.Api.Controllers.BasicFinancialsController",
+    "Method": "GetAsync",
+    "RelativePath": "BasicFinancials/api/basicfinancials",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "symbol",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "FinanceApp.Api.Entities.BasicFinancialsModel",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "FinanceApp.Api.Controllers.CompanyInfoController",
     "Method": "Get",
     "RelativePath": "CompanyInfo",
@@ -58,7 +84,7 @@
   {
     "ContainingType": "FinanceApp.Api.Controllers.EarningsCalendarController",
     "Method": "GetAsync",
-    "RelativePath": "controller/api/earningscalendar",
+    "RelativePath": "EarningsCalendar/api/earningscalendar",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

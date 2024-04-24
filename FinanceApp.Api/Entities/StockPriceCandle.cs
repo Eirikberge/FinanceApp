@@ -3,7 +3,6 @@
 public class StockPriceCandle
 {
 	public float Current { get; set; }
-
 	public float Open { get; set; }
 	public float Previous { get; set; }
 	public float High { get; set; }

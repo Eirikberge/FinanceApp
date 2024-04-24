@@ -96,21 +96,21 @@
 		await LoadCompanyInfo();
 	}
 
-	private async Task LoadCompanyInfo()
-	{
-		var response = await Http.GetAsync("https://localhost:7282/CompanyInfo");
-		if (response.IsSuccessStatusCode)
-		{
-			_companyInfoList = await response.Content.ReadFromJsonAsync<List<CompanyInfoResponse>>();
-		}
-	}
-
 	private async Task LoadStocks()
 	{
 		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
 		if (response.IsSuccessStatusCode)
 		{
 			_ownedStocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
+		}
+	}
+
+	private async Task LoadCompanyInfo()
+	{
+		var response = await Http.GetAsync("https://localhost:7282/CompanyInfo");
+		if (response.IsSuccessStatusCode)
+		{
+			_companyInfoList = await response.Content.ReadFromJsonAsync<List<CompanyInfoResponse>>();
 		}
 	}
 
@@ -182,17 +182,20 @@
 		if (IsStockOwned(searchedStock.Symbol))
 		{
 			var previousQty = 0;
+			var newBuyingPrice = 0;
 			foreach (var stock in _ownedStocks)
 			{
 				if (stock.Symbol == searchedStock.Symbol)
 				{
 					previousQty = stock.Qty;
+					newBuyingPrice = (((stock.Qty * (int)stock.BuyingPrice)/ stock.Qty) + ((_insertedQty * (int)searchedStock.Current)/_insertedQty))/2;
 				}
 			}
 			var updateModel = new Stock
 				{
 					Symbol = searchedStock.Symbol,
 					Qty = _insertedQty + previousQty,
+					BuyingPrice = newBuyingPrice,
 				};
 			var json = JsonConvert.SerializeObject(updateModel);
 			var content = new StringContent(json, Encoding.UTF8, "application/json");

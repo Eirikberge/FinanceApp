@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FinanceApp.Api.Controllers
 {
 	[ApiController]
-	[Route("controller")]
+	[Route("[controller]")]
 	public class EarningsCalendarController : ControllerBase
 	{
 		private readonly HttpClient _httpClient;

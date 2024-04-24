@@ -4,13 +4,17 @@
 @using System.Globalization
 @inject HttpClient Http
 
-<h1>My Stocks</h1>
+<PageTitle>My Portfolio</PageTitle>
+
+<h1>My Portfolio</h1>
 
 
 <form @onsubmit="UpdateFilteredStocks">
 	<input type="text" @bind="_searchString" />
 	<button type="submit">Search</button>
 </form>
+
+<td><button class="btn btn-primary" @onclick="() => UpdateStock()">Refresh</button></td>
 
 @if (_stocks == null)
 {
@@ -20,32 +24,38 @@ else
 {
 	<table class="table">
 		<thead>
-			<tr>
-				<th>Symbol</th>
-				<th>Name</th>
-				<th>BuyingPrice</th>
-				<th>CurrentPrice</th>
-				<th>Quantity</th>
-				<th>Gain</th>
-				<th></th>
-
-			</tr>
+		<tr>
+			<th>Symbol</th>
+			<th>Name</th>
+			<th>BuyingPrice</th>
+			<th>CurrentPrice</th>
+			<th>Quantity</th>
+			<th>Gain</th>
+		</tr>
 		</thead>
 		<tbody>
-			@foreach (var stock in _filteredStocks ?? _stocks)
-			{
-				var gain = Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
-				<tr>
-					<td>@stock.Symbol</td>
-					<td>@stock.Name</td>
-					<td>@stock.BuyingPrice</td>
-					<td>@stock.CurrentPrice</td>
-					<td>@stock.Qty</td>
-					<td>@gain</td>
-					<td><button class="btn btn-primary" @onclick="() => UpdateStock(stock)">Refresh</button></td>
-				</tr>
-			}
+		@foreach (var stock in _filteredStocks ?? _stocks)
+		{
+			var gain = Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
+			<tr>
+				<td>@stock.Symbol</td>
+				<td>@stock.Name</td>
+				<td>@stock.BuyingPrice</td>
+				<td>@stock.CurrentPrice</td>
+				<td>@stock.Qty</td>
+				<td>@gain</td>
+			</tr>
+		}
 		</tbody>
+	</table>
+	<br/>
+	<table class="table table-bordered table-striped">
+		<tr>
+			<th style="width: @(100 / 4)%;">Total Worth: @GetTotalWorth() </th>
+			<th style="width: @(100 / 4)%;">Risk(beta): 1.2</th>
+			<th style="width: @(100 / 4)%;">Total Gain: @GetTotalGain()</th>
+			<th style="width: @(100 / 4)%;">Estimated annual dividend: 54 USD</th>
+			</tr>
 	</table>
 
 	<br />
@@ -98,7 +108,6 @@ else
 	private List<Stock> _filteredStocks;
 	private List<EarningsCalendarResponse> _calendarResponsList;
 
-
 	private string _searchString;
 	private float _currentPrice;
 
@@ -122,17 +131,6 @@ else
 		await LoadCalendarInfo(firstDayInThisMonth, lastDayInMonth);
 	}
 
-	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
-	{
-		string apiUrl = $"https://localhost:7282/controller/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
-
-		var response = await Http.GetFromJsonAsync<List<EarningsCalendarResponse>>(apiUrl);
-		if (response != null)
-		{
-			_calendarResponsList = response;
-		}
-	}
-
 	private async Task LoadStocks()
 	{
 		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
@@ -143,6 +141,17 @@ else
 		}
 	}
 
+	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
+	{
+		string apiUrl = $"https://localhost:7282/EarningsCalendar/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
+
+		var response = await Http.GetFromJsonAsync<List<EarningsCalendarResponse>>(apiUrl);
+		if (response != null)
+		{
+			_calendarResponsList = response;
+		}
+	}
+
 	private void UpdateFilteredStocks()
 	{
 		_filteredStocks = string.IsNullOrEmpty(_searchString) ? _stocks : _stocks.Where(stock =>
@@ -150,18 +159,25 @@ else
 			stock.Symbol.Contains(_searchString, StringComparison.OrdinalIgnoreCase)).ToList();
 	}
 
-	private async Task UpdateStock(Stock stock)
+	private async Task UpdateStock()
 	{
-		var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{stock.Symbol}");
-
-		if (response.IsSuccessStatusCode)
+		foreach (var stock in _stocks)
+		{
+			var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{stock.Symbol}");
+			
+			if (response.IsSuccessStatusCode)
 		{
 			var jsonResponse = await response.Content.ReadAsStringAsync();
 			var responseObject = JsonConvert.DeserializeObject<StockSearchResponse>(jsonResponse);
 
 			stock.CurrentPrice = responseObject.Current;
 		}
+		}
+		
+
+		
 	}
+
 	private DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
 	{
 		DateTime jan1 = new DateTime(year, 1, 1);
@@ -176,6 +192,11 @@ else
 		}
 
 		return firstMonday.AddDays(weekOfYear * 7);
+	}
+
+	private int GetWeekNumber(DateTime date)
+	{
+		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 	}
 
 	private void GenerateCalendarHead()
@@ -230,12 +251,7 @@ else
 			countDays++;
 		}
 	}
-
-	private int GetWeekNumber(DateTime date)
-	{
-		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-	}
-
+	
 	private bool StockIsOwned(string symbol)
 	{
 		foreach (var stock in _stocks)
@@ -246,5 +262,27 @@ else
 			}
 		}
 		return false;
+	}
+
+	private double GetTotalGain()
+	{
+		double totalGain = 0;
+		@foreach (var stock in _filteredStocks ?? _stocks)
+		{
+			totalGain += Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
+		}
+
+		return Math.Round(totalGain, 2);
+	}
+
+	private double GetTotalWorth()
+	{
+		double totalWorth = 0;
+		@foreach (var stock in _filteredStocks ?? _stocks)
+		{
+			totalWorth += Math.Round(stock.CurrentPrice * stock.Qty, 2);
+		}
+
+		return Math.Round(totalWorth, 2);
 	}
 }

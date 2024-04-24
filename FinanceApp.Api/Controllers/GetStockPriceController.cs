@@ -15,7 +15,7 @@ namespace FinanceApp.Controllers
 		{
 			_httpClient = httpClient;
 		}
-
+	
 		[HttpGet("api/getstockprice/{symbol}")] // decorator
 
 		public ActionResult<StockPriceCandle> GetStockPrice(string symbol)

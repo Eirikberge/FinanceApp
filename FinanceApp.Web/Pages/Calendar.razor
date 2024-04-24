@@ -84,14 +84,24 @@
 		await LoadCalendarInfo(firstDayInThisMonth, lastDayInMonth);
 	}
 
-	private void ChangeMonthBack()
+	private async Task LoadStocks()
 	{
-		monthChange--;
+		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
+		if (response.IsSuccessStatusCode)
+		{
+			_stocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
+		}
 	}
 
-	private void ChangeMonthForward()
+	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
 	{
-		monthChange++;
+		string apiUrl = $"https://localhost:7282/EarningsCalendar/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
+
+		var response = await Http.GetFromJsonAsync<List<EarningsCalendarResponse>>(apiUrl);
+		if (response != null)
+		{
+			_calendarResponsList = response;
+		}
 	}
 
 	private DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
@@ -124,14 +134,6 @@
 		}
 
 		days = day1.Distinct().ToList();
-	}
-
-	private static string GetMonthHeadline()
-	{
-		int targetMonth = (DateTime.Now.Month + monthChange - 1) % 12 + 1;
-
-		string currentMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(targetMonth); var capitalizedMonth = currentMonth.Substring(0, 1).ToUpper() + currentMonth.Substring(1);
-		return capitalizedMonth;
 	}
 
 	private void GenerateCalendarBody()
@@ -176,26 +178,6 @@
 		}
 	}
 
-	private async Task LoadStocks()
-	{
-		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
-		if (response.IsSuccessStatusCode)
-		{
-			_stocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
-		}
-	}
-
-	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
-	{
-		string apiUrl = $"https://localhost:7282/controller/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
-
-		var response = await Http.GetFromJsonAsync<List<EarningsCalendarResponse>>(apiUrl);
-		if (response != null)
-		{
-			_calendarResponsList = response;
-		}
-	}
-
 	private bool StockIsOwned(string symbol)
 	{
 		foreach (var stock in _stocks)
@@ -206,5 +188,23 @@
 			}
 		}
 		return false;
+	}
+
+	private static string GetMonthHeadline()
+	{
+		int targetMonth = (DateTime.Now.Month + monthChange - 1) % 12 + 1;
+
+		string currentMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(targetMonth); var capitalizedMonth = currentMonth.Substring(0, 1).ToUpper() + currentMonth.Substring(1);
+		return capitalizedMonth;
+	}
+
+	private void ChangeMonthBack()
+	{
+		monthChange--;
+	}
+
+	private void ChangeMonthForward()
+	{
+		monthChange++;
 	}
 }
