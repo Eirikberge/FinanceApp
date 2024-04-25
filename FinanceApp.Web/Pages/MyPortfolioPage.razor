@@ -2,6 +2,7 @@
 @using System.Text
 @using Newtonsoft.Json
 @using System.Globalization
+@using FinanceApp.Api.Dtos
 @inject HttpClient Http
 
 <PageTitle>My Portfolio</PageTitle>
@@ -106,7 +107,7 @@ else
 @code {
 	private List<Stock> _stocks;
 	private List<Stock> _filteredStocks;
-	private List<EarningsCalendarResponse> _calendarResponsList;
+	private List<EarningsCalendarDto> _calendarResponsList;
 
 	private string _searchString;
 
@@ -144,7 +145,7 @@ else
 	{
 		string apiUrl = $"https://localhost:7282/EarningsCalendar/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
 
-		var response = await Http.GetFromJsonAsync<List<EarningsCalendarResponse>>(apiUrl);
+		var response = await Http.GetFromJsonAsync<List<EarningsCalendarDto>>(apiUrl);
 		if (response != null)
 		{
 			_calendarResponsList = response;

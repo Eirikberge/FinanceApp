@@ -154,7 +154,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "FinanceApp.Api.Dtos.StockPriceCandle",
+        "Type": "FinanceApp.Api.Entities.StockPriceCandle",
         "MediaTypes": [
           "text/plain",
           "application/json",

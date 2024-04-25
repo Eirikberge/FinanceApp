@@ -3,32 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\controllers\\earningscalendarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\controllers\\earningscalendarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\dtos\\stockpricecandle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\dtos\\stockpricecandle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\controllers\\basicfinancialscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\controllers\\basicfinancialscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{84B657AB-EFC4-43F4-AC42-5505E49D842A}|FinanceApp.Models\\FinanceApp.Models.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.models\\dtos\\basicfinancialsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{84B657AB-EFC4-43F4-AC42-5505E49D842A}|FinanceApp.Models\\FinanceApp.Models.csproj|solutionrelative:financeapp.models\\dtos\\basicfinancialsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\data\\financeappcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\data\\financeappcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\repositorys\\stockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\repositorys\\stockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\repositorys\\contracts\\istockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\repositorys\\contracts\\istockrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.web\\pages\\myportfoliopage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\pages\\myportfoliopage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.api\\controllers\\earningscalendarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FCB43550-DD22-4328-9B80-69F9263E0D79}|FinanceApp.Api\\FinanceApp.Api.csproj|solutionrelative:financeapp.api\\controllers\\earningscalendarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -43,89 +27,39 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "EarningsCalendarController.cs",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
-              "RelativeDocumentMoniker": "FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
-              "RelativeToolTip": "FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-25T11:51:01.436Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "BasicFinancialsController.cs",
               "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Controllers\\BasicFinancialsController.cs",
               "RelativeDocumentMoniker": "FinanceApp.Api\\Controllers\\BasicFinancialsController.cs",
               "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Controllers\\BasicFinancialsController.cs",
               "RelativeToolTip": "FinanceApp.Api\\Controllers\\BasicFinancialsController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAA0AAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-25T11:39:05.506Z",
+              "WhenOpened": "2024-04-25T12:10:56.248Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "BasicFinancialsDto.cs",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Models\\Dtos\\BasicFinancialsDto.cs",
-              "RelativeDocumentMoniker": "FinanceApp.Models\\Dtos\\BasicFinancialsDto.cs",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Models\\Dtos\\BasicFinancialsDto.cs",
-              "RelativeToolTip": "FinanceApp.Models\\Dtos\\BasicFinancialsDto.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAgAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-25T11:40:40.004Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "StockPriceCandle.cs",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Dtos\\StockPriceCandle.cs",
-              "RelativeDocumentMoniker": "FinanceApp.Api\\Dtos\\StockPriceCandle.cs",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Dtos\\StockPriceCandle.cs",
-              "RelativeToolTip": "FinanceApp.Api\\Dtos\\StockPriceCandle.cs",
+              "Title": "FinanceAppContext.cs",
+              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Data\\FinanceAppContext.cs",
+              "RelativeDocumentMoniker": "FinanceApp.Api\\Data\\FinanceAppContext.cs",
+              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Data\\FinanceAppContext.cs",
+              "RelativeToolTip": "FinanceApp.Api\\Data\\FinanceAppContext.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-25T09:52:42.033Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-25T12:10:34.686Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "MyPortfolioPage.razor",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
-              "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
-              "RelativeToolTip": "FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAPwAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-24T17:30:43.037Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "StockRepository.cs",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Repositorys\\StockRepository.cs",
-              "RelativeDocumentMoniker": "FinanceApp.Api\\Repositorys\\StockRepository.cs",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Repositorys\\StockRepository.cs",
-              "RelativeToolTip": "FinanceApp.Api\\Repositorys\\StockRepository.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAQwBIAAAAuAAAA",
+              "DocumentIndex": 2,
+              "Title": "EarningsCalendarController.cs",
+              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
+              "RelativeDocumentMoniker": "FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
+              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
+              "RelativeToolTip": "FinanceApp.Api\\Controllers\\EarningsCalendarController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-24T16:46:00.453Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IStockRepository.cs",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Repositorys\\Contracts\\IStockRepository.cs",
-              "RelativeDocumentMoniker": "FinanceApp.Api\\Repositorys\\Contracts\\IStockRepository.cs",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Api\\Repositorys\\Contracts\\IStockRepository.cs",
-              "RelativeToolTip": "FinanceApp.Api\\Repositorys\\Contracts\\IStockRepository.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-24T16:45:56.974Z"
+              "WhenOpened": "2024-04-25T12:10:21.569Z"
             }
           ]
         }

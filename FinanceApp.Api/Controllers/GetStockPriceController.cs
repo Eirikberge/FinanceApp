@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using FinanceApp.Api.Dtos;
+using FinanceApp.Api.Entities;
 using FinanceApp.Data;
 using Microsoft.AspNetCore.Mvc;
 
