@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
-using FinanceApp.Api.Entities;
+using FinanceApp.Api.Dtos;
 using FinanceApp.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class GetStockPriceController : Controller
 	{

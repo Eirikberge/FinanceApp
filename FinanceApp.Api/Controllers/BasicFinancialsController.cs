@@ -1,11 +1,11 @@
-﻿using FinanceApp.Api.Entities;
+﻿using FinanceApp.Api.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace FinanceApp.Api.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class BasicFinancialsController : Controller
 	{
@@ -16,7 +16,7 @@ namespace FinanceApp.Api.Controllers
 			_httpClient = httpClient;
 		}
 		[HttpGet("api/basicfinancials")]
-		public async Task<ActionResult<BasicFinancialsModel>> GetAsync(string symbol)
+		public async Task<ActionResult<BasicFinancialsDto>> GetAsync(string symbol)
 		{
 			var request = new HttpRequestMessage(HttpMethod.Get, $"https://finnhub.io/api/v1/stock/metric?symbol={symbol}&metric=all");
 			request.Headers.Add("X-Finnhub-Token", "co5tdu1r01qv77g7q8bgco5tdu1r01qv77g7q8c0");
@@ -42,6 +42,6 @@ namespace FinanceApp.Api.Controllers
 	public class MetricResponse
 	{
 		[JsonPropertyName("metric")]
-		public BasicFinancialsModel Metric { get; set; }
+		public BasicFinancialsDto Metric { get; set; }
 	}
 }

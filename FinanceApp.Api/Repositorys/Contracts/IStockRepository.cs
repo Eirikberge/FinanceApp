@@ -6,5 +6,7 @@ namespace FinanceApp.Api.Repositorys.Contracts
 	{
 		Task<IEnumerable<Stock>> GetStocks();
 		Task AddStock(Stock stock);
+		Task<bool> UpdateStock(string symbol, int newQty);
+
 	}
 }

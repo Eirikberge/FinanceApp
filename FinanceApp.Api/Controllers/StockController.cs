@@ -11,12 +11,10 @@ namespace FinanceApp.Api.Controllers
 	public class StockController : Controller
 	{
 		private readonly IStockRepository _stockRepository;
-		private readonly FinanceAppContext _context;
 
-		public StockController(IStockRepository stockRepository, FinanceAppContext context)
+		public StockController(IStockRepository stockRepository)
 		{
 			_stockRepository = stockRepository;
-			_context = context;
 		}
 
 		[HttpGet]
@@ -48,21 +46,20 @@ namespace FinanceApp.Api.Controllers
 		}
 
 		[HttpPut("{symbol}/{newQty}")]
-		public IActionResult UpdateStock(string symbol, int newQty)
+		public async Task<IActionResult> UpdateStock(string symbol, int newQty)
 		{
-			var stock = _context.Stocks.FirstOrDefault(s => s.Symbol == symbol);
-
-			if (stock == null)
-			{
-				return NotFound();
-			}
-
-			stock.Qty = newQty;
-
 			try
 			{
-				_context.SaveChanges();
-				return Ok();
+				var success = await _stockRepository.UpdateStock(symbol, newQty);
+
+				if (success)
+				{
+					return Ok();
+				}
+				else
+				{
+					return NotFound();
+				}
 			}
 			catch (Exception ex)
 			{

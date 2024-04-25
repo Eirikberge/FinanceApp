@@ -3,16 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using FinanceApp.Api.Entities;
+using FinanceApp.Api.Dtos;
 
 namespace FinanceApp.Api.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class CompanyInfoController : Controller
 	{
 		[HttpGet]
-		public ActionResult<IEnumerable<CompanyInfoModel>> Get()
+		public ActionResult<IEnumerable<CompanyInfoDto>> Get()
 		{
 			try
 			{
@@ -24,10 +24,10 @@ namespace FinanceApp.Api.Controllers
 
 					if (root.TryGetProperty("data", out JsonElement dataElement))
 					{
-						var companyInfoList = new List<CompanyInfoModel>();
+						var companyInfoList = new List<CompanyInfoDto>();
 						foreach (JsonElement companyInfoElement in dataElement.EnumerateArray())
 						{
-							var companyInfo = new CompanyInfoModel
+							var companyInfo = new CompanyInfoDto
 							{
 								Cik = companyInfoElement[0].GetInt32(),
 								Name = companyInfoElement[1].GetString(),

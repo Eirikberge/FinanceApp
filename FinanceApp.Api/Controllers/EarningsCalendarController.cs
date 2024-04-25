@@ -4,12 +4,12 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using FinanceApp.Api.Entities;
+using FinanceApp.Api.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Api.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class EarningsCalendarController : ControllerBase
 	{
@@ -21,7 +21,7 @@ namespace FinanceApp.Api.Controllers
 		}
 
 		[HttpGet("api/earningscalendar")]
-		public async Task<ActionResult<List<EarningsCalendarModel>>> GetAsync([FromQuery] DateTime from, [FromQuery] DateTime to, [FromQuery] string? symbol)
+		public async Task<ActionResult<List<EarningsCalendarDto>>> GetAsync([FromQuery] DateTime from, [FromQuery] DateTime to, [FromQuery] string? symbol)
 		{
 			string apiUrl = $"https://finnhub.io/api/v1/calendar/earnings?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}";
 
@@ -55,6 +55,6 @@ namespace FinanceApp.Api.Controllers
 	public class EarningsCalendarResponse
 	{
 		[JsonPropertyName("earningsCalendar")]
-		public List<EarningsCalendarModel>? EarningsCalendar { get; set; }
+		public List<EarningsCalendarDto>? EarningsCalendar { get; set; }
 	}
 }

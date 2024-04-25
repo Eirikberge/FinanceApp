@@ -24,7 +24,27 @@ namespace FinanceApp.Api.Repositorys
 			_context.Stocks.Add(stock);
 			await _context.SaveChangesAsync();
 		}
-		
+		public async Task<bool> UpdateStock(string symbol, int newQty)
+		{
+			var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Symbol == symbol);
+
+			if (stock == null)
+			{
+				return false; 
+			}
+
+			stock.Qty = newQty;
+
+			try
+			{
+				await _context.SaveChangesAsync();
+				return true;
+			}
+			catch (Exception)
+			{
+				return false; 
+			}
+		}
 	}
 }
 

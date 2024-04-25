@@ -1,0 +1,12 @@
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\bin\Debug\net8.0\FinanceApp.Models.deps.json
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\bin\Debug\net8.0\FinanceApp.Models.dll
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\bin\Debug\net8.0\FinanceApp.Models.pdb
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\obj\Debug\net8.0\FinanceApp.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\obj\Debug\net8.0\FinanceApp.Models.AssemblyInfoInputs.cache
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\obj\Debug\net8.0\FinanceApp.Models.AssemblyInfo.cs
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\obj\Debug\net8.0\FinanceApp.Models.csproj.CoreCompileInputs.cache
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\obj\Debug\net8.0\FinanceApp.Models.sourcelink.json
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\obj\Debug\net8.0\FinanceApp.Models.dll
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\obj\Debug\net8.0\refint\FinanceApp.Models.dll
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\obj\Debug\net8.0\FinanceApp.Models.pdb
+C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Models\obj\Debug\net8.0\ref\FinanceApp.Models.dll
