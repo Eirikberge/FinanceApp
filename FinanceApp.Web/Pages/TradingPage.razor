@@ -10,8 +10,7 @@
 	<button type="submit">Search</button>
 </form>
 
-<p>
-</p>
+<br/>
 <NavLink href="/symbolexamples" class="btn btn-primary">Se aksjer eksempler</NavLink>
 
 
@@ -98,7 +97,7 @@
 
 	private async Task LoadStocks()
 	{
-		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
+		var response = await Http.GetAsync("https://localhost:7282/api/stocks");
 		if (response.IsSuccessStatusCode)
 		{
 			_ownedStocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
@@ -176,32 +175,33 @@
 
 	private bool IsStockOwned(string symbol) => _ownedStocks?.Any(stock => stock.Symbol == symbol) ?? false;
 
-
 	private async Task ConfirmBuy(StockSearchResponse searchedStock)
 	{
 		if (IsStockOwned(searchedStock.Symbol))
 		{
-			var previousQty = 0;
-			var newBuyingPrice = 0;
-			foreach (var stock in _ownedStocks)
+			if (IsStockOwned(searchedStock.Symbol))
 			{
-				if (stock.Symbol == searchedStock.Symbol)
+				var previousQty = 0;
+				var newBuyingPrice = 0;
+				foreach (var stock in _ownedStocks)
 				{
-					previousQty = stock.Qty;
-					newBuyingPrice = (((stock.Qty * (int)stock.BuyingPrice)/ stock.Qty) + ((_insertedQty * (int)searchedStock.Current)/_insertedQty))/2;
+					if (stock.Symbol == searchedStock.Symbol)
+					{
+						previousQty = stock.Qty;
+						newBuyingPrice = (((stock.Qty * (int)stock.BuyingPrice)/ stock.Qty) + ((_insertedQty * (int)searchedStock.Current)/_insertedQty))/2;
+					}
 				}
-			}
-			var updateModel = new Stock
+				var updateModel = new Stock
 				{
 					Symbol = searchedStock.Symbol,
 					Qty = _insertedQty + previousQty,
 					BuyingPrice = newBuyingPrice,
 				};
-			var json = JsonConvert.SerializeObject(updateModel);
-			var content = new StringContent(json, Encoding.UTF8, "application/json");
+				var json = JsonConvert.SerializeObject(updateModel);
+				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-			var stockResponse = await Http.PutAsync("https://localhost:7282/UpdateStock/api/updateqty", content);
-			previousQty = 0;
+				var stockResponse = await Http.PutAsync($"https://localhost:7282/api/stocks/{updateModel.Symbol}/{updateModel.Qty}", content);
+			}
 		}
 		else
 		{
@@ -215,11 +215,12 @@
 			var json = JsonConvert.SerializeObject(addModel);
 			var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-			var addedStock = await Http.PostAsync("https://localhost:7282/AddStock/api/addstock", content);
+			var addedStock = await Http.PostAsync("https://localhost:7282/api/stocks", content);
 		}
 		ShowBuyStockForm();
 
 	}
+
 	private async Task ConfirmSell(StockSearchResponse searchedStock)
 	{
 		foreach (var ownedStock in _ownedStocks)
@@ -235,17 +236,16 @@
 					}
 				}
 				var updateModel = new Stock
-					{
-						Symbol = searchedStock.Symbol,
-						Qty = previousQty - _insertedQty,
-					};
+				{
+					Symbol = searchedStock.Symbol,
+					Qty = previousQty - _insertedQty,
+				};
 				var json = JsonConvert.SerializeObject(updateModel);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-				var stockResponse = await Http.PutAsync("https://localhost:7282/UpdateStock/api/updateqty", content);
-				previousQty = 0;
+				var stockResponse = await Http.PutAsync($"https://localhost:7282/api/stocks/{updateModel.Symbol}/{updateModel.Qty}", content);
 			}
-			else
+			else //delete stock
 			{
 			}
 		}

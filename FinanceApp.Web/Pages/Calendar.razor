@@ -86,7 +86,7 @@
 
 	private async Task LoadStocks()
 	{
-		var response = await Http.GetAsync("https://localhost:7282/api/getstocks");
+		var response = await Http.GetAsync("https://localhost:7282/api/stocks");
 		if (response.IsSuccessStatusCode)
 		{
 			_stocks = await response.Content.ReadFromJsonAsync<List<Stock>>();

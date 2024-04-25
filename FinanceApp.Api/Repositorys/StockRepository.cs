@@ -18,6 +18,13 @@ namespace FinanceApp.Api.Repositorys
 		{
 			return await _context.Stocks.ToListAsync();
 		}
+
+		public async Task AddStock(Stock stock)
+		{
+			_context.Stocks.Add(stock);
+			await _context.SaveChangesAsync();
+		}
+		
 	}
 }
 

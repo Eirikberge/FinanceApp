@@ -28,7 +28,7 @@ namespace FinanceApp.Controllers
 				return null;
 			}
 
-			var deserialized = JsonSerializer.Deserialize<QuoteResponse>(response.Content.ReadAsStream());
+			var deserialized = JsonSerializer.Deserialize<QuoteResponse>(response.Content.ReadAsStream()); // må legge inn en håndtering av feil
 			if (deserialized == null)
 			{
 				return null;

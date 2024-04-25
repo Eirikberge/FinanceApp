@@ -1,21 +1,5 @@
 [
   {
-    "ContainingType": "FinanceApp.Api.Controllers.AddStockController",
-    "Method": "AddStock",
-    "RelativePath": "AddStock/api/addstock",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "addModel",
-        "Type": "FinanceApp.Api.Entities.AddStockModel",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "FinanceApp.Controllers.GetOwnersController",
     "Method": "GetOwners",
     "RelativePath": "api/GetOwners",
@@ -26,13 +10,50 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "FinanceApp.Controllers.GetStocksController",
+    "ContainingType": "FinanceApp.Api.Controllers.StockController",
     "Method": "GetStocks",
-    "RelativePath": "api/getstocks",
+    "RelativePath": "api/stocks",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApp.Api.Controllers.StockController",
+    "Method": "AddStock",
+    "RelativePath": "api/stocks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "stock",
+        "Type": "FinanceApp.Api.Entities.Stock",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApp.Api.Controllers.StockController",
+    "Method": "UpdateStock",
+    "RelativePath": "api/stocks/{symbol}/{newQty}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "symbol",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "newQty",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -142,21 +163,5 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "FinanceApp.Api.Controllers.UpdateStockController",
-    "Method": "UpdateQty",
-    "RelativePath": "UpdateStock/api/updateqty",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "updateModel",
-        "Type": "FinanceApp.Api.Entities.StockUpdateModel",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
   }
 ]
