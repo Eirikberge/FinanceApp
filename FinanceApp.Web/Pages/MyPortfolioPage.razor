@@ -2,7 +2,7 @@
 @using System.Text
 @using Newtonsoft.Json
 @using System.Globalization
-@using FinanceApp.Api.Dtos
+@using FinanceApp.Models.Dtos
 @inject HttpClient Http
 
 <PageTitle>My Portfolio</PageTitle>
@@ -168,7 +168,7 @@ else
 			if (response.IsSuccessStatusCode)
 		{
 			var jsonResponse = await response.Content.ReadAsStringAsync();
-			var responseObject = JsonConvert.DeserializeObject<StockSearchResponse>(jsonResponse);
+				var responseObject = JsonConvert.DeserializeObject<StockSearchResponseDto>(jsonResponse);
 
 			stock.CurrentPrice = responseObject.Current;
 		}
@@ -284,5 +284,18 @@ else
 		}
 
 		return Math.Round(totalWorth, 2);
+	}
+
+	public class DayEvent
+	{
+		public DateTime FromDate { get; set; }
+		public DateTime ToDate { get; set; }
+		public string DateValue { get; set; }
+		public string DayName { get; set; }
+	}
+
+	public class WeekClass
+	{
+		public List<DayEvent> Dates { get; set; } = new List<DayEvent>();
 	}
 }

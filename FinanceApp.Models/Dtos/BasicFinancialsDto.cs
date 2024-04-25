@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FinanceApp.Api.Dtos
+namespace FinanceApp.Models.Dtos
 {
 	public class BasicFinancialsDto
 	{

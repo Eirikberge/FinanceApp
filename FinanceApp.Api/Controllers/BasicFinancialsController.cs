@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using FinanceApp.Api.Dtos;
+using FinanceApp.Models.Dtos;
 
 namespace FinanceApp.Api.Controllers
 {

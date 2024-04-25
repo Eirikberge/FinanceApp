@@ -72,7 +72,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "FinanceApp.Api.Dtos.BasicFinancialsDto",
+        "Type": "FinanceApp.Models.Dtos.BasicFinancialsDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -92,7 +92,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[FinanceApp.Api.Dtos.CompanyInfoDto, FinanceApp.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[FinanceApp.Models.Dtos.CompanyInfoDto, FinanceApp.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -128,7 +128,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[FinanceApp.Api.Dtos.EarningsCalendarDto, FinanceApp.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[FinanceApp.Models.Dtos.EarningsCalendarDto, FinanceApp.Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -154,7 +154,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "FinanceApp.Api.Entities.StockPriceCandle",
+        "Type": "FinanceApp.Models.Dtos.StockPriceCandleDto",
         "MediaTypes": [
           "text/plain",
           "application/json",

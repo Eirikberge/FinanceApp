@@ -2,7 +2,7 @@
 @using System.Net
 @using System.Runtime.InteropServices.JavaScript
 @using System.Globalization
-@using FinanceApp.Api.Dtos
+@using FinanceApp.Models.Dtos
 @inject HttpClient Http
 
 <PageTitle>Calendar</PageTitle>
@@ -207,5 +207,18 @@
 	private void ChangeMonthForward()
 	{
 		monthChange++;
+	}
+
+	public class DayEvent
+	{
+		public DateTime FromDate { get; set; }
+		public DateTime ToDate { get; set; }
+		public string DateValue { get; set; }
+		public string DayName { get; set; }
+	}
+
+	public class WeekClass
+	{
+		public List<DayEvent> Dates { get; set; } = new List<DayEvent>();
 	}
 }

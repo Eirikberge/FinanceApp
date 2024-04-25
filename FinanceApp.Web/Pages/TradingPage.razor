@@ -1,6 +1,7 @@
 ﻿@page "/tradingpage"
 @using Newtonsoft.Json
 @using System.Text
+@using FinanceApp.Models.Dtos
 @inject HttpClient Http
 
 <h3>Trading Page</h3>
@@ -28,7 +29,6 @@
 				<th>Low</th>
 				<th>Percent Change</th>
 				<th>Change</th>
-				<th>Time</th>
 				<th></th>
 				<th></th>
 			</tr>
@@ -47,7 +47,6 @@
 					<td>@stock.Low</td>
 					<td>@stock.PercentChange</td>
 					<td>@stock.Change</td>
-					<td>@FormatDateTime(stock.Time)</td>
 					<td><button class="btn btn-primary" @onclick='() => ShowBuyStockForm("buy")'>Buy</button></td>
 					@if (IsStockOwned(stock.Symbol))
 					{
@@ -78,8 +77,8 @@
 
 @code {
 	private List<Stock> _ownedStocks;
-	private List<StockSearchResponse> _searchedStocks;
-	private List<CompanyInfoResponse> _companyInfoList;
+	private List<StockSearchResponseDto> _searchedStocks;
+	private List<CompanyInfoDto> _companyInfoList;
 
 	private string _searchString;
 
@@ -109,7 +108,7 @@
 		var response = await Http.GetAsync("https://localhost:7282/CompanyInfo");
 		if (response.IsSuccessStatusCode)
 		{
-			_companyInfoList = await response.Content.ReadFromJsonAsync<List<CompanyInfoResponse>>();
+			_companyInfoList = await response.Content.ReadFromJsonAsync<List<CompanyInfoDto>>();
 		}
 	}
 
@@ -125,7 +124,7 @@
 		{
 
 			var jsonResponse = await response.Content.ReadAsStringAsync();
-			var responseObject = JsonConvert.DeserializeObject<StockSearchResponse>(jsonResponse);
+			var responseObject = JsonConvert.DeserializeObject<StockSearchResponseDto>(jsonResponse);
 
 			foreach (var company in _companyInfoList)
 			{
@@ -135,7 +134,7 @@
 				}
 			}
 
-			var stock = new StockSearchResponse
+			var stock = new StockSearchResponseDto
 				{
 					Name = _stockName,
 					Current = responseObject.Current,
@@ -143,12 +142,11 @@
 					Previous = responseObject.Previous,
 					High = responseObject.High,
 					Low = responseObject.Low,
-					Time = responseObject.Time,
 					Change = responseObject.Change,
 					PercentChange = responseObject.PercentChange,
 					Symbol = responseObject.Symbol
 				};
-			_searchedStocks = new List<StockSearchResponse> { stock };
+			_searchedStocks = new List<StockSearchResponseDto> { stock };
 		}
 	}
 
@@ -175,7 +173,7 @@
 
 	private bool IsStockOwned(string symbol) => _ownedStocks?.Any(stock => stock.Symbol == symbol) ?? false;
 
-	private async Task ConfirmBuy(StockSearchResponse searchedStock)
+	private async Task ConfirmBuy(StockSearchResponseDto searchedStock)
 	{
 		if (IsStockOwned(searchedStock.Symbol))
 		{
@@ -221,7 +219,7 @@
 
 	}
 
-	private async Task ConfirmSell(StockSearchResponse searchedStock)
+	private async Task ConfirmSell(StockSearchResponseDto searchedStock)
 	{
 		foreach (var ownedStock in _ownedStocks)
 		{

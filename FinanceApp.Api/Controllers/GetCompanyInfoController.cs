@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using FinanceApp.Api.Dtos;
+using FinanceApp.Models.Dtos;
 
 namespace FinanceApp.Api.Controllers
 {
