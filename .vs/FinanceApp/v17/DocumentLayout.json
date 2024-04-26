@@ -11,10 +11,6 @@
       "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\pages\\myportfoliopage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|c:\\users\\eirik\\source\\repos\\financeapp\\financeapp.web\\pages\\calendar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{590A5C99-F7FF-49B1-B472-F4F7F4501A76}|FinanceApp.Web\\FinanceApp.Web.csproj|solutionrelative:financeapp.web\\pages\\calendar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
@@ -26,32 +22,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 209,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Program.cs",
-              "RelativeDocumentMoniker": "FinanceApp.Web\\Program.cs",
-              "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Program.cs",
-              "RelativeToolTip": "FinanceApp.Web\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-25T13:56:33.604Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "Calendar.razor",
               "DocumentMoniker": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\Calendar.razor",
               "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\Calendar.razor",
               "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\Calendar.razor",
               "RelativeToolTip": "FinanceApp.Web\\Pages\\Calendar.razor",
-              "ViewState": "AQIAADkAAAAAAAAAAAAAANEAAAACAAAA",
+              "ViewState": "AQIAAFEAAAAAAAAAAAAAABAAAAAGAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-25T13:54:32.105Z",
+              "WhenOpened": "2024-04-26T09:33:43.405Z",
               "EditorCaption": ""
             },
             {
@@ -62,17 +45,11 @@
               "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\CalendarBase.cs",
               "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\CalendarBase.cs",
               "RelativeToolTip": "FinanceApp.Web\\Pages\\CalendarBase.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-25T13:48:24.765Z",
+              "WhenOpened": "2024-04-26T09:32:03.591Z",
               "EditorCaption": ""
-            }
-          ]
-        },
-        {
-          "DockedWidth": 209,
-          "SelectedChildIndex": 0,
-          "Children": [
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -81,9 +58,9 @@
               "RelativeDocumentMoniker": "FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
               "ToolTip": "C:\\Users\\eirik\\source\\repos\\FinanceApp\\FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
               "RelativeToolTip": "FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
-              "ViewState": "AQIAAGwAAAAAAAAAAAArwMgAAAAAAAAA",
+              "ViewState": "AQIAANMAAAAAAAAAAAAkwPoAAAACAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-25T13:54:40.784Z",
+              "WhenOpened": "2024-04-26T09:30:22.162Z",
               "EditorCaption": ""
             }
           ]

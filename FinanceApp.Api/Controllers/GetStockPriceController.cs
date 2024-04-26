@@ -26,13 +26,13 @@ namespace FinanceApp.Controllers
 			var response = _httpClient.Send(request);
 			if (!response.IsSuccessStatusCode)
 			{
-				return null;
+				return StatusCode((int)response.StatusCode);
 			}
 
-			var deserialized = JsonSerializer.Deserialize<QuoteResponse>(response.Content.ReadAsStream()); // må legge inn en håndtering av feil
+			var deserialized = JsonSerializer.Deserialize<QuoteResponse>(response.Content.ReadAsStream()); 
 			if (deserialized == null)
 			{
-				return null;
+				return NoContent();
 			}
 
 			var stockPrice = new StockPriceCandleDto();

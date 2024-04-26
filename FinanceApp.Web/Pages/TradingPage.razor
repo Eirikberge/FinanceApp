@@ -76,7 +76,7 @@
 
 
 @code {
-	private List<Stock> _ownedStocks;
+	private List<StockDto> _ownedStocks;
 	private List<StockSearchResponseDto> _searchedStocks;
 	private List<CompanyInfoDto> _companyInfoList;
 
@@ -99,7 +99,7 @@
 		var response = await Http.GetAsync("https://localhost:7282/api/stocks");
 		if (response.IsSuccessStatusCode)
 		{
-			_ownedStocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
+			_ownedStocks = await response.Content.ReadFromJsonAsync<List<StockDto>>();
 		}
 	}
 
@@ -189,7 +189,7 @@
 						newBuyingPrice = (((stock.Qty * (int)stock.BuyingPrice)/ stock.Qty) + ((_insertedQty * (int)searchedStock.Current)/_insertedQty))/2;
 					}
 				}
-				var updateModel = new Stock
+				var updateModel = new StockDto
 				{
 					Symbol = searchedStock.Symbol,
 					Qty = _insertedQty + previousQty,
@@ -203,7 +203,7 @@
 		}
 		else
 		{
-			var addModel = new Stock
+			var addModel = new StockDto
 				{
 					Name = _stockName,
 					Symbol = searchedStock.Symbol,
@@ -233,7 +233,7 @@
 						previousQty = stock.Qty;
 					}
 				}
-				var updateModel = new Stock
+				var updateModel = new StockDto
 				{
 					Symbol = searchedStock.Symbol,
 					Qty = previousQty - _insertedQty,
@@ -248,12 +248,5 @@
 			}
 		}
 		ShowBuyStockForm();
-	}
-
-	private string FormatDateTime(string dateTimeString)
-	{
-		DateTime time = DateTime.Parse(dateTimeString);
-		string formattedTime = time.ToString("HH:mm:ss");
-		return formattedTime;
 	}
 }

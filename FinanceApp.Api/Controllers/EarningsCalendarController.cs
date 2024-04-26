@@ -21,7 +21,7 @@ namespace FinanceApp.Api.Controllers
 		}
 
 		[HttpGet("api/earningscalendar")]
-		public async Task<ActionResult<List<EarningsCalendarDto>>> GetAsync([FromQuery] DateTime from, [FromQuery] DateTime to, [FromQuery] string? symbol)
+		public async Task<ActionResult<List<EarningsCalendarDto>>> GetEarningsCalendar([FromQuery] DateTime from, [FromQuery] DateTime to, [FromQuery] string? symbol)
 		{
 			string apiUrl = $"https://finnhub.io/api/v1/calendar/earnings?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}";
 

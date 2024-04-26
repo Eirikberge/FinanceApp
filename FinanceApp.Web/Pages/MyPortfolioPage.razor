@@ -3,7 +3,10 @@
 @using Newtonsoft.Json
 @using System.Globalization
 @using FinanceApp.Models.Dtos
+@using FinanceApp.Web.Models
 @inject HttpClient Http
+
+@inherits CalendarBase
 
 <PageTitle>My Portfolio</PageTitle>
 
@@ -105,8 +108,8 @@ else
 }
 
 @code {
-	private List<Stock> _stocks;
-	private List<Stock> _filteredStocks;
+	private List<StockDto> _stocks;
+	private List<StockDto> _filteredStocks;
 	private List<EarningsCalendarDto> _calendarResponsList;
 
 	private string _searchString;
@@ -136,7 +139,7 @@ else
 		var response = await Http.GetAsync("https://localhost:7282/api/stocks");
 		if (response.IsSuccessStatusCode)
 		{
-			_stocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
+			_stocks = await response.Content.ReadFromJsonAsync<List<StockDto>>();
 			_filteredStocks = _stocks.ToList();
 		}
 	}
@@ -192,11 +195,6 @@ else
 		}
 
 		return firstMonday.AddDays(weekOfYear * 7);
-	}
-
-	private int GetWeekNumber(DateTime date)
-	{
-		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 	}
 
 	private void GenerateCalendarHead()
@@ -286,16 +284,4 @@ else
 		return Math.Round(totalWorth, 2);
 	}
 
-	public class DayEvent
-	{
-		public DateTime FromDate { get; set; }
-		public DateTime ToDate { get; set; }
-		public string DateValue { get; set; }
-		public string DayName { get; set; }
-	}
-
-	public class WeekClass
-	{
-		public List<DayEvent> Dates { get; set; } = new List<DayEvent>();
-	}
 }

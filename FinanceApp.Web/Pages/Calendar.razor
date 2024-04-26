@@ -3,6 +3,7 @@
 @using System.Runtime.InteropServices.JavaScript
 @using System.Globalization
 @using FinanceApp.Models.Dtos
+@using FinanceApp.Web.Models
 @inject HttpClient Http
 
 <PageTitle>Calendar</PageTitle>
@@ -10,9 +11,9 @@
 <h1>Calendar</h1>
 
 <div style="display: flex; justify-content: center; align-items: center;">
-	<button class="btn btn-primary" style="font-size: 10px;" @onclick="ChangeMonthBack">Forrige</button>
+	<button class="btn btn-primary" style="font-size: 10px;" @onclick="(e => ChangeMonth(1))">Forrige</button>
 	<h2 style="text-align: center; margin: 0 10px;">@GetMonthHeadline()</h2>
-	<button class="btn btn-primary" style="font-size: 10px;" @onclick="ChangeMonthForward">Neste</button>
+	<button class="btn btn-primary" style="font-size: 10px;" @onclick="(e => ChangeMonth(-1))">Neste</button>
 </div>
 
 <br />
@@ -38,6 +39,7 @@
 						{
 							if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
 							{
+								<br />
 								<text>Ticker: @company.Symbol</text>
 
 								<br />
@@ -45,9 +47,6 @@
 
 								<br />
 								<text>EpsEstimate: @company.EpsEstimate</text>
-
-								<br />
-								<text>RevenueEstimate: @company.RevenueEstimate</text>
 							}
 						}
 					</td>
@@ -66,7 +65,7 @@
 	DateTime firstWeekOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month + monthChange, 1);
 	private static int monthChange = 0;
 
-	private List<Stock> _stocks;
+	private List<StockDto> _stocks;
 	private List<EarningsCalendarDto> _calendarResponsList;
 
 
@@ -90,7 +89,7 @@
 		var response = await Http.GetAsync("https://localhost:7282/api/stocks");
 		if (response.IsSuccessStatusCode)
 		{
-			_stocks = await response.Content.ReadFromJsonAsync<List<Stock>>();
+			_stocks = await response.Content.ReadFromJsonAsync<List<StockDto>>();
 		}
 	}
 
@@ -199,26 +198,8 @@
 		return capitalizedMonth;
 	}
 
-	private void ChangeMonthBack()
+	private void ChangeMonth(int change)
 	{
-		monthChange--;
-	}
-
-	private void ChangeMonthForward()
-	{
-		monthChange++;
-	}
-
-	public class DayEvent
-	{
-		public DateTime FromDate { get; set; }
-		public DateTime ToDate { get; set; }
-		public string DateValue { get; set; }
-		public string DayName { get; set; }
-	}
-
-	public class WeekClass
-	{
-		public List<DayEvent> Dates { get; set; } = new List<DayEvent>();
+		monthChange += change;
 	}
 }

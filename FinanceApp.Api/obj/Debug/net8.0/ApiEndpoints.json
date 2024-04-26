@@ -104,7 +104,7 @@
   },
   {
     "ContainingType": "FinanceApp.Api.Controllers.EarningsCalendarController",
-    "Method": "GetAsync",
+    "Method": "GetEarningsCalendar",
     "RelativePath": "EarningsCalendar/api/earningscalendar",
     "HttpMethod": "GET",
     "IsController": true,
