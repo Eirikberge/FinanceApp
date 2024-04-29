@@ -26,6 +26,14 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/eirik/source/repos/FinanceApp/FinanceApp.Web/Components/CalendarComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDYWxlbmRhckNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eirik/source/repos/FinanceApp/FinanceApp.Web/Components/SearchBarComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTZWFyY2hCYXJDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/eirik/source/repos/FinanceApp/FinanceApp.Web/Pages/Calendar.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FsZW5kYXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -36,6 +44,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/eirik/source/repos/FinanceApp/FinanceApp.Web/Pages/MyPortfolioPage.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQb3J0Zm9saW9QYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eirik/source/repos/FinanceApp/FinanceApp.Web/Pages/Mystock2.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlzdG9jazIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/eirik/source/repos/FinanceApp/FinanceApp.Web/Pages/StockSymbolExamples.razor]

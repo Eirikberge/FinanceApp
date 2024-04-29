@@ -2,18 +2,17 @@
 @using Newtonsoft.Json
 @using System.Text
 @using FinanceApp.Models.Dtos
+@using FinanceApp.Web.Components
+
 @inject HttpClient Http
 
 <h3>Trading Page</h3>
 
-<form @onsubmit="Search">
-	<input type="text" @bind="_searchString" @bind:event="oninput" />
-	<button type="submit">Search</button>
-</form>
+<SearchBarComponent TEntity="StockSearchResponseDto" OnSearch="ShowStockInfo"></SearchBarComponent>
 
 <br/>
-<NavLink href="/symbolexamples" class="btn btn-primary">Se aksjer eksempler</NavLink>
 
+<NavLink href="/symbolexamples" class="btn btn-primary">Se aksjer eksempler</NavLink>
 
 @if (_searchedStocks != null)
 {
@@ -34,7 +33,6 @@
 			</tr>
 		</thead>
 		<tbody>
-
 			@foreach (var stock in _searchedStocks)
 			{
 				<tr>
@@ -73,14 +71,10 @@
 	</table>
 }
 
-
-
 @code {
 	private List<StockDto> _ownedStocks;
 	private List<StockSearchResponseDto> _searchedStocks;
 	private List<CompanyInfoDto> _companyInfoList;
-
-	private string _searchString;
 
 	private bool _showBuyForm = false;
 	private bool _showSellForm = false;
@@ -112,29 +106,26 @@
 		}
 	}
 
-	private async Task Search()
+	private async Task ShowStockInfo(string searchString)
 	{
-		await ShowStockInfo();
-	}
-
-	private async Task ShowStockInfo()
-	{
-		var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{_searchString.ToUpper()}");
-		if (response.IsSuccessStatusCode)
+		try
 		{
-
-			var jsonResponse = await response.Content.ReadAsStringAsync();
-			var responseObject = JsonConvert.DeserializeObject<StockSearchResponseDto>(jsonResponse);
-
-			foreach (var company in _companyInfoList)
+			var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{searchString.ToUpper()}");
+			if (response.IsSuccessStatusCode)
 			{
-				if (responseObject.Symbol == company.Ticker)
-				{
-					_stockName = company.Name;
-				}
-			}
+				var jsonResponse = await response.Content.ReadAsStringAsync();
+				var responseObject = JsonConvert.DeserializeObject<StockSearchResponseDto>(jsonResponse);
 
-			var stock = new StockSearchResponseDto
+				foreach (var company in _companyInfoList)
+				{
+					if (responseObject.Symbol == company.Ticker)
+					{
+						_stockName = company.Name;
+						break;
+					}
+				}
+
+				var stock = new StockSearchResponseDto
 				{
 					Name = _stockName,
 					Current = responseObject.Current,
@@ -146,7 +137,14 @@
 					PercentChange = responseObject.PercentChange,
 					Symbol = responseObject.Symbol
 				};
-			_searchedStocks = new List<StockSearchResponseDto> { stock };
+				_searchedStocks = new List<StockSearchResponseDto> { stock };
+			}
+			else
+			{
+			}
+		}
+		catch (Exception ex)
+		{
 		}
 	}
 
@@ -198,7 +196,7 @@
 				var json = JsonConvert.SerializeObject(updateModel);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-				var stockResponse = await Http.PutAsync($"https://localhost:7282/api/stocks/{updateModel.Symbol}/{updateModel.Qty}", content);
+				await Http.PutAsync($"https://localhost:7282/api/stocks/{updateModel.Symbol}/{updateModel.Qty}", content);
 			}
 		}
 		else
@@ -241,7 +239,7 @@
 				var json = JsonConvert.SerializeObject(updateModel);
 				var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-				var stockResponse = await Http.PutAsync($"https://localhost:7282/api/stocks/{updateModel.Symbol}/{updateModel.Qty}", content);
+				await Http.PutAsync($"https://localhost:7282/api/stocks/{updateModel.Symbol}/{updateModel.Qty}", content);
 			}
 			else //delete stock
 			{

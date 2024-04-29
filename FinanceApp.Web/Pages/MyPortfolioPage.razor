@@ -4,20 +4,21 @@
 @using System.Globalization
 @using FinanceApp.Models.Dtos
 @using FinanceApp.Web.Models
+@using FinanceApp.Web.Components
 @inject HttpClient Http
 
-@inherits CalendarBase
+@inherits StockBase
+
 
 <PageTitle>My Portfolio</PageTitle>
 
 <h1>My Portfolio</h1>
 
+<div>
+	<SearchBarComponent Items="_stocks" OnSearch="UpdateFilteredStocks"></SearchBarComponent>
+</div>
 
-<form @onsubmit="UpdateFilteredStocks">
-	<input type="text" @bind="_searchString" />
-	<button type="submit">Search</button>
-</form>
-
+<br/>
 <td><button class="btn btn-primary" @onclick="() => UpdateStock()">Refresh</button></td>
 
 @if (_stocks == null)
@@ -28,83 +29,45 @@ else
 {
 	<table class="table">
 		<thead>
-		<tr>
-			<th>Symbol</th>
-			<th>Name</th>
-			<th>BuyingPrice</th>
-			<th>CurrentPrice</th>
-			<th>Quantity</th>
-			<th>Gain</th>
-		</tr>
+			<tr>
+				<th>Symbol</th>
+				<th>Name</th>
+				<th>BuyingPrice</th>
+				<th>CurrentPrice</th>
+				<th>Quantity</th>
+				<th>Gain</th>
+			</tr>
 		</thead>
 		<tbody>
-		@foreach (var stock in _filteredStocks ?? _stocks)
-		{
-			var gain = Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
-			<tr>
-				<td>@stock.Symbol</td>
-				<td>@stock.Name</td>
-				<td>@stock.BuyingPrice</td>
-				<td>@stock.CurrentPrice</td>
-				<td>@stock.Qty</td>
-				<td>@gain</td>
-			</tr>
-		}
+			@foreach (var stock in _filteredStocks ?? _stocks)
+			{
+				var gain = Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
+				<tr>
+					<td>@stock.Symbol</td>
+					<td>@stock.Name</td>
+					<td>@stock.BuyingPrice</td>
+					<td>@stock.CurrentPrice</td>
+					<td>@stock.Qty</td>
+					<td>@gain</td>
+				</tr>
+			}
 		</tbody>
 	</table>
-	<br/>
+	<br />
 	<table class="table table-bordered table-striped">
 		<tr>
 			<th style="width: @(100 / 4)%;">Total Worth: @GetTotalWorth() </th>
 			<th style="width: @(100 / 4)%;">Risk(beta): 1.2</th>
 			<th style="width: @(100 / 4)%;">Total Gain: @GetTotalGain()</th>
 			<th style="width: @(100 / 4)%;">Estimated annual dividend: 54 USD</th>
-			</tr>
+		</tr>
 	</table>
 
 	<br />
 	<h4 style="text-align: center;">Uke: @GetWeekNumber(DateTime.Now)</h4>
 
-	<table class="table table-bordered table-striped">
-		<thead>
-			<tr>
-				@foreach (var day in days)
-				{
-					<th style="width: @(100 / days.Count())%;">@day</th>
-				}
-			</tr>
-		</thead>
-		<tbody>
-		@foreach (var week in weeks)
-		{
-			<tr>
-				@foreach (var day in week.Dates)
-				{
-					<td>
-						@day.DateValue
-						<br />
-						@foreach (var company in _calendarResponsList)
-						{
-							if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
-							{
-								<text>Ticker: @company.Symbol</text>
+	<CalendarComponent NumberOfDaysToAdd="6" length="week"></CalendarComponent>
 
-								<br />
-								<text>Quarter: @company.Quarter</text>
-
-								<br />
-								<text>EpsEstimate: @company.EpsEstimate</text>
-
-								<br />
-								<text>RevenueEstimate: @company.RevenueEstimate</text>
-							}
-						}
-					</td>
-				}
-			</tr>
-		}
-	</tbody>
-	</table>
 }
 
 @code {
@@ -114,24 +77,12 @@ else
 
 	private string _searchString;
 
-	private List<string> days;
-	private List<WeekClass> weeks;
 	private DateTime startDate = DateTime.Now;
 	private DateTime endDate = DateTime.Now;
 
 	protected override async Task OnInitializedAsync()
 	{
 		await LoadStocks();
-
-		startDate = GetFirstMondayOfWeek(startDate.Year, GetWeekNumber(startDate));
-		endDate = startDate.AddDays(6);
-
-		GenerateCalendarHead();
-		GenerateCalendarBody();
-
-		DateTime firstDayInThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-		DateTime lastDayInMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
-		await LoadCalendarInfo(firstDayInThisMonth, lastDayInMonth);
 	}
 
 	private async Task LoadStocks()
@@ -144,122 +95,28 @@ else
 		}
 	}
 
-	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
-	{
-		string apiUrl = $"https://localhost:7282/EarningsCalendar/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
-
-		var response = await Http.GetFromJsonAsync<List<EarningsCalendarDto>>(apiUrl);
-		if (response != null)
-		{
-			_calendarResponsList = response;
-		}
-	}
-
-	private void UpdateFilteredStocks()
-	{
-		_filteredStocks = string.IsNullOrEmpty(_searchString) ? _stocks : _stocks.Where(stock =>
-			stock.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
-			stock.Symbol.Contains(_searchString, StringComparison.OrdinalIgnoreCase)).ToList();
-	}
-
 	private async Task UpdateStock()
 	{
 		foreach (var stock in _stocks)
 		{
 			var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{stock.Symbol}");
-			
+
 			if (response.IsSuccessStatusCode)
-		{
-			var jsonResponse = await response.Content.ReadAsStringAsync();
+			{
+				var jsonResponse = await response.Content.ReadAsStringAsync();
 				var responseObject = JsonConvert.DeserializeObject<StockSearchResponseDto>(jsonResponse);
 
-			stock.CurrentPrice = responseObject.Current;
-		}
-		}
-		
-
-		
-	}
-
-	private DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
-	{
-		DateTime jan1 = new DateTime(year, 1, 1);
-		int daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
-		DateTime firstMonday = jan1.AddDays(daysOffset);
-
-		int firstWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(jan1, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-
-		if (firstWeek <= 1)
-		{
-			weekOfYear -= 1;
-		}
-
-		return firstMonday.AddDays(weekOfYear * 7);
-	}
-
-	private void GenerateCalendarHead()
-	{
-		var day1 = new List<string>();
-		for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
-		{
-			day1.Add(dt.ToString("dddd"));
-		}
-
-		days = day1.Distinct().ToList();
-	}
-
-	private void GenerateCalendarBody()
-	{
-		weeks = new List<WeekClass>();
-
-		int flag = 0;
-		WeekClass week = new WeekClass();
-		List<DayEvent> dates = new List<DayEvent>();
-		var totalDays = (int)(endDate - startDate).TotalDays;
-		int countDays = 0;
-
-		for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
-		{
-			flag++;
-
-			dates.Add(new DayEvent()
-				{
-					DateValue = dt.ToString("yyyy-MM-dd"),
-					DayName = dt.ToString("dddd")
-				});
-
-			if (flag == 7)
-			{
-				week = new WeekClass();
-				week.Dates = dates;
-				weeks.Add(week);
-
-				dates = new List<DayEvent>();
-				flag = 0;
-			}
-
-			if (countDays == totalDays)
-			{
-				week = new WeekClass();
-				week.Dates = dates;
-				weeks.Add(week);
-				break;
-			}
-
-			countDays++;
-		}
-	}
-	
-	private bool StockIsOwned(string symbol)
-	{
-		foreach (var stock in _stocks)
-		{
-			if (stock.Symbol == symbol)
-			{
-				return true;
+				stock.CurrentPrice = responseObject.Current;
 			}
 		}
-		return false;
+	}
+
+	private async Task UpdateFilteredStocks(string searchString)
+	{
+		_filteredStocks = string.IsNullOrEmpty(searchString) ? _stocks :
+			_stocks.Where(stock =>
+				stock.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+				stock.Symbol.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
 	}
 
 	private double GetTotalGain()
@@ -282,6 +139,26 @@ else
 		}
 
 		return Math.Round(totalWorth, 2);
+	}
+	public int GetWeekNumber(DateTime date)
+	{
+		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+	}
+
+	private DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
+	{
+		DateTime jan1 = new DateTime(year, 1, 1);
+		int daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
+		DateTime firstMonday = jan1.AddDays(daysOffset);
+
+		int firstWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(jan1, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+		if (firstWeek <= 1)
+		{
+			weekOfYear -= 1;
+		}
+
+		return firstMonday.AddDays(weekOfYear * 7);
 	}
 
 }

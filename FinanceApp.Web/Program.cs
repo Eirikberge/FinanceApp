@@ -1,3 +1,5 @@
+using FinanceApp.Web.Services;
+using FinanceApp.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -12,6 +14,8 @@ namespace FinanceApp.Web
 			builder.RootComponents.Add<HeadOutlet>("head::after");
 
 			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+			
+			builder.Services.AddScoped<IStockService, StockService>();
 
 			await builder.Build().RunAsync();
 		}

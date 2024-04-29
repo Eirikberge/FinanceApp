@@ -1,0 +1,198 @@
+﻿@using FinanceApp.Models.Dtos
+@using System.Globalization
+@using System.Net
+@using FinanceApp.Web.Models
+@inject HttpClient Http
+
+
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			@foreach (var day in days)
+			{
+				<th style="width: @(100 / days.Count())%;">@day</th>
+			}
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var week in weeks)
+		{
+			<tr>
+				@foreach (var day in week.Dates)
+				{
+					<td>
+						@day.DateValue
+						<br />
+						@foreach (var company in _calendarResponsList)
+						{
+							if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
+							{
+								<br />
+								<text>Ticker: @company.Symbol</text>
+
+								<br />
+								<text>Quarter: @company.Quarter</text>
+
+								<br />
+								<text>EpsEstimate: @company.EpsEstimate</text>
+							}
+						}
+					</td>
+				}
+			</tr>
+		}
+	</tbody>
+</table>
+
+@code {
+	private List<StockDto> _stocks;
+	private List<EarningsCalendarDto> _calendarResponsList;
+
+
+	[Parameter]
+	public int NumberOfDaysToAdd { get; set; }
+
+	[Parameter]
+	public string length { get; set; }
+
+	public DateTime startDate = DateTime.Now;
+	public DateTime endDate = DateTime.Now;
+
+	public List<string> days = new List<string>();
+	public List<WeekClass> weeks = new List<WeekClass>();
+
+	public DateTime firstWeekOfMonth = new(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadStocks();
+
+		if (length == "week")
+		{
+			startDate = GetFirstMondayOfWeek(startDate.Year, GetWeekNumber(startDate));
+		}
+		else if (length == "month")
+		{
+			startDate = GetFirstMondayOfWeek(firstWeekOfMonth.Year, GetWeekNumber(firstWeekOfMonth));
+		}
+
+		endDate = startDate.AddDays(NumberOfDaysToAdd);
+
+		GenerateCalendarHead();
+		GenerateCalendarBody();
+
+		DateTime firstDayInThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+		DateTime lastDayInMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
+		await LoadCalendarInfo(firstDayInThisMonth, lastDayInMonth);
+	}
+
+	private async Task LoadStocks()
+	{
+		var response = await Http.GetAsync("https://localhost:7282/api/stocks");
+		if (response.IsSuccessStatusCode)
+		{
+			_stocks = await response.Content.ReadFromJsonAsync<List<StockDto>>();
+		}
+	}
+
+	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
+	{
+		string apiUrl = $"https://localhost:7282/EarningsCalendar/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
+
+		var response = await Http.GetFromJsonAsync<List<EarningsCalendarDto>>(apiUrl);
+		if (response != null)
+		{
+			_calendarResponsList = response;
+		}
+	}
+
+	private bool StockIsOwned(string symbol)
+	{
+		foreach (var stock in _stocks)
+		{
+			if (stock.Symbol == symbol)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	public void GenerateCalendarHead()
+	{
+		var day1 = new List<string>();
+		for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
+		{
+			day1.Add(dt.ToString("dddd"));
+		}
+
+		days = day1.Distinct().ToList();
+	}
+
+	public void GenerateCalendarBody()
+	{
+		weeks = new List<WeekClass>();
+
+		int flag = 0;
+		WeekClass week = new WeekClass();
+		List<DayEvent> dates = new List<DayEvent>();
+		var totalDays = (int)(endDate - startDate).TotalDays;
+		int countDays = 0;
+
+		for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
+		{
+			flag++;
+
+			dates.Add(new DayEvent()
+				{
+					DateValue = dt.ToString("yyyy-MM-dd"),
+					DayName = dt.ToString("dddd")
+				});
+
+			if (flag == 7)
+			{
+				week = new WeekClass();
+				week.Dates = dates;
+				weeks.Add(week);
+
+				dates = new List<DayEvent>();
+				flag = 0;
+			}
+
+			if (countDays == totalDays)
+			{
+				week = new WeekClass();
+				week.Dates = dates;
+				weeks.Add(week);
+				break;
+			}
+
+			countDays++;
+		}
+	}
+
+	public DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
+	{
+		DateTime jan1 = new DateTime(year, 1, 1);
+		int daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
+		DateTime firstMonday = jan1.AddDays(daysOffset);
+
+		int firstWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(jan1, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+		if (firstWeek <= 1)
+		{
+			weekOfYear -= 1;
+		}
+
+		return firstMonday.AddDays(weekOfYear * 7);
+	}
+
+	public int GetWeekNumber(DateTime date)
+	{
+		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+	}
+
+
+}

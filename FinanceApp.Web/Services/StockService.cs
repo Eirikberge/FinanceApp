@@ -1,10 +1,11 @@
 ﻿using FinanceApp.Models.Dtos;
 using static System.Net.WebRequestMethods;
 using System.Net.Http.Json;
+using FinanceApp.Web.Services.Contracts;
 
 namespace FinanceApp.Web.Services
 {
-	public class StockService
+	public class StockService : IStockService
 	{
 		private readonly HttpClient _httpClient;
 
@@ -12,21 +13,18 @@ namespace FinanceApp.Web.Services
 		{
 			_httpClient = httpClient;
 		}
-		public List<StockDto> _stocks; 
 
-		private async Task GetStocks()
+		public async Task<IEnumerable<StockDto>> GetStocks()
 		{
-			var response = await _httpClient.GetAsync("https://localhost:7282/api/stocks");
-			if (response.IsSuccessStatusCode)
+			try
 			{
-				_stocks = await response.Content.ReadFromJsonAsync<List<StockDto>>();
+				var stocks = await _httpClient.GetFromJsonAsync<IEnumerable<StockDto>>("https://localhost:7282/api/stocks");
+				return stocks;
 			}
-		}
-
-		public async Task<List<StockDto>> ReturnStockList()
-		{
-			await GetStocks();
-			return _stocks;
+			catch (Exception ex)
+			{
+				throw;
+			}
 		}
 	}
 }

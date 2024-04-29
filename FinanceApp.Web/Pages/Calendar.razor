@@ -4,107 +4,27 @@
 @using System.Globalization
 @using FinanceApp.Models.Dtos
 @using FinanceApp.Web.Models
+@using FinanceApp.Web.Components
 @inject HttpClient Http
+
+@inherits CalendarBase
 
 <PageTitle>Calendar</PageTitle>
 
 <h1>Calendar</h1>
 
-<div style="display: flex; justify-content: center; align-items: center;">
-	<button class="btn btn-primary" style="font-size: 10px;" @onclick="(e => ChangeMonth(1))">Forrige</button>
-	<h2 style="text-align: center; margin: 0 10px;">@GetMonthHeadline()</h2>
-	<button class="btn btn-primary" style="font-size: 10px;" @onclick="(e => ChangeMonth(-1))">Neste</button>
+<div>
+	<h2 style="text-align: center; margin: 0 10px;">@GetMonthAsString()</h2>
 </div>
 
 <br />
-<table class="table table-bordered table-striped">
-	<thead>
-		<tr>
-			@foreach (var day in days)
-			{
-				<th style="width: @(100 / days.Count())%;">@day</th>
-			}
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var week in weeks)
-		{
-			<tr>
-				@foreach (var day in week.Dates)
-				{
-					<td>
-						@day.DateValue
-						<br />
-						@foreach (var company in _calendarResponsList)
-						{
-							if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
-							{
-								<br />
-								<text>Ticker: @company.Symbol</text>
 
-								<br />
-								<text>Quarter: @company.Quarter</text>
+<CalendarComponent NumberOfDaysToAdd="34" length="month"></CalendarComponent>
 
-								<br />
-								<text>EpsEstimate: @company.EpsEstimate</text>
-							}
-						}
-					</td>
-				}
-			</tr>
-		}
-	</tbody>
-</table>
+@code{
+	public DateTime firstWeekOfMonth = new(DateTime.Now.Year, DateTime.Now.Month, 1);
 
-@code {
-	private List<string> days = new List<string>();
-	private List<WeekClass> weeks = new List<WeekClass>();
-	private DateTime startDate = DateTime.Now.Date;
-	private DateTime endDate = DateTime.Now.Date;
-
-	DateTime firstWeekOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month + monthChange, 1);
-	private static int monthChange = 0;
-
-	private List<StockDto> _stocks;
-	private List<EarningsCalendarDto> _calendarResponsList;
-
-
-	protected override async Task OnInitializedAsync()
-	{
-		await LoadStocks();
-
-		startDate = GetFirstMondayOfWeek(firstWeekOfMonth.Year, GetWeekNumber(firstWeekOfMonth));
-		endDate = startDate.AddDays(34);
-
-		GenerateCalendarHead();
-		GenerateCalendarBody();
-
-		DateTime firstDayInThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-		DateTime lastDayInMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
-		await LoadCalendarInfo(firstDayInThisMonth, lastDayInMonth);
-	}
-
-	private async Task LoadStocks()
-	{
-		var response = await Http.GetAsync("https://localhost:7282/api/stocks");
-		if (response.IsSuccessStatusCode)
-		{
-			_stocks = await response.Content.ReadFromJsonAsync<List<StockDto>>();
-		}
-	}
-
-	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
-	{
-		string apiUrl = $"https://localhost:7282/EarningsCalendar/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
-
-		var response = await Http.GetFromJsonAsync<List<EarningsCalendarDto>>(apiUrl);
-		if (response != null)
-		{
-			_calendarResponsList = response;
-		}
-	}
-
-	private DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
+	public DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
 	{
 		DateTime jan1 = new DateTime(year, 1, 1);
 		int daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
@@ -119,87 +39,8 @@
 
 		return firstMonday.AddDays(weekOfYear * 7);
 	}
-
-	private int GetWeekNumber(DateTime date)
+	public int GetWeekNumber(DateTime date)
 	{
 		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-	}
-
-	private void GenerateCalendarHead()
-	{
-		var day1 = new List<string>();
-		for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
-		{
-			day1.Add(dt.ToString("dddd"));
-		}
-
-		days = day1.Distinct().ToList();
-	}
-
-	private void GenerateCalendarBody()
-	{
-		weeks = new List<WeekClass>();
-
-		int flag = 0;
-		WeekClass week = new WeekClass();
-		List<DayEvent> dates = new List<DayEvent>();
-		var totalDays = (int)(endDate - startDate).TotalDays;
-		int countDays = 0;
-
-		for (var dt = startDate; dt <= endDate; dt = dt.AddDays(1))
-		{
-			flag++;
-
-			dates.Add(new DayEvent()
-				{
-					DateValue = dt.ToString("yyyy-MM-dd"),
-					DayName = dt.ToString("dddd")
-				});
-
-			if (flag == 7)
-			{
-				week = new WeekClass();
-				week.Dates = dates;
-				weeks.Add(week);
-
-				dates = new List<DayEvent>();
-				flag = 0;
-			}
-
-			if (countDays == totalDays)
-			{
-				week = new WeekClass();
-				week.Dates = dates;
-				weeks.Add(week);
-				break;
-			}
-
-			countDays++;
-		}
-	}
-
-	private bool StockIsOwned(string symbol)
-	{
-		foreach (var stock in _stocks)
-		{
-			if (stock.Symbol == symbol)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static string GetMonthHeadline()
-	{
-		int targetMonth = (DateTime.Now.Month + monthChange - 1) % 12 + 1;
-
-		string currentMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(targetMonth); var capitalizedMonth = currentMonth.Substring(0, 1).ToUpper() + currentMonth.Substring(1);
-		return capitalizedMonth;
-	}
-
-	private void ChangeMonth(int change)
-	{
-		monthChange += change;
 	}
 }

@@ -1,0 +1,29 @@
+﻿@page "/mystock2"
+@inherits StockBase
+
+@if(Stocks == null)
+{
+	<div>loading</div>
+
+}
+
+else
+{
+	<h3 class="mb-5">Stocks</h3>
+
+	var stockCount = Stocks.Count();
+
+	@if (stockCount > 0)
+	{
+		@foreach(var stock in Stocks)
+		{
+
+			<div class = "row mt-3">
+				@stock.Symbol
+			</div>
+
+		}
+
+	}
+
+}
