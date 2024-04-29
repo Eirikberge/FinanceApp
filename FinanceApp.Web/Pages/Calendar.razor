@@ -3,7 +3,6 @@
 @using System.Runtime.InteropServices.JavaScript
 @using System.Globalization
 @using FinanceApp.Models.Dtos
-@using FinanceApp.Web.Models
 @using FinanceApp.Web.Components
 @inject HttpClient Http
 
@@ -19,28 +18,9 @@
 
 <br />
 
-<CalendarComponent NumberOfDaysToAdd="34" length="month"></CalendarComponent>
+<CalendarComponent Length="month"></CalendarComponent>
 
 @code{
-	public DateTime firstWeekOfMonth = new(DateTime.Now.Year, DateTime.Now.Month, 1);
 
-	public DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
-	{
-		DateTime jan1 = new DateTime(year, 1, 1);
-		int daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
-		DateTime firstMonday = jan1.AddDays(daysOffset);
 
-		int firstWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(jan1, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-
-		if (firstWeek <= 1)
-		{
-			weekOfYear -= 1;
-		}
-
-		return firstMonday.AddDays(weekOfYear * 7);
-	}
-	public int GetWeekNumber(DateTime date)
-	{
-		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-	}
 }

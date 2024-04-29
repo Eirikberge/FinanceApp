@@ -1,27 +1,22 @@
 ﻿@page "/mystock"
-@using System.Text
 @using Newtonsoft.Json
 @using System.Globalization
 @using FinanceApp.Models.Dtos
-@using FinanceApp.Web.Models
 @using FinanceApp.Web.Components
 @inject HttpClient Http
 
-@inherits StockBase
-
+@inherits MyPortfolioBase
 
 <PageTitle>My Portfolio</PageTitle>
 
 <h1>My Portfolio</h1>
 
-<div>
-	<SearchBarComponent Items="_stocks" OnSearch="UpdateFilteredStocks"></SearchBarComponent>
-</div>
+<SearchBarComponent TEntity="StockDto" OnSearch="UpdateFilteredStocks"></SearchBarComponent>
 
-<br/>
-<td><button class="btn btn-primary" @onclick="() => UpdateStock()">Refresh</button></td>
+<br />
+<td><button class="btn btn-primary" @onclick="() => UpdateStockPrices()">Refresh</button></td>
 
-@if (_stocks == null)
+@if (Stocks == null)
 {
 	<p>Loading...</p>
 }
@@ -39,7 +34,7 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var stock in _filteredStocks ?? _stocks)
+			@foreach (var stock in _filteredStocks ?? Stocks)
 			{
 				var gain = Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
 				<tr>
@@ -66,38 +61,25 @@ else
 	<br />
 	<h4 style="text-align: center;">Uke: @GetWeekNumber(DateTime.Now)</h4>
 
-	<CalendarComponent NumberOfDaysToAdd="6" length="week"></CalendarComponent>
-
+	<CalendarComponent Length="week"></CalendarComponent>
 }
 
 @code {
-	private List<StockDto> _stocks;
-	private List<StockDto> _filteredStocks;
+	private IEnumerable<StockDto> _filteredStocks;
 	private List<EarningsCalendarDto> _calendarResponsList;
-
-	private string _searchString;
-
-	private DateTime startDate = DateTime.Now;
-	private DateTime endDate = DateTime.Now;
 
 	protected override async Task OnInitializedAsync()
 	{
-		await LoadStocks();
-	}
-
-	private async Task LoadStocks()
-	{
-		var response = await Http.GetAsync("https://localhost:7282/api/stocks");
-		if (response.IsSuccessStatusCode)
+		await base.OnInitializedAsync();
+		if (Stocks == null)
 		{
-			_stocks = await response.Content.ReadFromJsonAsync<List<StockDto>>();
-			_filteredStocks = _stocks.ToList();
+			_filteredStocks = Stocks.ToList();
 		}
 	}
 
-	private async Task UpdateStock()
+	private async Task UpdateStockPrices()
 	{
-		foreach (var stock in _stocks)
+		foreach (var stock in Stocks)
 		{
 			var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{stock.Symbol}");
 
@@ -113,52 +95,34 @@ else
 
 	private async Task UpdateFilteredStocks(string searchString)
 	{
-		_filteredStocks = string.IsNullOrEmpty(searchString) ? _stocks :
-			_stocks.Where(stock =>
+		_filteredStocks = string.IsNullOrEmpty(searchString) ? Stocks :
+			Stocks.Where(stock =>
 				stock.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-				stock.Symbol.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+				stock.Symbol.Contains(searchString, StringComparison.OrdinalIgnoreCase));
 	}
 
 	private double GetTotalGain()
 	{
 		double totalGain = 0;
-		@foreach (var stock in _filteredStocks ?? _stocks)
+		@foreach (var stock in Stocks)
 		{
 			totalGain += Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
 		}
-
 		return Math.Round(totalGain, 2);
 	}
 
 	private double GetTotalWorth()
 	{
 		double totalWorth = 0;
-		@foreach (var stock in _filteredStocks ?? _stocks)
+		@foreach (var stock in Stocks)
 		{
 			totalWorth += Math.Round(stock.CurrentPrice * stock.Qty, 2);
 		}
-
 		return Math.Round(totalWorth, 2);
 	}
+
 	public int GetWeekNumber(DateTime date)
 	{
 		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 	}
-
-	private DateTime GetFirstMondayOfWeek(int year, int weekOfYear)
-	{
-		DateTime jan1 = new DateTime(year, 1, 1);
-		int daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
-		DateTime firstMonday = jan1.AddDays(daysOffset);
-
-		int firstWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(jan1, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-
-		if (firstWeek <= 1)
-		{
-			weekOfYear -= 1;
-		}
-
-		return firstMonday.AddDays(weekOfYear * 7);
-	}
-
 }

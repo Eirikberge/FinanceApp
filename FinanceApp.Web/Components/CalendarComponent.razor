@@ -1,9 +1,8 @@
 ﻿@using FinanceApp.Models.Dtos
 @using System.Globalization
 @using System.Net
-@using FinanceApp.Web.Models
+@using FinanceApp.Web.Services
 @inject HttpClient Http
-
 
 
 <table class="table table-bordered table-striped">
@@ -28,14 +27,10 @@
 						{
 							if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
 							{
-								<br />
 								<text>Ticker: @company.Symbol</text>
-
 								<br />
 								<text>Quarter: @company.Quarter</text>
-
 								<br />
-								<text>EpsEstimate: @company.EpsEstimate</text>
 							}
 						}
 					</td>
@@ -46,15 +41,11 @@
 </table>
 
 @code {
-	private List<StockDto> _stocks;
+	private IEnumerable<StockDto> _stocks;
 	private List<EarningsCalendarDto> _calendarResponsList;
 
-
 	[Parameter]
-	public int NumberOfDaysToAdd { get; set; }
-
-	[Parameter]
-	public string length { get; set; }
+	public string Length { get; set; }
 
 	public DateTime startDate = DateTime.Now;
 	public DateTime endDate = DateTime.Now;
@@ -68,16 +59,20 @@
 	{
 		await LoadStocks();
 
-		if (length == "week")
+		var numberOfDaysToAdd = 0;
+
+		if (Length == "week")
 		{
+			numberOfDaysToAdd = 6;
 			startDate = GetFirstMondayOfWeek(startDate.Year, GetWeekNumber(startDate));
 		}
-		else if (length == "month")
+		else if (Length == "month")
 		{
+			numberOfDaysToAdd = 34;
 			startDate = GetFirstMondayOfWeek(firstWeekOfMonth.Year, GetWeekNumber(firstWeekOfMonth));
 		}
 
-		endDate = startDate.AddDays(NumberOfDaysToAdd);
+		endDate = startDate.AddDays(numberOfDaysToAdd);
 
 		GenerateCalendarHead();
 		GenerateCalendarBody();
@@ -118,8 +113,7 @@
 		}
 		return false;
 	}
-
-
+	
 	public void GenerateCalendarHead()
 	{
 		var day1 = new List<string>();
@@ -193,6 +187,18 @@
 	{
 		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 	}
+	
 
+		public class DayEvent
+	{
+		public DateTime FromDate { get; set; }
+		public DateTime ToDate { get; set; }
+		public string DateValue { get; set; }
+		public string DayName { get; set; }
+	}
 
+	public class WeekClass
+	{
+		public List<DayEvent> Dates { get; set; } = new List<DayEvent>();
+	}
 }

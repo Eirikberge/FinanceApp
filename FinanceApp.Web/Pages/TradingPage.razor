@@ -6,6 +6,8 @@
 
 @inject HttpClient Http
 
+@inherits TradingBase
+
 <h3>Trading Page</h3>
 
 <SearchBarComponent TEntity="StockSearchResponseDto" OnSearch="ShowStockInfo"></SearchBarComponent>
@@ -14,7 +16,7 @@
 
 <NavLink href="/symbolexamples" class="btn btn-primary">Se aksjer eksempler</NavLink>
 
-@if (_searchedStocks != null)
+@if (_searchedStock != null)
 {
 	<table class="table">
 		<thead>
@@ -33,7 +35,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var stock in _searchedStocks)
+			@foreach (var stock in _searchedStock)
 			{
 				<tr>
 					<td>@_stockName</td>
@@ -45,10 +47,10 @@
 					<td>@stock.Low</td>
 					<td>@stock.PercentChange</td>
 					<td>@stock.Change</td>
-					<td><button class="btn btn-primary" @onclick='() => ShowBuyStockForm("buy")'>Buy</button></td>
+					<td><button class="btn btn-primary" @onclick='() => ShowTradeForm("buy")'>Buy</button></td>
 					@if (IsStockOwned(stock.Symbol))
 					{
-						<td><button class="btn btn-primary" @onclick='() => ShowBuyStockForm("sell")'>Sell</button></td>
+						<td><button class="btn btn-primary" @onclick='() => ShowTradeForm("sell")'>Sell</button></td>
 					}
 
 				</tr>
@@ -72,9 +74,7 @@
 }
 
 @code {
-	private List<StockDto> _ownedStocks;
-	private List<StockSearchResponseDto> _searchedStocks;
-	private List<CompanyInfoDto> _companyInfoList;
+	private List<StockSearchResponseDto> _searchedStock;
 
 	private bool _showBuyForm = false;
 	private bool _showSellForm = false;
@@ -84,26 +84,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		await LoadStocks();
-		await LoadCompanyInfo();
-	}
-
-	private async Task LoadStocks()
-	{
-		var response = await Http.GetAsync("https://localhost:7282/api/stocks");
-		if (response.IsSuccessStatusCode)
-		{
-			_ownedStocks = await response.Content.ReadFromJsonAsync<List<StockDto>>();
-		}
-	}
-
-	private async Task LoadCompanyInfo()
-	{
-		var response = await Http.GetAsync("https://localhost:7282/CompanyInfo");
-		if (response.IsSuccessStatusCode)
-		{
-			_companyInfoList = await response.Content.ReadFromJsonAsync<List<CompanyInfoDto>>();
-		}
+		await base.OnInitializedAsync();
 	}
 
 	private async Task ShowStockInfo(string searchString)
@@ -116,7 +97,7 @@
 				var jsonResponse = await response.Content.ReadAsStringAsync();
 				var responseObject = JsonConvert.DeserializeObject<StockSearchResponseDto>(jsonResponse);
 
-				foreach (var company in _companyInfoList)
+				foreach (var company in CompanyInfos)
 				{
 					if (responseObject.Symbol == company.Ticker)
 					{
@@ -137,7 +118,7 @@
 					PercentChange = responseObject.PercentChange,
 					Symbol = responseObject.Symbol
 				};
-				_searchedStocks = new List<StockSearchResponseDto> { stock };
+				_searchedStock = new List<StockSearchResponseDto> { stock };
 			}
 			else
 			{
@@ -146,21 +127,21 @@
 		catch (Exception ex)
 		{
 		}
-	}
+	} // Bør skrives om
 
-	private void ShowBuyStockForm(string buyOrSell = "clear")
+	private void ShowTradeForm(string trade = "clear")
 	{
-		if (buyOrSell == "buy")
+		if (trade == "buy")
 		{
 			_showSellForm = false;
 			_showBuyForm = true;
 		}
-		else if (buyOrSell == "sell")
+		else if (trade == "sell")
 		{
 			_showBuyForm = false;
 			_showSellForm = true;
 		}
-		else if (buyOrSell == "clear")
+		else if (trade == "clear")
 		{
 			_showBuyForm = false;
 			_showSellForm = false;
@@ -169,7 +150,7 @@
 		}
 	}
 
-	private bool IsStockOwned(string symbol) => _ownedStocks?.Any(stock => stock.Symbol == symbol) ?? false;
+	private bool IsStockOwned(string symbol) => Stocks?.Any(stock => stock.Symbol == symbol) ?? false;
 
 	private async Task ConfirmBuy(StockSearchResponseDto searchedStock)
 	{
@@ -179,7 +160,7 @@
 			{
 				var previousQty = 0;
 				var newBuyingPrice = 0;
-				foreach (var stock in _ownedStocks)
+				foreach (var stock in Stocks)
 				{
 					if (stock.Symbol == searchedStock.Symbol)
 					{
@@ -213,18 +194,17 @@
 
 			var addedStock = await Http.PostAsync("https://localhost:7282/api/stocks", content);
 		}
-		ShowBuyStockForm();
-
-	}
+		ShowTradeForm();
+			} //Skal inn i StockService
 
 	private async Task ConfirmSell(StockSearchResponseDto searchedStock)
 	{
-		foreach (var ownedStock in _ownedStocks)
+		foreach (var ownedStock in Stocks)
 		{
 			var previousQty = 0;
 			if (ownedStock.Symbol == searchedStock.Symbol || ownedStock.Qty > _insertedQty)
 			{
-				foreach (var stock in _ownedStocks)
+				foreach (var stock in Stocks)
 				{
 					if (stock.Symbol == searchedStock.Symbol)
 					{
@@ -245,6 +225,6 @@
 			{
 			}
 		}
-		ShowBuyStockForm();
-	}
+		ShowTradeForm();
+	} //Skal inn i StockService
 }
