@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Api.Controllers
 {
-    [ApiController]
+	[ApiController]
 	[Route("[controller]")]
 	public class EarningsCalendarController : ControllerBase
 	{
@@ -21,7 +21,7 @@ namespace FinanceApp.Api.Controllers
 		}
 
 		[HttpGet("api/earningscalendar")]
-		public async Task<ActionResult<List<EarningsCalendarDto>>> GetEarningsCalendar([FromQuery] DateTime from, [FromQuery] DateTime to, [FromQuery] string? symbol)
+		public async Task<ActionResult<IEnumerable<EarningsCalendarDto>>> GetEarningsCalendar([FromQuery] DateTime from, [FromQuery] DateTime to, [FromQuery] string? symbol)
 		{
 			string apiUrl = $"https://finnhub.io/api/v1/calendar/earnings?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}";
 
@@ -55,6 +55,6 @@ namespace FinanceApp.Api.Controllers
 	public class EarningsCalendarResponse
 	{
 		[JsonPropertyName("earningsCalendar")]
-		public List<EarningsCalendarDto>? EarningsCalendar { get; set; }
+		public IEnumerable<EarningsCalendarDto>? EarningsCalendar { get; set; }
 	}
 }

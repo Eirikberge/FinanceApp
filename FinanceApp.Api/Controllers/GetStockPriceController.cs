@@ -29,7 +29,7 @@ namespace FinanceApp.Controllers
 				return StatusCode((int)response.StatusCode);
 			}
 
-			var deserialized = JsonSerializer.Deserialize<QuoteResponse>(response.Content.ReadAsStream()); 
+			var deserialized = JsonSerializer.Deserialize<QuoteResponse>(response.Content.ReadAsStream());
 			if (deserialized == null)
 			{
 				return NoContent();

@@ -77,9 +77,9 @@
 		GenerateCalendarHead();
 		GenerateCalendarBody();
 
-		DateTime firstDayInThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-		DateTime lastDayInMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
-		await LoadCalendarInfo(firstDayInThisMonth, lastDayInMonth);
+		DateTime fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+		DateTime toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
+		await LoadCalendarInfo(fromDate, toDate);
 	}
 
 	private async Task LoadStocks()
@@ -90,7 +90,7 @@
 			_stocks = await response.Content.ReadFromJsonAsync<List<StockDto>>();
 		}
 	}
-
+	
 	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
 	{
 		string apiUrl = $"https://localhost:7282/EarningsCalendar/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
@@ -100,7 +100,7 @@
 		{
 			_calendarResponsList = response;
 		}
-	}
+	} // Lage en egen Service-fil til denne, kanskje denne da funker uten LoadStocks...
 
 	private bool StockIsOwned(string symbol)
 	{

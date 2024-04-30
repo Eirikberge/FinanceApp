@@ -18,5 +18,14 @@ namespace FinanceApp.Web.Pages
 			Stocks = await StockService.GetStocks();
 			CompanyInfos = await CompanyInfoService.GetCompanyInfo();
 		}
+
+		public void AddStock(StockDto stock)
+		{
+			StockService.AddStock(stock);
+		}
+		public void UpdateStock(StockDto stock)
+		{
+			StockService.UpdateStock(stock);
+		}
 	}
 }

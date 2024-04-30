@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "FinanceApp.Web",
   "resources": {
-    "hash": "sha256-ovOxbVNbYy28AwhsaYkqQFfRGkBwBL1gsSTBYQCqW9U=",
+    "hash": "sha256-6ugNFJII83p4af17fHVoTrSV1rJKN5eLQpbU9S5UAs8=",
     "jsModuleNative": {
       "dotnet.native.8.0.2.w8gep2bt7q.js": "sha256-gPMK16QWoJSTxorlZJqcVtbBRTniIQWlLsJN2O4cJHg="
     },
@@ -210,11 +210,11 @@
       "netstandard.wasm": "sha256-ZOswxXEbR2TmqjpbaBEdgr85Bv1NC4GwOwoJ+oxXM3M=",
       "System.Private.CoreLib.wasm": "sha256-I2w0iHf5nvSQyF1YE1VbgdTzmmz6a4OE6J7vo5wFa/4=",
       "FinanceApp.Models.wasm": "sha256-efuSqWqmc3ju4T4pwoS/f0kp4MpHkqSVofV4Q2NVygk=",
-      "FinanceApp.Web.wasm": "sha256-Stw1yzJ6zzQU/fXn7oFtL7+6Re5WDg+IA+uocqvdDh4="
+      "FinanceApp.Web.wasm": "sha256-u0yHcjwa256crLvT7Ek70g4kZbbrRm5kV2jjRWNVkMU="
     },
     "pdb": {
       "FinanceApp.Models.pdb": "sha256-jVxRotT7QUsV0PHWlNw45b0UBZMZbHdUF7DHyZ+f6og=",
-      "FinanceApp.Web.pdb": "sha256-sTGxD6zORTQWHQdUpe2TFfuh0EDvaWshyeo9ZwJI+qE="
+      "FinanceApp.Web.pdb": "sha256-VNoiMsNaL32FBQxujy8P+P2G1p2jbmjzqoxG1l3EiRs="
     }
   },
   "cacheBootResources": true,

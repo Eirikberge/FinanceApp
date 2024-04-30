@@ -165,7 +165,7 @@
 					if (stock.Symbol == searchedStock.Symbol)
 					{
 						previousQty = stock.Qty;
-						newBuyingPrice = (((stock.Qty * (int)stock.BuyingPrice)/ stock.Qty) + ((_insertedQty * (int)searchedStock.Current)/_insertedQty))/2;
+						newBuyingPrice = (((stock.Qty * (int)stock.BuyingPrice) / stock.Qty) + ((_insertedQty * (int)searchedStock.Current) / _insertedQty)) / 2;
 					}
 				}
 				var updateModel = new StockDto
@@ -174,10 +174,7 @@
 					Qty = _insertedQty + previousQty,
 					BuyingPrice = newBuyingPrice,
 				};
-				var json = JsonConvert.SerializeObject(updateModel);
-				var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-				await Http.PutAsync($"https://localhost:7282/api/stocks/{updateModel.Symbol}/{updateModel.Qty}", content);
+				UpdateStock(updateModel);
 			}
 		}
 		else
@@ -189,13 +186,10 @@
 					BuyingPrice = searchedStock.Current,
 					Qty = _insertedQty,
 				};
-			var json = JsonConvert.SerializeObject(addModel);
-			var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-			var addedStock = await Http.PostAsync("https://localhost:7282/api/stocks", content);
+			AddStock(addModel);
 		}
 		ShowTradeForm();
-			} //Skal inn i StockService
+			}
 
 	private async Task ConfirmSell(StockSearchResponseDto searchedStock)
 	{
@@ -216,10 +210,7 @@
 					Symbol = searchedStock.Symbol,
 					Qty = previousQty - _insertedQty,
 				};
-				var json = JsonConvert.SerializeObject(updateModel);
-				var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-				await Http.PutAsync($"https://localhost:7282/api/stocks/{updateModel.Symbol}/{updateModel.Qty}", content);
+				UpdateStock(updateModel);
 			}
 			else //delete stock
 			{

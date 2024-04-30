@@ -66,7 +66,6 @@ else
 
 @code {
 	private IEnumerable<StockDto> _filteredStocks;
-	private List<EarningsCalendarDto> _calendarResponsList;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -124,5 +123,5 @@ else
 	public int GetWeekNumber(DateTime date)
 	{
 		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-	}
+	} // denne er dobbelt, både her og i calendarComponent...
 }
