@@ -1,0 +1,121 @@
+﻿@page "/CompanyDetails/{Symbol}"
+
+@using System.Net
+@using Newtonsoft.Json
+@using FinanceApp.Models.Dtos
+@inject HttpClient Http
+
+@inherits CompanyDetailsBase
+
+<h3>CompanyDetails for @Symbol</h3>
+
+@if (EarningsCalendarEvents == null)
+{
+	<p>Loading...</p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Symbol</th>
+				<th>Name</th>
+				<th>BuyingPrice</th>
+				<th>CurrentPrice</th>
+				<th>Quantity</th>
+				<th>Gain</th>
+			</tr>
+		</thead>
+		<tbody>
+			@* @foreach (var stock in Stocks)
+			{
+				if (stock.Symbol == Symbol)
+				{
+					_stockName = stock.Name;
+					<tr>
+						<td>@stock.Symbol</td>
+						<td>@stock.Name</td>
+					</tr>
+				}
+
+			} *@
+		</tbody>
+	</table>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Symbol</th>
+				<th>Current Price</th>
+				<th>Open Price</th>
+				<th>Previous Price</th>
+				<th>High</th>
+				<th>Low</th>
+				<th>Percent Change</th>
+				<th>Change</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>@_stockName</td>
+				<td>@_searchedStock.Symbol</td>
+				<td>@_searchedStock.Current</td>
+				<td>@_searchedStock.Open</td>
+				<td>@_searchedStock.Previous</td>
+				<td>@_searchedStock.High</td>
+				<td>@_searchedStock.Low</td>
+				<td>@_searchedStock.PercentChange</td>
+				<td>@_searchedStock.Change</td>
+			</tr>
+		</tbody>
+	</table>
+
+	@code {
+
+	private StockPriceCandleDto _searchedStock;
+	private string _stockName;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		await GetCurrentPriceCandle();
+	}
+
+	private async Task GetCurrentPriceCandle()
+	{
+		try
+		{
+			var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{Symbol.ToUpper()}");
+			if (response.IsSuccessStatusCode)
+			{
+				var jsonResponse = await response.Content.ReadAsStringAsync();
+				var responseObject = JsonConvert.DeserializeObject<StockPriceCandleDto>(jsonResponse);
+
+				// _stockName = CompanyInfos.FirstOrDefault(company => responseObject.Symbol == company.Ticker)?.Name;
+
+				var stock = new StockPriceCandleDto
+					{
+						Current = responseObject.Current,
+						Open = responseObject.Open,
+						Previous = responseObject.Previous,
+						High = responseObject.High,
+						Low = responseObject.Low,
+						Change = responseObject.Change,
+						PercentChange = responseObject.PercentChange,
+						Symbol = responseObject.Symbol
+					};
+				_searchedStock = stock;
+			}
+			else
+			{
+
+			}
+		}
+		catch (Exception ex)
+		{
+		}
+	}
+		}
+
+}

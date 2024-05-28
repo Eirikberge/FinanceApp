@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Api.Controllers
 {
+	[Route("api/[controller]")]
 	[ApiController]
-	[Route("[controller]")]
-	public class EarningsCalendarController : ControllerBase
+	public class GetEarningsCalendarController : ControllerBase
 	{
 		private readonly HttpClient _httpClient;
 
-		public EarningsCalendarController(HttpClient httpClient)
+		public GetEarningsCalendarController(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
 		}

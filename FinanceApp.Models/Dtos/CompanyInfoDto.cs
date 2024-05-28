@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace FinanceApp.Models.Dtos
+﻿namespace FinanceApp.Models.Dtos
 {
 	public class CompanyInfoDto
 	{

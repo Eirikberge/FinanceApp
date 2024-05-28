@@ -20,18 +20,19 @@
 			<tr>
 				@foreach (var day in week.Dates)
 				{
-					<td>
+					<td style="height: 160px;">
 						@day.DateValue
 						<br />
-						@foreach (var company in _calendarResponsList)
+						@foreach (var company in EarningsCalendarEvents)
 						{
-							if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
+							@* if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
 							{
+								<br />
 								<text>Ticker: @company.Symbol</text>
+
 								<br />
 								<text>Quarter: @company.Quarter</text>
-								<br />
-							}
+							} *@
 						}
 					</td>
 				}
@@ -41,8 +42,10 @@
 </table>
 
 @code {
-	private IEnumerable<StockDto> _stocks;
-	private List<EarningsCalendarDto> _calendarResponsList;
+
+
+	[Parameter]
+	public IEnumerable<EarningsCalendarDto> EarningsCalendarEvents { get; set; }
 
 	[Parameter]
 	public string Length { get; set; }
@@ -53,11 +56,15 @@
 	public List<string> days = new List<string>();
 	public List<WeekClass> weeks = new List<WeekClass>();
 
-	public DateTime firstWeekOfMonth = new(DateTime.Now.Year, DateTime.Now.Month, 1);
 
 	protected override async Task OnInitializedAsync()
 	{
-		await LoadStocks();
+		GenerateCalendar();
+	}
+
+	public void GenerateCalendar()
+	{
+		DateTime FirstWeekOfMonth = new(DateTime.Now.Year, DateTime.Now.Month, 1);
 
 		var numberOfDaysToAdd = 0;
 
@@ -69,51 +76,15 @@
 		else if (Length == "month")
 		{
 			numberOfDaysToAdd = 34;
-			startDate = GetFirstMondayOfWeek(firstWeekOfMonth.Year, GetWeekNumber(firstWeekOfMonth));
+			startDate = GetFirstMondayOfWeek(FirstWeekOfMonth.Year, GetWeekNumber(FirstWeekOfMonth));
 		}
 
 		endDate = startDate.AddDays(numberOfDaysToAdd);
 
 		GenerateCalendarHead();
 		GenerateCalendarBody();
-
-		DateTime fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-		DateTime toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
-		await LoadCalendarInfo(fromDate, toDate);
 	}
 
-	private async Task LoadStocks()
-	{
-		var response = await Http.GetAsync("https://localhost:7282/api/stocks");
-		if (response.IsSuccessStatusCode)
-		{
-			_stocks = await response.Content.ReadFromJsonAsync<List<StockDto>>();
-		}
-	}
-	
-	private async Task LoadCalendarInfo(DateTime fromDate, DateTime toDate)
-	{
-		string apiUrl = $"https://localhost:7282/EarningsCalendar/api/earningscalendar?from={fromDate:yyyy-MM-dd}&to={toDate:yyyy-MM-dd}";
-
-		var response = await Http.GetFromJsonAsync<List<EarningsCalendarDto>>(apiUrl);
-		if (response != null)
-		{
-			_calendarResponsList = response;
-		}
-	} // Lage en egen Service-fil til denne, kanskje denne da funker uten LoadStocks...
-
-	private bool StockIsOwned(string symbol)
-	{
-		foreach (var stock in _stocks)
-		{
-			if (stock.Symbol == symbol)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	public void GenerateCalendarHead()
 	{
 		var day1 = new List<string>();
@@ -187,9 +158,20 @@
 	{
 		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 	}
-	
 
-		public class DayEvent
+	// private bool StockIsOwned(string symbol)
+	// {
+	// 	foreach (var stock in Stocks)
+	// 	{
+	// 		if (stock.Symbol == symbol)
+	// 		{
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return false;
+	// }
+
+	public class DayEvent
 	{
 		public DateTime FromDate { get; set; }
 		public DateTime ToDate { get; set; }

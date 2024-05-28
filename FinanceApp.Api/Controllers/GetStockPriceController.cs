@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Controllers
 {
+	[Route("api/[controller]")]
 	[ApiController]
-	[Route("[controller]")]
 	public class GetStockPriceController : Controller
 	{
 		private readonly HttpClient _httpClient;

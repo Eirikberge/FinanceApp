@@ -10,9 +10,9 @@
 
 <h3>Trading Page</h3>
 
-<SearchBarComponent TEntity="StockSearchResponseDto" OnSearch="ShowStockInfo"></SearchBarComponent>
+<SearchBarComponent TEntity="StockPriceCandleDto" OnSearch="ShowStockInfo"></SearchBarComponent>
 
-<br/>
+<br />
 
 <NavLink href="/symbolexamples" class="btn btn-primary">Se aksjer eksempler</NavLink>
 
@@ -35,187 +35,122 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var stock in _searchedStock)
+			<tr>
+				<td>@_stockName</td>
+				<td>@_searchedStock.Symbol</td>
+				<td>@_searchedStock.Current</td>
+				<td>@_searchedStock.Open</td>
+				<td>@_searchedStock.Previous</td>
+				<td>@_searchedStock.High</td>
+				<td>@_searchedStock.Low</td>
+				<td>@_searchedStock.PercentChange</td>
+				<td>@_searchedStock.Change</td>
+				<td><button class="btn btn-primary" @onclick='() => ShowTradeForm("buy")'>Buy</button></td>
+@* 				@if (IsStockOwned(_searchedStock.Symbol))
+				{
+					<td><button class="btn btn-primary" @onclick='() => ShowTradeForm("sell")'>Sell</button></td>
+				} *@
+			</tr>
+			@if (_showBuyForm)
 			{
-				<tr>
-					<td>@_stockName</td>
-					<td>@stock.Symbol</td>
-					<td>@stock.Current</td>
-					<td>@stock.Open</td>
-					<td>@stock.Previous</td>
-					<td>@stock.High</td>
-					<td>@stock.Low</td>
-					<td>@stock.PercentChange</td>
-					<td>@stock.Change</td>
-					<td><button class="btn btn-primary" @onclick='() => ShowTradeForm("buy")'>Buy</button></td>
-					@if (IsStockOwned(stock.Symbol))
-					{
-						<td><button class="btn btn-primary" @onclick='() => ShowTradeForm("sell")'>Sell</button></td>
-					}
-
-				</tr>
-				@if (_showBuyForm)
-				{
-					<div class="buy-form">
-						<input type="number" @bind="_insertedQty" placeholder="Enter quantity for @_stockName" />
-						<button @onclick="() => ConfirmBuy(stock)">Confirm</button>
-					</div>
-				}
-				@if (_showSellForm)
-				{
-					<div class="sell-form">
-						<input type="number" @bind="_insertedQty" placeholder="Enter quantity for @stock.Symbol" />
-						<button @onclick="() => ConfirmSell(stock)">Confirm</button>
-					</div>
-				}
+				<div class="buy-form">
+					<input type="number" @bind="_insertedQty" placeholder="Enter quantity for @_stockName" />
+					<button @onclick="() => ConfirmAction()">Confirm buy</button>
+				</div>
 			}
+			@if (_showSellForm)
+			{
+				<div class="sell-form">
+					<input type="number" @bind="_insertedQty" placeholder="Enter quantity for @_searchedStock.Symbol" />
+					<button @onclick="() => ConfirmAction()">Confirm sale</button>
+				</div>
+			}
+
 		</tbody>
 	</table>
+	@if (_errorMessage != null)
+	{
+		<div>
+			_errorMessage
+		</div>
+	}
 }
 
 @code {
-	private List<StockSearchResponseDto> _searchedStock;
-
+	private StockPriceCandleDto _searchedStock;
 	private bool _showBuyForm = false;
 	private bool _showSellForm = false;
 
 	private string _stockName;
 	private int _insertedQty;
 
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-	}
+	private string _errorMessage;
 
 	private async Task ShowStockInfo(string searchString)
 	{
 		try
 		{
-			var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{searchString.ToUpper()}");
+			var response = await Http.GetAsync($"https://localhost:7282/api/GetStockPrice/api/getstockprice/{searchString.ToUpper()}");
 			if (response.IsSuccessStatusCode)
 			{
 				var jsonResponse = await response.Content.ReadAsStringAsync();
-				var responseObject = JsonConvert.DeserializeObject<StockSearchResponseDto>(jsonResponse);
+				var responseObject = JsonConvert.DeserializeObject<StockPriceCandleDto>(jsonResponse);
 
-				foreach (var company in CompanyInfos)
-				{
-					if (responseObject.Symbol == company.Ticker)
+				_stockName = CompanyInfos.FirstOrDefault(company => responseObject.Symbol == company.Ticker)?.Name;
+
+				var stock = new StockPriceCandleDto
 					{
-						_stockName = company.Name;
-						break;
-					}
-				}
-
-				var stock = new StockSearchResponseDto
-				{
-					Name = _stockName,
-					Current = responseObject.Current,
-					Open = responseObject.Open,
-					Previous = responseObject.Previous,
-					High = responseObject.High,
-					Low = responseObject.Low,
-					Change = responseObject.Change,
-					PercentChange = responseObject.PercentChange,
-					Symbol = responseObject.Symbol
-				};
-				_searchedStock = new List<StockSearchResponseDto> { stock };
+						Current = responseObject.Current,
+						Open = responseObject.Open,
+						Previous = responseObject.Previous,
+						High = responseObject.High,
+						Low = responseObject.Low,
+						Change = responseObject.Change,
+						PercentChange = responseObject.PercentChange,
+						Symbol = responseObject.Symbol
+					};
+				_searchedStock = stock;
 			}
 			else
 			{
+				ShowErrorMessage("Ingen aksje ble funnet basert på søket.");
 			}
 		}
 		catch (Exception ex)
 		{
 		}
-	} // Bør skrives om
+	}
 
 	private void ShowTradeForm(string trade = "clear")
 	{
-		if (trade == "buy")
+		_showBuyForm = trade == "buy";
+		_showSellForm = trade == "sell";
+		if (trade == "clear")
 		{
-			_showSellForm = false;
-			_showBuyForm = true;
-		}
-		else if (trade == "sell")
-		{
-			_showBuyForm = false;
-			_showSellForm = true;
-		}
-		else if (trade == "clear")
-		{
-			_showBuyForm = false;
-			_showSellForm = false;
 			_stockName = "";
 			_insertedQty = 0;
 		}
 	}
+	
 
-	private bool IsStockOwned(string symbol) => Stocks?.Any(stock => stock.Symbol == symbol) ?? false;
-
-	private async Task ConfirmBuy(StockSearchResponseDto searchedStock)
+	private async Task ConfirmAction()
 	{
-		if (IsStockOwned(searchedStock.Symbol))
+		var addTrade = new TradeDto
 		{
-			if (IsStockOwned(searchedStock.Symbol))
-			{
-				var previousQty = 0;
-				var newBuyingPrice = 0;
-				foreach (var stock in Stocks)
-				{
-					if (stock.Symbol == searchedStock.Symbol)
-					{
-						previousQty = stock.Qty;
-						newBuyingPrice = (((stock.Qty * (int)stock.BuyingPrice) / stock.Qty) + ((_insertedQty * (int)searchedStock.Current) / _insertedQty)) / 2;
-					}
-				}
-				var updateModel = new StockDto
-				{
-					Symbol = searchedStock.Symbol,
-					Qty = _insertedQty + previousQty,
-					BuyingPrice = newBuyingPrice,
-				};
-				UpdateStock(updateModel);
-			}
-		}
-		else
-		{
-			var addModel = new StockDto
-				{
-					Name = _stockName,
-					Symbol = searchedStock.Symbol,
-					BuyingPrice = searchedStock.Current,
-					Qty = _insertedQty,
-				};
-			AddStock(addModel);
-		}
-		ShowTradeForm();
-			}
+			UserId = 1,
+			StockSymbol = _searchedStock.Symbol,
+			Price = _searchedStock.Current,
+			Quantity = _insertedQty,
+			TimeStamp = DateTime.Now
+		};
+		AddTrade(addTrade);
 
-	private async Task ConfirmSell(StockSearchResponseDto searchedStock)
-	{
-		foreach (var ownedStock in Stocks)
-		{
-			var previousQty = 0;
-			if (ownedStock.Symbol == searchedStock.Symbol || ownedStock.Qty > _insertedQty)
-			{
-				foreach (var stock in Stocks)
-				{
-					if (stock.Symbol == searchedStock.Symbol)
-					{
-						previousQty = stock.Qty;
-					}
-				}
-				var updateModel = new StockDto
-				{
-					Symbol = searchedStock.Symbol,
-					Qty = previousQty - _insertedQty,
-				};
-				UpdateStock(updateModel);
-			}
-			else //delete stock
-			{
-			}
-		}
 		ShowTradeForm();
-	} //Skal inn i StockService
+	}
+
+
+	private void ShowErrorMessage(string message)
+	{
+		_errorMessage = message;
+	}
 }

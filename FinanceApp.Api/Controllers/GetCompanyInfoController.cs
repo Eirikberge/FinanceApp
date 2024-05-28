@@ -7,8 +7,8 @@ using FinanceApp.Models.Dtos;
 
 namespace FinanceApp.Api.Controllers
 {
-    [ApiController]
-	[Route("[controller]")]
+	[Route("api/[controller]")]
+	[ApiController]
 	public class CompanyInfoController : Controller
 	{
 		[HttpGet]

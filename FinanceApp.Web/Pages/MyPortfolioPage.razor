@@ -11,12 +11,13 @@
 
 <h1>My Portfolio</h1>
 
-<SearchBarComponent TEntity="StockDto" OnSearch="UpdateFilteredStocks"></SearchBarComponent>
+<SearchBarComponent TEntity="StockDto"></SearchBarComponent>
+@* <SearchBarComponent TEntity="StockDto" OnSearch="UpdateFilteredStocks"></SearchBarComponent> *@
 
 <br />
-<td><button class="btn btn-primary" @onclick="() => UpdateStockPrices()">Refresh</button></td>
+<td><button class="btn btn-primary" @onclick="() => GetCurrentStockPrice()">Refresh</button></td>
 
-@if (Stocks == null)
+@if (EarningsCalendarEvents == null)
 {
 	<p>Loading...</p>
 }
@@ -34,16 +35,11 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var stock in _filteredStocks ?? Stocks)
+			@foreach (var stock in _filteredStocks)
 			{
-				var gain = Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
 				<tr>
 					<td>@stock.Symbol</td>
 					<td>@stock.Name</td>
-					<td>@stock.BuyingPrice</td>
-					<td>@stock.CurrentPrice</td>
-					<td>@stock.Qty</td>
-					<td>@gain</td>
 				</tr>
 			}
 		</tbody>
@@ -61,67 +57,23 @@ else
 	<br />
 	<h4 style="text-align: center;">Uke: @GetWeekNumber(DateTime.Now)</h4>
 
-	<CalendarComponent Length="week"></CalendarComponent>
+	<DisplayCalendar Length="week" EarningsCalendarEvents="EarningsCalendarEvents" Stocks="Stocks"></DisplayCalendar>
 }
 
 @code {
-	private IEnumerable<StockDto> _filteredStocks;
-
-	protected override async Task OnInitializedAsync()
+	private async Task GetCurrentStockPrice()
 	{
-		await base.OnInitializedAsync();
-		if (Stocks == null)
-		{
-			_filteredStocks = Stocks.ToList();
-		}
+		// foreach (var stock in Stocks)
+		// {
+		// 	var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{stock.Symbol}");
+
+		// 	if (response.IsSuccessStatusCode)
+		// 	{
+		// 		var jsonResponse = await response.Content.ReadAsStringAsync();
+		// 		var responseObject = JsonConvert.DeserializeObject<StockPriceCandleDto>(jsonResponse);
+
+		// 		// responseObject.Current;
+		// 	}
+		// }
 	}
-
-	private async Task UpdateStockPrices()
-	{
-		foreach (var stock in Stocks)
-		{
-			var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{stock.Symbol}");
-
-			if (response.IsSuccessStatusCode)
-			{
-				var jsonResponse = await response.Content.ReadAsStringAsync();
-				var responseObject = JsonConvert.DeserializeObject<StockSearchResponseDto>(jsonResponse);
-
-				stock.CurrentPrice = responseObject.Current;
-			}
-		}
-	}
-
-	private async Task UpdateFilteredStocks(string searchString)
-	{
-		_filteredStocks = string.IsNullOrEmpty(searchString) ? Stocks :
-			Stocks.Where(stock =>
-				stock.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-				stock.Symbol.Contains(searchString, StringComparison.OrdinalIgnoreCase));
-	}
-
-	private double GetTotalGain()
-	{
-		double totalGain = 0;
-		@foreach (var stock in Stocks)
-		{
-			totalGain += Math.Round((stock.CurrentPrice - stock.BuyingPrice) * stock.Qty, 2);
-		}
-		return Math.Round(totalGain, 2);
-	}
-
-	private double GetTotalWorth()
-	{
-		double totalWorth = 0;
-		@foreach (var stock in Stocks)
-		{
-			totalWorth += Math.Round(stock.CurrentPrice * stock.Qty, 2);
-		}
-		return Math.Round(totalWorth, 2);
-	}
-
-	public int GetWeekNumber(DateTime date)
-	{
-		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-	} // denne er dobbelt, både her og i calendarComponent...
 }

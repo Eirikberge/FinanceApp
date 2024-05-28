@@ -15,8 +15,10 @@ namespace FinanceApp.Web
 
 			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 			
-			builder.Services.AddScoped<IStockService, StockService>();
+			builder.Services.AddScoped<ITradeService, TradeService>();
 			builder.Services.AddScoped<ICompanyInfoService, CompanyInfoService>();
+			builder.Services.AddScoped<ICalendarInfoService, CalendarInfoService>();
+			builder.Services.AddScoped<IUserService, UserService>();
 
 			await builder.Build().RunAsync();
 		}

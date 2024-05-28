@@ -1,6 +1,6 @@
 using FinanceApp.Api.Data;
-using FinanceApp.Api.Repositorys.Contracts;
-using FinanceApp.Api.Repositorys;
+using FinanceApp.Api.Repositories;
+using FinanceApp.Api.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApp.Api
@@ -21,7 +21,8 @@ namespace FinanceApp.Api
 			builder.Services.AddDbContext<FinanceAppContext>(options =>
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-			builder.Services.AddScoped<IStockRepository, StockRepository>();
+			builder.Services.AddScoped<ITradeRepository, TradeRepository>();
+			builder.Services.AddScoped<IStockHoldingRepository, StockHoldingRepository>();
 
 			builder.Services.AddHttpClient();
 

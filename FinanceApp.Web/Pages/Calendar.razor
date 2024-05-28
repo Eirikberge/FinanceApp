@@ -17,10 +17,11 @@
 
 
 <br />
-
-<CalendarComponent Length="month"></CalendarComponent>
-
-@code {
-
-
+@if (EarningsCalendarEvents == null)
+{
+	<p>Loading...</p>
+}
+else
+{
+	<DisplayCalendar Length="month" EarningsCalendarEvents="EarningsCalendarEvents"></DisplayCalendar>
 }

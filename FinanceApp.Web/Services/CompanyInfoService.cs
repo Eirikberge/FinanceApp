@@ -15,7 +15,7 @@ namespace FinanceApp.Web.Services
 		{
 			try
 			{
-				var companyInfo = await _httpClient.GetFromJsonAsync<IEnumerable<CompanyInfoDto>>("https://localhost:7282/CompanyInfo");
+				var companyInfo = await _httpClient.GetFromJsonAsync<IEnumerable<CompanyInfoDto>>("https://localhost:7282/api/CompanyInfo");
 				return companyInfo;
 			}
 			catch (Exception ex)

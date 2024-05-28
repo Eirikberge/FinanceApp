@@ -5,13 +5,13 @@ using FinanceApp.Models.Dtos;
 
 namespace FinanceApp.Api.Controllers
 {
-    [ApiController]
-	[Route("[controller]")]
-	public class BasicFinancialsController : Controller
+	[Route("api/[controller]")]
+	[ApiController]
+	public class GetBasicFinancialsController : Controller
 	{
 		private readonly HttpClient _httpClient;
 
-		public BasicFinancialsController(HttpClient httpClient)
+		public GetBasicFinancialsController(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
 		}
