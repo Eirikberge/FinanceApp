@@ -13,9 +13,7 @@ namespace FinanceApp.Models.Dtos
 	public class TradeDto
 	{
 		public int UserId { get; set; }
-
 		public string StockSymbol { get; set; }
-
 		public float Price { get; set; }
 		public int Quantity { get; set; }
 		public DateTime TimeStamp { get; set; }

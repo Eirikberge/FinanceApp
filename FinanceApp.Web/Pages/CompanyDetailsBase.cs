@@ -8,7 +8,7 @@ namespace FinanceApp.Web.Pages
 	{
 		[Parameter] public string Symbol { get; set; }
 
-		[Inject] public ICalendarInfoService CalendarInfoService { get; set; }
+		[Inject] public IEarningsCalendarDataService CalendarInfoService { get; set; }
 		public IEnumerable<EarningsCalendarDto> EarningsCalendarEvents { get; set; }
 
 		protected override async Task OnInitializedAsync()

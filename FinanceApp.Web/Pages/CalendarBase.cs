@@ -9,13 +9,16 @@ namespace FinanceApp.Web.Pages
 	{
 
 		[Inject]
-		public ICalendarInfoService CalendarInfoService { get; set; }
-		public IEnumerable<EarningsCalendarDto> EarningsCalendarEvents { get; set; }
+		public IEarningsCalendarDataService CalendarInfoService { get; set; }
+		public IEnumerable<EarningsCalendarDto> EarningsCalendarList { get; set; }
+		[Inject]
+		public IStockHoldingService StockHoldingService { get; set; }
+		public IEnumerable<StockHoldingDto> StockHoldings { get; set; }
 
 		protected override async Task OnInitializedAsync()
 		{
-			EarningsCalendarEvents = await CalendarInfoService.GetCalendarInfo();
-
+			EarningsCalendarList = await CalendarInfoService.GetCalendarInfo();
+			StockHoldings = await StockHoldingService.GetStockHoldingById(1);
 		}
 		public static string GetMonthAsString()
 		{

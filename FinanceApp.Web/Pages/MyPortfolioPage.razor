@@ -11,13 +11,12 @@
 
 <h1>My Portfolio</h1>
 
-<SearchBarComponent TEntity="StockDto"></SearchBarComponent>
-@* <SearchBarComponent TEntity="StockDto" OnSearch="UpdateFilteredStocks"></SearchBarComponent> *@
+<SearchBarComponent TEntity="StockDto" OnSearch="UpdateFilteredStocks"></SearchBarComponent>
 
 <br />
-<td><button class="btn btn-primary" @onclick="() => GetCurrentStockPrice()">Refresh</button></td>
+<td><button class="btn btn-primary" @onclick="() => GetCurrentStockPrice()">Update stock prices</button></td>
 
-@if (EarningsCalendarEvents == null)
+@if (EarningsCalendarList == null)
 {
 	<p>Loading...</p>
 }
@@ -28,18 +27,23 @@ else
 			<tr>
 				<th>Symbol</th>
 				<th>Name</th>
-				<th>BuyingPrice</th>
-				<th>CurrentPrice</th>
+				<th>Buying Price</th>
+				<th>Current Price</th>
 				<th>Quantity</th>
 				<th>Gain</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var stock in _filteredStocks)
+			@foreach (var stock in StockList)
 			{
 				<tr>
 					<td>@stock.Symbol</td>
 					<td>@stock.Name</td>
+					<td>@stock.BuyingPrice</td>
+					<td>@stock.CurrentPrice</td>
+					<td>@stock.Quantity</td>
+					<td>gain...</td>
+
 				</tr>
 			}
 		</tbody>
@@ -57,23 +61,23 @@ else
 	<br />
 	<h4 style="text-align: center;">Uke: @GetWeekNumber(DateTime.Now)</h4>
 
-	<DisplayCalendar Length="week" EarningsCalendarEvents="EarningsCalendarEvents" Stocks="Stocks"></DisplayCalendar>
+	<DisplayCalendar Length="week" EarningsCalendarList="EarningsCalendarList" StockHoldings="StockHoldings"></DisplayCalendar>
 }
 
 @code {
 	private async Task GetCurrentStockPrice()
 	{
-		// foreach (var stock in Stocks)
-		// {
-		// 	var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{stock.Symbol}");
+		foreach (var stock in StockList)
+		{
+			var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{stock.Symbol}");
 
-		// 	if (response.IsSuccessStatusCode)
-		// 	{
-		// 		var jsonResponse = await response.Content.ReadAsStringAsync();
-		// 		var responseObject = JsonConvert.DeserializeObject<StockPriceCandleDto>(jsonResponse);
+			if (response.IsSuccessStatusCode)
+			{
+				var jsonResponse = await response.Content.ReadAsStringAsync();
+				var responseObject = JsonConvert.DeserializeObject<StockPriceCandleDto>(jsonResponse);
 
-		// 		// responseObject.Current;
-		// 	}
-		// }
+				stock.CurrentPrice = responseObject.Current;
+			}
+		}
 	}
 }

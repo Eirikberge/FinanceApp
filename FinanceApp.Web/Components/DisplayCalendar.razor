@@ -23,16 +23,16 @@
 					<td style="height: 160px;">
 						@day.DateValue
 						<br />
-						@foreach (var company in EarningsCalendarEvents)
+						@foreach (var company in EarningsCalendarList)
 						{
-							@* if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
+							if (StockIsOwned(company.Symbol) && company.Date == day.DateValue)
 							{
 								<br />
 								<text>Ticker: @company.Symbol</text>
 
 								<br />
 								<text>Quarter: @company.Quarter</text>
-							} *@
+							}
 						}
 					</td>
 				}
@@ -45,10 +45,13 @@
 
 
 	[Parameter]
-	public IEnumerable<EarningsCalendarDto> EarningsCalendarEvents { get; set; }
+	public IEnumerable<EarningsCalendarDto> EarningsCalendarList { get; set; }
 
 	[Parameter]
 	public string Length { get; set; }
+
+	[Parameter]
+	public IEnumerable<StockHoldingDto> StockHoldings { get; set; }
 
 	public DateTime startDate = DateTime.Now;
 	public DateTime endDate = DateTime.Now;
@@ -159,17 +162,17 @@
 		return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 	}
 
-	// private bool StockIsOwned(string symbol)
-	// {
-	// 	foreach (var stock in Stocks)
-	// 	{
-	// 		if (stock.Symbol == symbol)
-	// 		{
-	// 			return true;
-	// 		}
-	// 	}
-	// 	return false;
-	// }
+	private bool StockIsOwned(string symbol)
+	{
+		foreach (var stock in StockHoldings)
+		{
+			if (stock.StockSymbol == symbol)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public class DayEvent
 	{

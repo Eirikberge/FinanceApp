@@ -17,11 +17,11 @@
 
 
 <br />
-@if (EarningsCalendarEvents == null)
+@if (EarningsCalendarList == null)
 {
 	<p>Loading...</p>
 }
 else
 {
-	<DisplayCalendar Length="month" EarningsCalendarEvents="EarningsCalendarEvents"></DisplayCalendar>
+	<DisplayCalendar Length="month" EarningsCalendarList="EarningsCalendarList" StockHoldings="StockHoldings"></DisplayCalendar>
 }

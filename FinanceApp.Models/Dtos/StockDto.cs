@@ -8,11 +8,10 @@ namespace FinanceApp.Models.Dtos
 {
 	public class StockDto
 	{
-		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Symbol { get; set; }
 		public float BuyingPrice { get; set; }
 		public float CurrentPrice { get; set; }
-		public int Qty { get; set; }
+		public int Quantity { get; set; }
 	}
 }

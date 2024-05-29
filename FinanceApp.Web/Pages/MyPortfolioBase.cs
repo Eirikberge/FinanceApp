@@ -10,32 +10,53 @@ namespace FinanceApp.Web.Pages
 {
 	public class MyPortfolioBase : ComponentBase
 	{
-
-
 		[Inject]
-		public ITradeService TradeService { get; set; }
-		public IEnumerable<TradeDto> Trades { get; set; }
+		public IEarningsCalendarDataService CalendarInfoService { get; set; }
+		public IEnumerable<EarningsCalendarDto> EarningsCalendarList { get; set; }
 		[Inject]
-		public ICalendarInfoService CalendarInfoService { get; set; }
-		public IEnumerable<EarningsCalendarDto> EarningsCalendarEvents { get; set; }
-		
-		public IEnumerable<StockDto> _filteredStocks;
+		public IStockHoldingService StockHoldingService { get; set; }
+		public IEnumerable<StockHoldingDto> StockHoldings { get; set; }		
+		[Inject]
+		public ICompanyInfoService CompanyInfoService { get; set; }
+		public IEnumerable<CompanyInfoDto> CompanyInfoList { get; set; }
+
+		public IEnumerable<StockDto> StockList;
+
 		protected override async Task OnInitializedAsync()
 		{
-			EarningsCalendarEvents = await CalendarInfoService.GetCalendarInfo();
+			EarningsCalendarList = await CalendarInfoService.GetCalendarInfo();
 
-			_filteredStocks.ToList();
+			CompanyInfoList = await CompanyInfoService.GetCompanyInfo();
 
+			StockHoldings = await StockHoldingService.GetStockHoldingById(1);
+
+			StockList = StockHoldings.Select(stock => new StockDto
+			{
+				Symbol = stock.StockSymbol,
+				BuyingPrice = stock.Price,
+				Quantity = stock.Quantity
+			}).ToList();
+
+			foreach (var stockDto in StockList)
+			{
+				var companyInfo = CompanyInfoList.FirstOrDefault(ci => ci.Ticker == stockDto.Symbol);
+				if (companyInfo != null)
+				{
+					stockDto.Name = companyInfo.Name;
+				}
+			}
+
+			StockList.ToList();
 		}
 
 
-		//public async Task UpdateFilteredStocks(string searchString)
-		//{
-		//	_filteredStocks = string.IsNullOrEmpty(searchString) ? Stocks :
-		//		Stocks.Where(stock =>
-		//			stock.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-		//			stock.Symbol.Contains(searchString, StringComparison.OrdinalIgnoreCase));
-		//}
+		public async Task UpdateFilteredStocks(string searchString)
+		{
+			StockList = string.IsNullOrEmpty(searchString) ? StockList :
+				StockList.Where(stock =>
+					stock.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+					stock.Symbol.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+		}
 
 		public double GetTotalGain()
 		{

@@ -20,7 +20,7 @@ namespace FinanceApp.Api.Controllers
 		{
 			try
 			{
-				var stockHoldings = _stockHoldingRepository.GetStockHoldingById(id);
+				var stockHoldings = await _stockHoldingRepository.GetStockHoldingById(id);
 				return Ok(stockHoldings);
 			}
 			catch (Exception ex)

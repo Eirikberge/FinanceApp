@@ -18,7 +18,7 @@ namespace FinanceApp.Web.Services
 		{
 			try
 			{
-				var trades = await _httpClient.GetFromJsonAsync<IEnumerable<TradeDto>>("https://localhost:7282/api/trades");
+				var trades = await _httpClient.GetFromJsonAsync<IEnumerable<TradeDto>>("https://localhost:7282/api/Trade");
 				return trades;
 			}
 			catch (Exception ex)

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FinanceApp.Api.Repositories
 {
     public class StockHoldingRepository : IStockHoldingRepository
+    // Repositories tilhører databasen, mens service er til prosjektet.
     {
         private readonly FinanceAppContext _context;
 
