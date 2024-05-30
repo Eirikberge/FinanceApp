@@ -1,10 +1,8 @@
 ﻿using FinanceApp.Models.Dtos;
 using FinanceApp.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
 using System.Globalization;
-using static System.Net.WebRequestMethods;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace FinanceApp.Web.Pages
 {
@@ -19,6 +17,10 @@ namespace FinanceApp.Web.Pages
 		[Inject]
 		public ICompanyInfoService CompanyInfoService { get; set; }
 		public IEnumerable<CompanyInfoDto> CompanyInfoList { get; set; }
+		[Inject]
+		public IBasicFinancialDataService BasicFinancialDataService { get; set; }
+		[Inject]
+		public IStockPriceCandleService StockPriceCandleService { get; set; }
 
 		public IEnumerable<StockDto> StockList;
 
@@ -30,25 +32,39 @@ namespace FinanceApp.Web.Pages
 
 			StockHoldings = await StockHoldingService.GetStockHoldingById(1);
 
+			
+
 			StockList = StockHoldings.Select(stock => new StockDto
 			{
 				Symbol = stock.StockSymbol,
 				BuyingPrice = stock.Price,
-				Quantity = stock.Quantity
+				Quantity = stock.Quantity,
 			}).ToList();
 
-			foreach (var stockDto in StockList)
+			foreach (var stock in StockList)
 			{
-				var companyInfo = CompanyInfoList.FirstOrDefault(ci => ci.Ticker == stockDto.Symbol);
+				var companyInfo = CompanyInfoList.FirstOrDefault(ci => ci.Ticker == stock.Symbol);
 				if (companyInfo != null)
 				{
-					stockDto.Name = companyInfo.Name;
+					stock.Name = companyInfo.Name;
 				}
+
+				await StockPriceCandleService.GetStockPriceCandle(stock.Symbol);
 			}
 
 			StockList.ToList();
-		}
 
+			GetCurrentStockBeta();
+		}
+		public async Task GetCurrentStockPrice()
+		{
+			foreach (var stock in StockList)
+			{
+				var response = await StockPriceCandleService.GetStockPriceCandle(stock.Symbol);
+
+				stock.CurrentPrice = response.Current;
+			}
+		}
 
 		public async Task UpdateFilteredStocks(string searchString)
 		{
@@ -58,14 +74,41 @@ namespace FinanceApp.Web.Pages
 					stock.Symbol.Contains(searchString, StringComparison.OrdinalIgnoreCase));
 		}
 
-		public double GetTotalGain()
+		private async Task GetCurrentStockBeta()
 		{
-			return 123;
+			foreach (var stock in StockList)
+			{
+				var response = await BasicFinancialDataService.GetBasicFinancialsData(stock.Symbol);
+
+				{
+					stock.Beta = response.Beta;
+					stock.DividendPSAnnual = response.DividendPerShareAnnual;
+				}
+			}
 		}
 
-		public double GetTotalWorth()
+
+		public double GetTotalValue(string returntype)
 		{
-			return 123;
+			var totalGain = 0.00;
+			var totalWorth = 0.00;
+
+			foreach (var stock in StockList)
+			{
+				totalGain += (stock.CurrentPrice - stock.BuyingPrice) * stock.Quantity;
+				totalWorth += stock.CurrentPrice * stock.Quantity;
+			}
+
+			if (returntype == "Gain")
+			{
+				return totalGain;
+			}
+			if (returntype == "Worth")
+			{
+				return totalGain;
+			}
+
+			return 0;
 		}
 
 		public int GetWeekNumber(DateTime date)

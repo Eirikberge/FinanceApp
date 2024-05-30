@@ -46,23 +46,23 @@
 				<td>@_searchedStock.PercentChange</td>
 				<td>@_searchedStock.Change</td>
 				<td><button class="btn btn-primary" @onclick='() => ShowTradeForm("buy")'>Buy</button></td>
-@* 				@if (IsStockOwned(_searchedStock.Symbol))
+				@if (IsStockOwned(_searchedStock.Symbol))
 				{
 					<td><button class="btn btn-primary" @onclick='() => ShowTradeForm("sell")'>Sell</button></td>
-				} *@
+				}
 			</tr>
 			@if (_showBuyForm)
 			{
 				<div class="buy-form">
 					<input type="number" @bind="_insertedQty" placeholder="Enter quantity for @_stockName" />
-					<button @onclick="() => ConfirmAction()">Confirm buy</button>
+					<button @onclick='() => ConfirmTrade("buy")'>Confirm sale</button>
 				</div>
 			}
 			@if (_showSellForm)
 			{
 				<div class="sell-form">
 					<input type="number" @bind="_insertedQty" placeholder="Enter quantity for @_searchedStock.Symbol" />
-					<button @onclick="() => ConfirmAction()">Confirm sale</button>
+					<button @onclick='() => ConfirmTrade("sell")'>Confirm sale</button>
 				</div>
 			}
 
@@ -71,7 +71,7 @@
 	@if (_errorMessage != null)
 	{
 		<div>
-			_errorMessage
+			@_errorMessage
 		</div>
 	}
 }
@@ -83,6 +83,7 @@
 
 	private string _stockName;
 	private int _insertedQty;
+	private int _searchedAndOwnedStockQuantity;
 
 	private string _errorMessage;
 
@@ -121,6 +122,31 @@
 		}
 	}
 
+	private async Task ConfirmTrade(string trade)
+	{
+		if (_insertedQty <= _searchedAndOwnedStockQuantity)
+		{
+			var change = 1;
+
+			if (trade == "sell") change = -1;
+
+			var addTrade = new TradeDto
+			{
+				UserId = 1,
+				StockSymbol = _searchedStock.Symbol,
+				Price = _searchedStock.Current,
+				Quantity = _insertedQty * change,
+				TimeStamp = DateTime.Now
+			};
+			AddTrade(addTrade);
+		}
+		else
+		{
+			ShowErrorMessage("Error: Du eier ikke så mange aksjer");
+		}
+		ShowTradeForm();
+	}
+
 	private void ShowTradeForm(string trade = "clear")
 	{
 		_showBuyForm = trade == "buy";
@@ -131,26 +157,22 @@
 			_insertedQty = 0;
 		}
 	}
-	
-
-	private async Task ConfirmAction()
-	{
-		var addTrade = new TradeDto
-		{
-			UserId = 1,
-			StockSymbol = _searchedStock.Symbol,
-			Price = _searchedStock.Current,
-			Quantity = _insertedQty,
-			TimeStamp = DateTime.Now
-		};
-		AddTrade(addTrade);
-
-		ShowTradeForm();
-	}
-
 
 	private void ShowErrorMessage(string message)
 	{
 		_errorMessage = message;
+	}
+
+	private bool IsStockOwned(string symbol)
+	{
+		foreach (var stock in StockHoldings)
+		{
+			if (stock.StockSymbol == symbol)
+			{
+				_searchedAndOwnedStockQuantity = stock.Quantity;
+				return true;
+			}
+		}
+		return false;
 	}
 }

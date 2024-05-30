@@ -22,14 +22,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\eirik\source\repos\FinanceApp\FinanceApp.Web
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/eirik/source/repos/FinanceApp/FinanceApp.Web/Account/Pages/Login.razor]
-build_metadata.AdditionalFiles.TargetPath = QWNjb3VudFxQYWdlc1xMb2dpbi5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/eirik/source/repos/FinanceApp/FinanceApp.Web/Account/Pages/Register.razor]
-build_metadata.AdditionalFiles.TargetPath = QWNjb3VudFxQYWdlc1xSZWdpc3Rlci5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/eirik/source/repos/FinanceApp/FinanceApp.Web/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 

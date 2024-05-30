@@ -30,6 +30,7 @@ else
 				<th>Buying Price</th>
 				<th>Current Price</th>
 				<th>Quantity</th>
+				<th>Beta</th>
 				<th>Gain</th>
 			</tr>
 		</thead>
@@ -42,8 +43,8 @@ else
 					<td>@stock.BuyingPrice</td>
 					<td>@stock.CurrentPrice</td>
 					<td>@stock.Quantity</td>
-					<td>gain...</td>
-
+					<td>@stock.Beta</td>
+					<td>@((stock.CurrentPrice - stock.BuyingPrice) * stock.Quantity)</td>
 				</tr>
 			}
 		</tbody>
@@ -51,9 +52,9 @@ else
 	<br />
 	<table class="table table-bordered table-striped">
 		<tr>
-			<th style="width: @(100 / 4)%;">Total Worth: @GetTotalWorth() </th>
+			<th style="width: @(100 / 4)%;">Total Worth: @GetTotalValue("Worth") </th>
 			<th style="width: @(100 / 4)%;">Risk(beta): 1.2</th>
-			<th style="width: @(100 / 4)%;">Total Gain: @GetTotalGain()</th>
+			<th style="width: @(100 / 4)%;">Total Gain: @GetTotalValue("Gain")</th>
 			<th style="width: @(100 / 4)%;">Estimated annual dividend: 54 USD</th>
 		</tr>
 	</table>
@@ -65,19 +66,7 @@ else
 }
 
 @code {
-	private async Task GetCurrentStockPrice()
-	{
-		foreach (var stock in StockList)
-		{
-			var response = await Http.GetAsync($"https://localhost:7282/GetStockPrice/api/getstockprice/{stock.Symbol}");
 
-			if (response.IsSuccessStatusCode)
-			{
-				var jsonResponse = await response.Content.ReadAsStringAsync();
-				var responseObject = JsonConvert.DeserializeObject<StockPriceCandleDto>(jsonResponse);
+}
 
-				stock.CurrentPrice = responseObject.Current;
-			}
-		}
-	}
 }

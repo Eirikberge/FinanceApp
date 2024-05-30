@@ -20,6 +20,8 @@ namespace FinanceApp.Web
 			builder.Services.AddScoped<IEarningsCalendarDataService, EarningsCalendarDataService>();
 			builder.Services.AddScoped<IUserService, UserService>();
 			builder.Services.AddScoped<IStockHoldingService, StockHoldingService>();
+			builder.Services.AddScoped<IBasicFinancialDataService, BasicFinancialDataService>();
+			builder.Services.AddScoped<IStockPriceCandleService, StockPriceCandleService>();
 
 			await builder.Build().RunAsync();
 		}

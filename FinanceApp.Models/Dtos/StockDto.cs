@@ -13,5 +13,7 @@ namespace FinanceApp.Models.Dtos
 		public float BuyingPrice { get; set; }
 		public float CurrentPrice { get; set; }
 		public int Quantity { get; set; }
+		public float Beta { get; set; }
+		public float DividendPSAnnual { get; set; }
 	}
 }
