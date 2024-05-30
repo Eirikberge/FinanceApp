@@ -59,8 +59,7 @@
               "RelativeToolTip": "FinanceApp.Web\\Services\\BasicFinancialDataService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-30T06:55:10.285Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-30T06:55:10.285Z"
             },
             {
               "$type": "Document",
@@ -72,8 +71,7 @@
               "RelativeToolTip": "FinanceApp.Web\\Components\\DisplayCalendar.razor",
               "ViewState": "AQIAADIAAAAAAAAAAAAowDwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-30T06:53:40.343Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-30T06:53:40.343Z"
             },
             {
               "$type": "Document",
@@ -85,8 +83,7 @@
               "RelativeToolTip": "FinanceApp.Models\\Dtos\\StockPriceCandleDto.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-30T06:43:22.409Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-30T06:43:22.409Z"
             },
             {
               "$type": "Document",
@@ -98,8 +95,7 @@
               "RelativeToolTip": "FinanceApp.Web\\Pages\\MyPortfolioBase.cs",
               "ViewState": "AQIAACIAAAAAAAAAAAAYwDMAAABEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-30T06:40:44.607Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-30T06:40:44.607Z"
             },
             {
               "$type": "Document",
@@ -111,8 +107,7 @@
               "RelativeToolTip": "FinanceApp.Web\\Pages\\MyPortfolioPage.razor",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-30T06:39:59.524Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-30T06:39:59.524Z"
             }
           ]
         }
